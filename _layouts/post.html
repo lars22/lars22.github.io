@@ -1,28 +1,27 @@
 ---
 layout: default
 ---
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-<h1>
-  {{ page.title }}
-</h1>
+  <header class="artilce_header">
+    <h1 class="artilce_title" itemprop="name headline">{{ page.title }}</h1>
+    <p class="artilce_meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}</p>
+  </header>
 
-{% if page.image.feature %}
-  <img src="{{ site.github.url }}/images/{{ page.image.feature }}">
-{% endif %}
+  <div class="article-content" itemprop="articleBody">
+    {{ page.content }}
+  </div>
 
-{{ content }}
+  <footer class="article-footer">
 
-<span class="post-date">
-  Written on
-  {% assign d = page.date | date: "%-d"  %}
-  {{ page.date | date: "%B" }}
-  {% case d %}
-    {% when '1' or '21' or '31' %}{{ d }}st
-    {% when '2' or '22' %}{{ d }}nd
-    {% when '3' or '23' %}{{ d }}rd
-    {% else %}{{ d }}th{% endcase %},
-  {{ page.date | date: "%Y" }}
-  by {{ site.author.name }}
-</span>
-{% include social-sharing.html %}
-{% include related-posts.html %}
+  {% include share.html %}
+
+  <hr/>
+
+  {% include author.html %}
+
+  </footer>
+
+  {% include dq.html %}
+
+</article>
