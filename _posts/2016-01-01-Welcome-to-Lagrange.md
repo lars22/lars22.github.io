@@ -5,7 +5,7 @@ categories: journal
 tags: [documentation,sample]
 image:
   feature: mountains.jpg
-  teaser: mountains-teaser.jpg
+  teaser: mountains.jpg
   credit: Death to Stock Photo
   creditlink: ""
 ---
