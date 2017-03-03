@@ -2,12 +2,12 @@
 layout: page
 title: Impressum
 ---
-#Impressum
 
 ###Inhaber
-    Lars
-    Jahnplatz 10
-    30165 Hannover
+
+    Lars <br />
+    Jahnplatz 10 <br />
+    30165 Hannover <br />
 
 1. Haftungsbeschränkung
 
