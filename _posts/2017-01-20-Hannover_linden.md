@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Hannover Oper
+title: Heizkraftwerk Hannover
 categories: travel
 tags: [documentation,sample]
 image:
@@ -9,4 +9,4 @@ image:
   credit: ""
   creditlink: ""
 ---
-Opernhaus Hannover, Niedersachsen
+Heizkraftwerk in Linden, Hannover
