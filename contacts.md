@@ -3,4 +3,4 @@ layout: page
 title: Contact
 ---
 
-If you are having any problems, any questions or suggestions, feel free to [tweet at me](https://twitter.com/intent/tweet?text=My%question%about%Lagrange%is:%&amp;via=paululele), or [file a GitHub issue](https://github.com/lenpaul/lagrange/issues/new)
+Ich habe keine Kommentarfunktion für die Bilder eingerichtet, aber Ihr könnt mir gerne eine [E-Mail](mailto:weitendorf@outlook.com) senden, falls Ihr Fragen oder Anregungen habt.
