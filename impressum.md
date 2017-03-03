@@ -3,7 +3,7 @@ layout: page
 title: Impressum
 ---
 
-# Inhaber
+### Inhaber
 
   Lars
   Jahnplatz 10
