@@ -5,9 +5,9 @@ title: Impressum
 
 ### Inhaber
 
-  Lars
-  Jahnplatz 10
-  31789 Hameln
+  Lars  
+  Jahnplatz 10  
+  31789 Hameln  
 
 1. Haftungsbeschränkung
 
