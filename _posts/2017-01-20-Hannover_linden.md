@@ -4,8 +4,8 @@ title: Heizkraftwerk Hannover
 categories: travel
 tags: [documentation,sample]
 image:
-  feature: oper_web.jpg
-  teaser: oper_web.jpg
+  feature: linden.jpg
+  teaser: linden_web.jpg
   credit: ""
   creditlink: ""
 ---
