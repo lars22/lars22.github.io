@@ -7,7 +7,7 @@ title: Impressum
 
   Lars  
   Jahnplatz 10  
-  31789 Hameln  
+  30165 Hannover  
 
 1. Haftungsbeschränkung
 
