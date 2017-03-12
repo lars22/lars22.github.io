@@ -6,12 +6,10 @@ title: Home
 {% for post in paginator.posts %}
 <div class="posts">
   <h1>
-    <!-- <a href="{{ site.github.url }}{{ post.url }}">{{ post.title }}</a> -->
-    <a >{{ post.title }}</a>
+    <a href="{{ site.github.url }}{{ post.url }}">{{ post.title }}</a>
   </h1>
   {% if post.image.teaser %}
-    <!-- <a href="{{ site.github.url }}{{ post.url }}"><img src="{{ site.github.url }}/images/{{ post.image.teaser }}"></a> -->
-    <a><img src="{{ site.github.url }}/images/{{ post.image.teaser }}"></a>
+    <a href="{{ site.github.url }}{{ post.url }}"><img src="{{ site.github.url }}/images/{{ post.image.teaser }}"></a>
   {% endif %}
   <p>
     {{ post.content | strip_html | truncate: 350 }} <!-- <a href="{{ site.github.url }}{{ post.url }}">Read more</a> -->
