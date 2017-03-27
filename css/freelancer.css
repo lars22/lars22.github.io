@@ -103,10 +103,10 @@ header .intro-text .skills {
   }
 }
 .navbar-custom {
-  background: #2C3E50;
+  background: #2e3842;
   font-family: 'Open Sans', sans-serif;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 400;
   border: none;
 }
 .navbar-custom .navbar-brand {
