@@ -1,6 +1,0 @@
-﻿page_description: Technology, Designs, Works.
--
-title: Home
--
-content:
-Hi there! This is my creative and technical portfolio site. Have a look around and see what I have been up to.
