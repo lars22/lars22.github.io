@@ -24,13 +24,13 @@ body {
 .articletext{
   display: inline-block;
   text-align: left;
-  font-size: 22px;
-  max-width: 1300px;
+  font-size: 20px;
+  max-width: 1000px;
 }
 
 .articletitle{
   text-align: center;
-  font-size: 35px;
+  font-size: 25px;
   font-weight: bold;
   margin-top: 50px;
 }
@@ -38,14 +38,14 @@ body {
 .date{
   text-align: center;
   color: lightgrey;
-  font-size: 25px;
+  font-size: 18px;
   margin-bottom: 50px;
 }
 
 .article {
   text-align: center;
   font-family: 'Merriweather', serif;
-  font-size: 30px;
+  font-size: 20px;
 }
 
 /* Linkfarbe */
