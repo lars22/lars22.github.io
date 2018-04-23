@@ -1,0 +1,69 @@
+header{
+  text-align: center;
+  font-size: 30px;
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+
+h1{
+  font-family: 'Open sans', sans-serif;
+  font-size: 30px;
+}
+
+nav{
+  font-family: 'Open sans', sans-serif;
+  font-size: 15px;
+  text-align: center;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a{
+  color: darkgrey;
+  font-family: 'Open sans', serif;
+  font-size: 14px;
+}
+
+a.h1{
+  color:black;
+}
+
+div.container{
+  width:100%;
+  max-width: 700px;
+  margin: 0px auto;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+div.main-container{
+  margin-top: 100px;
+}
+
+div.meta{
+  font-family: 'Open sans', serif;
+  font-size: 14px;
+  color: darkgrey;
+  margin-bottom: 5px;
+}
+
+div.about{
+  width:100%;
+  max-width: 700px;
+  margin: 0px auto;
+  margin-top: 50px;
+  font-family: 'Open sans', serif;
+}
+
+div.arrow{
+  font-size: 30px;
+  font-family: 'Open sans', sans-serif;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
