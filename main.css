@@ -40,6 +40,12 @@ a{
   font-size: 14px;
 }
 
+.textlink{
+  color: #2c2c2f;
+  font-family: 'PT Serif', serif;
+  font-size: 15px;
+}
+
 div.container{
   width:100%;
   max-width: 700px;
@@ -65,7 +71,18 @@ div.about{
   max-width: 700px;
   margin: 0px auto;
   margin-top: 50px;
-  font-family: 'Open sans', serif;
+  font-family: 'PT Serif', serif;
+  font-size: 16px;
+  margin-bottom: 150px;
+}
+
+.grossabstand{
+  letter-spacing: 0.05em;
+}
+
+.zitat{
+  letter-spacing: 0.05em;
+  font-style: oblique;
 }
 
 div.arrow{
