@@ -92,3 +92,10 @@ div.arrow{
   margin-top: 50px;
   margin-bottom: 50px;
 }
+
+@media only screen and (max-width: 600px) {
+    body {
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+}
