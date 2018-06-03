@@ -77,16 +77,22 @@ div.meta{
 }
 
 div.about{
-  max-width: 700px;
   margin: 0px auto;
   margin-top: 100px;
-  font-family: 'Merriweather', serif;
   font-size: 16px;
   margin-bottom: 150px;
   line-height: 1.5;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 601px) {
+    div.about {
+        max-width: 700px;
+        width: 100%;
+        font-family: 'Merriweather', serif;
+	}
+}
+
+@media only screen and (max-width: 600px) {
     div.about {
         max-width: 100%;
         width: 100%;
