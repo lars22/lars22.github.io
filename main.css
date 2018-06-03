@@ -90,6 +90,8 @@ div.about{
 @media only screen and (min-width: 680px) {
     .div about {
         max-width: 100%;
+        width: 100%;
+        font-family: 'Open sans', serif;
 	}
 }
 
