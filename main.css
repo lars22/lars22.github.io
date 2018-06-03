@@ -87,7 +87,7 @@ div.about{
   line-height: 1.5;
 }
 
-@media only screen and (min-width: 680px) {
+@media only screen and (max-width: 600px) {
     .about {
         max-width: 100%;
         width: 100%;
