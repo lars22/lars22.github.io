@@ -87,6 +87,12 @@ div.about{
   line-height: 1.5;
 }
 
+@media only screen and (min-width: 680px) {
+    .div about {
+        max-width: 100%;
+	}
+}
+
 .grossabstand{
   letter-spacing: 0.05em;
 }
