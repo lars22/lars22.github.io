@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>lars</title>
-    <link>https://lars22.github.io/</link>
+    <link>/</link>
     <description>Recent content on lars</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 15 Dec 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://lars22.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>✌️ About me</title>
-      <link>https://lars22.github.io/1_hello/</link>
+      <link>/1_hello/</link>
       <pubDate>Sat, 15 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://lars22.github.io/1_hello/</guid>
+      <guid>/1_hello/</guid>
       <description>Welcome to my website! This blog started as a small testing area for static website build with hugo</description>
     </item>
     
     <item>
       <title>Thailand</title>
-      <link>https://lars22.github.io/2_hello/</link>
+      <link>/2_hello/</link>
       <pubDate>Fri, 14 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://lars22.github.io/2_hello/</guid>
+      <guid>/2_hello/</guid>
       <description>Welcome to my website. This is a small photoproject. 😊</description>
     </item>
     
