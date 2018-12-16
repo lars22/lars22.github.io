@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>lars</title>
+    <link>http://example.org/</link>
+    <description>Recent content on lars</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 15 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>✌️ About me</title>
+      <link>http://example.org/1_hello/</link>
+      <pubDate>Sat, 15 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/1_hello/</guid>
+      <description>Welcome to my website! This blog started as a small testing area for static website build with hugo</description>
+    </item>
+    
+    <item>
+      <title>Thailand</title>
+      <link>http://example.org/2_hello/</link>
+      <pubDate>Fri, 14 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/2_hello/</guid>
+      <description>Welcome to my website. This is a small photoproject. 😊</description>
+    </item>
+    
+  </channel>
+</rss>
