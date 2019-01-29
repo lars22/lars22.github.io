@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>lars</title>
+    <title>lars fotoblog</title>
     <link>/</link>
-    <description>Recent content on lars</description>
+    <description>Recent content on lars fotoblog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 15 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 14 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>✌️ About me</title>
-      <link>/1_hello/</link>
-      <pubDate>Sat, 15 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/1_hello/</guid>
-      <description>Welcome to my website! This blog started as a small testing area for static website build with hugo</description>
-    </item>
     
     <item>
       <title>Thailand</title>
@@ -26,7 +17,18 @@
       <pubDate>Fri, 14 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>/2_hello/</guid>
-      <description>Welcome to my website. This is a small photoproject. 😊</description>
+      <description>Dieses Jahr bin ich das erste mal nach Asien gereist und es war auch das erste mal, dass ich mein Telefon als Kamera auf meiner Reise genutzt habe. Alle Bilder habe ich mit der VSCO App bearbeitet. Ich war sehr gespannt was mich in Thailand erwartet - die Landschaften, die Kultur, das Essen.
+Gelandet sind wir in Bangkok, das man kaum mit einer anderen Stadt vergleichen kann. Laut, heiß, anstrengend, aufregend&amp;hellip; An jeder Ecke gibt es etwas zu entdecken.</description>
+    </item>
+    
+    <item>
+      <title>✌️ About me</title>
+      <link>/1_hello/</link>
+      <pubDate>Fri, 14 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/1_hello/</guid>
+      <description>Hello and welcome to my website. I&amp;rsquo;m Lars, based in Germany and I&amp;rsquo;m interested in taking photos. I have studied geoscience and working as a GIS technian.
+This blog is hosted on github and created with Hugo.</description>
     </item>
     
   </channel>

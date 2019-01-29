@@ -32,8 +32,8 @@ article, aside, figcaption, figure, footer, header, main, nav, section {
 body {
   margin: 0;
   font-family: 'Source Sans Pro', sans-serif;
-  color: rgba(0, 0, 0, .8);
-  font-size: 20px;
+  color: #29293A;
+  font-size: 16px;
   line-height: 1.6;
 }
 h1, h2, h3, h4, h5, h6 {
@@ -78,7 +78,7 @@ pre, code {
 /* Body
 ============================================================= */
 .list {
-  background: #f9f9f9;
+    background: #;
 }
 /* Header
 ============================================================= */
@@ -86,14 +86,24 @@ pre, code {
   display: flex;
   justify-content: space-between;
   height: 65px;
-  padding-left: 30px;
-  padding-right: 30px;
   line-height: 65px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
 }
+@media (max-width: 767px) {
+  .title {
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 30px;
+  }}
+
 .home .header {
-  background: #fff;
+  background: #;
 }
 .title a {
+  font-family: 'Source Sans Pro', sans-serif;
   display: block;
   margin-top: 18px;
   font-size: 24px;
@@ -212,6 +222,23 @@ pre, code {
     padding-right: 30px;
   }
 }
+/* Subtitle
+------------------------------ */
+.subtitle {
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 767px) {
+  .main {
+    min-height: calc(100vh - 155px);
+  }
+  .subtitle {
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
 /* List header
 ------------------------------ */
 .list-header span {
@@ -228,44 +255,44 @@ pre, code {
 .post-meta {
   margin-top: 8px;
   color: rgba(0, 0, 0, .4);
-  font-size: 16px;
+  font-size: 14px;
   letter-spacing: .5px;
 }
 /* First entry */
 .first-entry {
   position: relative;
   min-height: calc(100vh - 65px - 400px);
-  margin-bottom: 80px;
-  padding-top: 12vh;
+  margin-bottom: 20px;
+  padding-top: 8vh;
   padding-bottom: 1vh;
-  background: #fff;
+  background: #;
 }
 .welcome-emoji {
   font-size: 60px;
   line-height: 1;
 }
 .first-entry .post-title {
-  font-size: 40px;
+  font-size: 24px;
+  color: #29293A;
   transform: translateX(-3px);
 }
 .first-entry .post-summary {
   margin-top: 15px;
   margin-bottom: 15px;
-  font-size: 19px;
+  font-size: 16px;
 }
 .post-title {
   transform: translateX(-2px);
 }
 .post-summary {
   margin-top: 10px;
-  color: rgba(0, 0, 0, .4);
-  font-size: 18px;
+  color: #29293A;
+  font-size: 16px;
 }
 /* Post entry */
 .post-entry {
   position: relative;
-  padding: 30px;
-  background: #fff;
+  margin-bottom: 80px;
   border-radius: 6px;
 }
 .post-entry:active {
@@ -278,11 +305,13 @@ pre, code {
 .post-entry:first-child {
   margin-top: 40px;
 }
+/*
 .post-entry:hover {
   box-shadow: 0 5px 40px -5px rgba(0, 0, 0, .1);
 }
+*/
 .post-entry .post-title {
-  font-size: 30px;
+  font-size: 24px;
 }
 .post-link {
   position: absolute;
@@ -293,7 +322,7 @@ pre, code {
 }
 /* Post view */
 .post-view .post-title {
-  font-size: 45px;
+  font-size: 24px;
 }
 .post-content {
   padding-top: 30px;
@@ -314,25 +343,25 @@ pre, code {
   font-weight: 400;
 }
 .post-content h1 {
-  font-size: 45px;
+  font-size: 24px;
   margin-top: 50px;
 }
 .post-content h2 {
-  font-size: 32px;
+  font-size: 22px;
   margin-top: 40px;
 }
 .post-content h3 {
-  font-size: 28px;
+  font-size: 20px;
   margin-top: 30px;
 }
 .post-content h4 {
-  font-size: 24px;
+  font-size: 18px;
 }
 .post-content h5 {
-  font-size: 20px;
+  font-size: 16px;
 }
 .post-content h6 {
-  font-size: 18px;
+  font-size: 14px;
 }
 .post-content a {
   padding-bottom: 2px;
