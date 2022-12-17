@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bearista</title>
+
+    <!-- ==== STYLE.CSS ==== -->
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <!-- ==== FAVICON ==== -->
+    <link rel="icon" href="./img/bearista.svg">
+
+    <!-- ==== MAP ==== -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+    crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
+
+    <!-- ==== MAP SEARCH BAR ==== -->
+
+    <script src="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet/0.0.1-beta.5/esri-leaflet.js"></script>
+
+    <script src="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.css">
+
+  </head>
+  <body>
+    <!-- ==== HEADER ==== -->
+    <header class="container header">
+    </header>
+
+    <section class="wrapper">
+      <div class="container">
+        <div class="grid-cols-2">
+          <div class="grid-item-1">
+            <h1 class="main-heading">
+              Bearista <br>Kaffee-Karte
+              <br />
+            </h1>
+            <!-- ==== HEADER ==== -->
+            <p class="info-text">
+              Finde die schönsten Cafés mit dem besten Kaffee in deiner Umgebung ❤
+              <br>
+              <br>
+            </p>
+
+            <!-- MAP -->
+            <div id="map" style="width:100%; height: 400px;"></div>
+            <script>
+            var map = L.map('map').setView([53.5502, 9.9920], 13);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            // Control 3: This add a Search bar
+            var searchControl = new L.esri.Controls.Geosearch().addTo(map);
+
+            var results = new L.LayerGroup().addTo(map);
+
+              searchControl.on('results', function(data){
+                results.clearLayers();
+                for (var i = data.results.length - 1; i >= 0; i--) {
+                  results.addLayer(L.marker(data.results[i].latlng));
+                }
+              });
+
+              var marker = L.marker([53.55316551268747, 9.992089451583253]).addTo(map);
+              marker.bindPopup("<b>Elbgold im Alsterhaus</b><br>Jungfernstieg 16-20");
+
+              var marker2 = L.marker([53.56317103995257, 9.967068878853038]).addTo(map);
+              marker2.bindPopup("<b>Elbgold</b><br>Lagerstraße 34c");
+            </script>
+             <p class="info-text">
+              <br>
+              Erfahre mehr über <a href="about.html">Kaffee-Karte</a> und unsere Story.
+              <br>
+            </p>
+          </div>
+          <div class="grid-item-2">
+            <div class="team_img_wrapper">
+              <img src="./img/bearista.svg" alt="team-img" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
