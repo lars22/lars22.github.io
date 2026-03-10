@@ -1,9 +1,0 @@
-baseURL = "lars22.github.io"
-languageCode = "en-us"
-title = "Lars blog"
-theme = "ritzy"
-paginate = 5
-
-[params]
-  author = "Lars"
-  description = "my blog"
