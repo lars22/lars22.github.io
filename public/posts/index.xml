@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Lars blog</title>
+    <link>lars22.github.io/posts/</link>
+    <description>Recent content in Posts on Lars blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 10 Sep 2023 20:44:30 +0100</lastBuildDate><atom:link href="lars22.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tour de Wallonie</title>
+      <link>lars22.github.io/posts/tour_de_wallonie/</link>
+      <pubDate>Sun, 10 Sep 2023 20:44:30 +0100</pubDate>
+      
+      <guid>lars22.github.io/posts/tour_de_wallonie/</guid>
+      <description>📍Wallonie, Belgium
+Cycling 520 km through Beglium, Germany and Luxembourg.</description>
+    </item>
+    
+    <item>
+      <title>Hamburg Rathaus</title>
+      <link>lars22.github.io/posts/hamburg/</link>
+      <pubDate>Fri, 10 Mar 2023 20:44:30 +0100</pubDate>
+      
+      <guid>lars22.github.io/posts/hamburg/</guid>
+      <description>📍 Hamburg Rathaus, Germany</description>
+    </item>
+    
+    <item>
+      <title>Madrid</title>
+      <link>lars22.github.io/posts/madrid/</link>
+      <pubDate>Fri, 10 Mar 2023 20:44:30 +0100</pubDate>
+      
+      <guid>lars22.github.io/posts/madrid/</guid>
+      <description>📍Madrid, Spain</description>
+    </item>
+    
+    <item>
+      <title>Summer in Bari</title>
+      <link>lars22.github.io/posts/bari/</link>
+      <pubDate>Sat, 04 Feb 2023 20:44:30 +0100</pubDate>
+      
+      <guid>lars22.github.io/posts/bari/</guid>
+      <description>📍 Bari, Italy</description>
+    </item>
+    
+  </channel>
+</rss>
