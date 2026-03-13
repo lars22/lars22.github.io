@@ -6,7 +6,70 @@
     <description>Recent content in Posts on Lars blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 10 Sep 2023 20:44:30 +0100</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Nov 2024 20:44:30 +0100</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lissabon</title>
+      <link>/posts/lissabon/</link>
+      <pubDate>Fri, 22 Nov 2024 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/lissabon/</guid>
+      <description>📍 Lisboa, Portugal</description>
+    </item>
+    
+    <item>
+      <title>Monumento nazionale a Vittorio Emanuele II</title>
+      <link>/posts/rom/</link>
+      <pubDate>Fri, 22 Nov 2024 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/rom/</guid>
+      <description>📍 Roma, Italia</description>
+    </item>
+    
+    <item>
+      <title>Firenze</title>
+      <link>/posts/florenz/</link>
+      <pubDate>Fri, 01 Nov 2024 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/florenz/</guid>
+      <description>📍 Firenze, Italy</description>
+    </item>
+    
+    <item>
+      <title>Saigon</title>
+      <link>/posts/saigon/</link>
+      <pubDate>Sat, 22 Jun 2024 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/saigon/</guid>
+      <description>📍 Saigon, Vietnam</description>
+    </item>
+    
+    <item>
+      <title>Beach Holbox</title>
+      <link>/posts/holbox/</link>
+      <pubDate>Fri, 22 Mar 2024 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/holbox/</guid>
+      <description>📍 Holbox, Mexico</description>
+    </item>
+    
+    <item>
+      <title>Holbox</title>
+      <link>/posts/holbox_2/</link>
+      <pubDate>Fri, 22 Mar 2024 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/holbox_2/</guid>
+      <description>📍 Holbox, Mexico</description>
+    </item>
+    
+    <item>
+      <title>Holbox</title>
+      <link>/posts/holbox_3/</link>
+      <pubDate>Fri, 22 Mar 2024 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/holbox_3/</guid>
+      <description>📍 Holbox, Mexico</description>
+    </item>
+    
     <item>
       <title>Tour de Wallonie</title>
       <link>/posts/tour_de_wallonie/</link>
@@ -37,6 +100,15 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     </item>
     
     <item>
+      <title>Istanbul</title>
+      <link>/posts/istanbul/</link>
+      <pubDate>Wed, 22 Mar 2023 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/istanbul/</guid>
+      <description>📍 Istanbul, Türkiye</description>
+    </item>
+    
+    <item>
       <title>Hamburg Rathaus</title>
       <link>/posts/hamburg/</link>
       <pubDate>Fri, 10 Mar 2023 20:44:30 +0100</pubDate>
@@ -46,12 +118,66 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     </item>
     
     <item>
+      <title>Chilehaus</title>
+      <link>/posts/chilehaus/</link>
+      <pubDate>Wed, 01 Feb 2023 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/chilehaus/</guid>
+      <description>📍 Hamburg, Germany</description>
+    </item>
+    
+    <item>
+      <title>Chania</title>
+      <link>/posts/chania/</link>
+      <pubDate>Thu, 01 Sep 2022 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/chania/</guid>
+      <description>📍 Chania, Greece</description>
+    </item>
+    
+    <item>
+      <title>Chania Harbor</title>
+      <link>/posts/chania2/</link>
+      <pubDate>Thu, 01 Sep 2022 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/chania2/</guid>
+      <description>📍 Chania, Greece</description>
+    </item>
+    
+    <item>
+      <title>Cabalgata de los Reyes Magos</title>
+      <link>/posts/valencia/</link>
+      <pubDate>Thu, 06 Jan 2022 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/valencia/</guid>
+      <description>📍 Valencia, Spain</description>
+    </item>
+    
+    <item>
       <title>Archive</title>
       <link>/posts/archive/</link>
       <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>/posts/archive/</guid>
       <description>All posts chronologically</description>
+    </item>
+    
+    <item>
+      <title>Bangkok</title>
+      <link>/posts/bangkok/</link>
+      <pubDate>Thu, 01 Nov 2018 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/bangkok/</guid>
+      <description>📍 Bangkok, Thailand</description>
+    </item>
+    
+    <item>
+      <title>Pont Jacques Chaban Delmas</title>
+      <link>/posts/bordeaux/</link>
+      <pubDate>Thu, 01 Nov 2018 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/bordeaux/</guid>
+      <description>📍 Bordeaux, France</description>
     </item>
     
   </channel>

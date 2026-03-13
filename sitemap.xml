@@ -3,10 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>/</loc>
-    <lastmod>2023-09-10T20:44:30+01:00</lastmod>
+    <lastmod>2024-11-22T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/lissabon/</loc>
+    <lastmod>2024-11-22T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/rom/</loc>
+    <lastmod>2024-11-22T20:44:30+01:00</lastmod>
   </url><url>
     <loc>/posts/</loc>
-    <lastmod>2023-09-10T20:44:30+01:00</lastmod>
+    <lastmod>2024-11-22T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/florenz/</loc>
+    <lastmod>2024-11-01T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/saigon/</loc>
+    <lastmod>2024-06-22T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/holbox/</loc>
+    <lastmod>2024-03-22T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/holbox_2/</loc>
+    <lastmod>2024-03-22T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/holbox_3/</loc>
+    <lastmod>2024-03-22T20:44:30+01:00</lastmod>
   </url><url>
     <loc>/posts/tour_de_wallonie/</loc>
     <lastmod>2023-09-10T20:44:30+01:00</lastmod>
@@ -17,11 +38,32 @@
     <loc>/posts/bari/</loc>
     <lastmod>2023-08-04T20:44:30+01:00</lastmod>
   </url><url>
+    <loc>/posts/istanbul/</loc>
+    <lastmod>2023-03-22T20:44:30+01:00</lastmod>
+  </url><url>
     <loc>/posts/hamburg/</loc>
     <lastmod>2023-03-10T20:44:30+01:00</lastmod>
   </url><url>
+    <loc>/posts/chilehaus/</loc>
+    <lastmod>2023-02-01T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/chania/</loc>
+    <lastmod>2022-09-01T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/chania2/</loc>
+    <lastmod>2022-09-01T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/valencia/</loc>
+    <lastmod>2022-01-06T20:44:30+01:00</lastmod>
+  </url><url>
     <loc>/posts/archive/</loc>
     <lastmod>2022-01-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/posts/bangkok/</loc>
+    <lastmod>2018-11-01T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/bordeaux/</loc>
+    <lastmod>2018-11-01T20:44:30+01:00</lastmod>
   </url><url>
     <loc>/categories/</loc>
   </url><url>
