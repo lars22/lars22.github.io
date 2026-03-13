@@ -8,7 +8,7 @@
     <language>en-us</language>
     <lastBuildDate>Fri, 22 Nov 2024 20:44:30 +0100</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Lissabon</title>
+      <title>Alfama Lissabon</title>
       <link>/posts/lissabon/</link>
       <pubDate>Fri, 22 Nov 2024 20:44:30 +0100</pubDate>
       
@@ -17,7 +17,7 @@
     </item>
     
     <item>
-      <title>Monumento nazionale a Vittorio Emanuele II</title>
+      <title>Sunset in Rome</title>
       <link>/posts/rom/</link>
       <pubDate>Fri, 22 Nov 2024 20:44:30 +0100</pubDate>
       
@@ -26,7 +26,7 @@
     </item>
     
     <item>
-      <title>Firenze</title>
+      <title>Sunset in Firenze</title>
       <link>/posts/florenz/</link>
       <pubDate>Fri, 01 Nov 2024 20:44:30 +0100</pubDate>
       
@@ -44,7 +44,16 @@
     </item>
     
     <item>
-      <title>Beach Holbox</title>
+      <title>Holbox</title>
+      <link>/posts/holbox_3/</link>
+      <pubDate>Fri, 22 Mar 2024 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/holbox_3/</guid>
+      <description>📍 Holbox, Mexico</description>
+    </item>
+    
+    <item>
+      <title>Holbox Beach</title>
       <link>/posts/holbox/</link>
       <pubDate>Fri, 22 Mar 2024 20:44:30 +0100</pubDate>
       
@@ -53,20 +62,11 @@
     </item>
     
     <item>
-      <title>Holbox</title>
+      <title>Holbox Campfire</title>
       <link>/posts/holbox_2/</link>
       <pubDate>Fri, 22 Mar 2024 20:44:30 +0100</pubDate>
       
       <guid>/posts/holbox_2/</guid>
-      <description>📍 Holbox, Mexico</description>
-    </item>
-    
-    <item>
-      <title>Holbox</title>
-      <link>/posts/holbox_3/</link>
-      <pubDate>Fri, 22 Mar 2024 20:44:30 +0100</pubDate>
-      
-      <guid>/posts/holbox_3/</guid>
       <description>📍 Holbox, Mexico</description>
     </item>
     
@@ -118,7 +118,7 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     </item>
     
     <item>
-      <title>Chilehaus</title>
+      <title>Hamburg Chilehaus</title>
       <link>/posts/chilehaus/</link>
       <pubDate>Wed, 01 Feb 2023 20:44:30 +0100</pubDate>
       
@@ -127,20 +127,20 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     </item>
     
     <item>
-      <title>Chania</title>
-      <link>/posts/chania/</link>
-      <pubDate>Thu, 01 Sep 2022 20:44:30 +0100</pubDate>
-      
-      <guid>/posts/chania/</guid>
-      <description>📍 Chania, Greece</description>
-    </item>
-    
-    <item>
       <title>Chania Harbor</title>
       <link>/posts/chania2/</link>
       <pubDate>Thu, 01 Sep 2022 20:44:30 +0100</pubDate>
       
       <guid>/posts/chania2/</guid>
+      <description>📍 Chania, Greece</description>
+    </item>
+    
+    <item>
+      <title>Chania Lighthouse</title>
+      <link>/posts/chania/</link>
+      <pubDate>Thu, 01 Sep 2022 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/chania/</guid>
       <description>📍 Chania, Greece</description>
     </item>
     

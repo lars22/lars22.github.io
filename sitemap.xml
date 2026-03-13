@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/</loc>
-    <lastmod>2024-11-22T20:44:30+01:00</lastmod>
-  </url><url>
     <loc>/posts/lissabon/</loc>
     <lastmod>2024-11-22T20:44:30+01:00</lastmod>
   </url><url>
-    <loc>/posts/rom/</loc>
+    <loc>/</loc>
     <lastmod>2024-11-22T20:44:30+01:00</lastmod>
   </url><url>
     <loc>/posts/</loc>
+    <lastmod>2024-11-22T20:44:30+01:00</lastmod>
+  </url><url>
+    <loc>/posts/rom/</loc>
     <lastmod>2024-11-22T20:44:30+01:00</lastmod>
   </url><url>
     <loc>/posts/florenz/</loc>
@@ -20,13 +20,13 @@
     <loc>/posts/saigon/</loc>
     <lastmod>2024-06-22T20:44:30+01:00</lastmod>
   </url><url>
+    <loc>/posts/holbox_3/</loc>
+    <lastmod>2024-03-22T20:44:30+01:00</lastmod>
+  </url><url>
     <loc>/posts/holbox/</loc>
     <lastmod>2024-03-22T20:44:30+01:00</lastmod>
   </url><url>
     <loc>/posts/holbox_2/</loc>
-    <lastmod>2024-03-22T20:44:30+01:00</lastmod>
-  </url><url>
-    <loc>/posts/holbox_3/</loc>
     <lastmod>2024-03-22T20:44:30+01:00</lastmod>
   </url><url>
     <loc>/posts/tour_de_wallonie/</loc>
@@ -47,10 +47,10 @@
     <loc>/posts/chilehaus/</loc>
     <lastmod>2023-02-01T20:44:30+01:00</lastmod>
   </url><url>
-    <loc>/posts/chania/</loc>
+    <loc>/posts/chania2/</loc>
     <lastmod>2022-09-01T20:44:30+01:00</lastmod>
   </url><url>
-    <loc>/posts/chania2/</loc>
+    <loc>/posts/chania/</loc>
     <lastmod>2022-09-01T20:44:30+01:00</lastmod>
   </url><url>
     <loc>/posts/valencia/</loc>
