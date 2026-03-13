@@ -154,12 +154,12 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     </item>
     
     <item>
-      <title>Archive</title>
-      <link>/posts/archive/</link>
-      <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+      <title>Pont Jacques Chaban Delmas</title>
+      <link>/posts/bordeaux/</link>
+      <pubDate>Sun, 01 Nov 2020 20:44:30 +0100</pubDate>
       
-      <guid>/posts/archive/</guid>
-      <description>All posts chronologically</description>
+      <guid>/posts/bordeaux/</guid>
+      <description>📍 Bordeaux, France</description>
     </item>
     
     <item>
@@ -172,12 +172,12 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     </item>
     
     <item>
-      <title>Pont Jacques Chaban Delmas</title>
-      <link>/posts/bordeaux/</link>
-      <pubDate>Thu, 01 Nov 2018 20:44:30 +0100</pubDate>
+      <title>Archive</title>
+      <link>/posts/archive/</link>
+      <pubDate>Fri, 01 Jan 2010 00:00:00 +0000</pubDate>
       
-      <guid>/posts/bordeaux/</guid>
-      <description>📍 Bordeaux, France</description>
+      <guid>/posts/archive/</guid>
+      <description>All posts chronologically</description>
     </item>
     
   </channel>
