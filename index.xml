@@ -8,7 +8,7 @@
     <language>en-us</language>
     <lastBuildDate>Fri, 22 Nov 2024 20:44:30 +0100</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Alfama Lissabon</title>
+      <title>Alfama Lisboa</title>
       <link>/posts/lissabon/</link>
       <pubDate>Fri, 22 Nov 2024 20:44:30 +0100</pubDate>
       
@@ -71,17 +71,6 @@
     </item>
     
     <item>
-      <title>Tour de Wallonie</title>
-      <link>/posts/tour_de_wallonie/</link>
-      <pubDate>Sun, 10 Sep 2023 20:44:30 +0100</pubDate>
-      
-      <guid>/posts/tour_de_wallonie/</guid>
-      <description>📍 Wallonie, Belgium
-Cycling 520 km through Beglium, Germany and Luxembourg.
- Aachen - Bomal (85 km) Bomal - Chimay (131 km) Chimay - La Champagne (52 km) La Champagne - Betrix (64 km) Betrix - Troisvierges (88 km) Troisvierges - Monschau (83 km) Monschau - Aachen (62 km)  </description>
-    </item>
-    
-    <item>
       <title>Bari Mincuzzi Building</title>
       <link>/posts/bari_2/</link>
       <pubDate>Thu, 10 Aug 2023 20:44:30 +0100</pubDate>
@@ -127,6 +116,17 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     </item>
     
     <item>
+      <title>Tour de Wallonie</title>
+      <link>/posts/tour_de_wallonie/</link>
+      <pubDate>Sat, 10 Sep 2022 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/tour_de_wallonie/</guid>
+      <description>📍 Wallonie, Belgium
+Cycling 520 km through Beglium, Germany and Luxembourg.
+ Aachen - Bomal (85 km) Bomal - Chimay (131 km) Chimay - La Champagne (52 km) La Champagne - Betrix (64 km) Betrix - Troisvierges (88 km) Troisvierges - Monschau (83 km) Monschau - Aachen (62 km)  </description>
+    </item>
+    
+    <item>
       <title>Chania Harbor</title>
       <link>/posts/chania2/</link>
       <pubDate>Thu, 01 Sep 2022 20:44:30 +0100</pubDate>
@@ -154,12 +154,84 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     </item>
     
     <item>
+      <title>Palermo</title>
+      <link>/posts/palermo/</link>
+      <pubDate>Thu, 06 Jan 2022 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/palermo/</guid>
+      <description>📍 Palermo, Italia</description>
+    </item>
+    
+    <item>
       <title>Pont Jacques Chaban Delmas</title>
       <link>/posts/bordeaux/</link>
       <pubDate>Sun, 01 Nov 2020 20:44:30 +0100</pubDate>
       
       <guid>/posts/bordeaux/</guid>
       <description>📍 Bordeaux, France</description>
+    </item>
+    
+    <item>
+      <title>Sunrise in Schleswig-Holstein</title>
+      <link>/posts/cow/</link>
+      <pubDate>Thu, 15 Oct 2020 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/cow/</guid>
+      <description>📍 Schleswig-Holstein</description>
+    </item>
+    
+    <item>
+      <title>Bucher Stausee</title>
+      <link>/posts/bucher_stausee/</link>
+      <pubDate>Thu, 06 Aug 2020 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/bucher_stausee/</guid>
+      <description>📍 Bucher Stausee, Germany</description>
+    </item>
+    
+    <item>
+      <title>Ronda</title>
+      <link>/posts/ronda/</link>
+      <pubDate>Thu, 06 Aug 2020 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/ronda/</guid>
+      <description>📍 Ronda, Spain</description>
+    </item>
+    
+    <item>
+      <title>Porto from above</title>
+      <link>/posts/porto/</link>
+      <pubDate>Thu, 10 Oct 2019 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/porto/</guid>
+      <description>📍 Porto, Portugal</description>
+    </item>
+    
+    <item>
+      <title>Basketball Crailsheim Merlins</title>
+      <link>/posts/crailsheim_merlins/</link>
+      <pubDate>Tue, 01 Oct 2019 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/crailsheim_merlins/</guid>
+      <description>📍 Crailsheim, Germany</description>
+    </item>
+    
+    <item>
+      <title>Sunrise in the Alps</title>
+      <link>/posts/switzerland/</link>
+      <pubDate>Thu, 01 Aug 2019 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/switzerland/</guid>
+      <description>📍 Switzerland</description>
+    </item>
+    
+    <item>
+      <title>Chiang Mai</title>
+      <link>/posts/chiang_mai/</link>
+      <pubDate>Sat, 10 Nov 2018 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/chiang_mai/</guid>
+      <description>📍 Chiang Mai, Thailand</description>
     </item>
     
     <item>
