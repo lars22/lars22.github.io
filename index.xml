@@ -6,14 +6,68 @@
     <description>Recent content on Lars blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 Nov 2024 20:44:30 +0100</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 30 Dec 2025 20:44:30 +0100</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Secret bar in Palermo</title>
+      <link>/posts/bar_palermo/</link>
+      <pubDate>Tue, 30 Dec 2025 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/bar_palermo/</guid>
+      <description>📍 Palermo, Italia</description>
+    </item>
+    
     <item>
       <title>Alfama Lisboa</title>
       <link>/posts/lissabon/</link>
-      <pubDate>Fri, 22 Nov 2024 20:44:30 +0100</pubDate>
+      <pubDate>Sat, 22 Nov 2025 20:44:30 +0100</pubDate>
       
       <guid>/posts/lissabon/</guid>
       <description>📍 Lisboa, Portugal</description>
+    </item>
+    
+    <item>
+      <title>LX Factory</title>
+      <link>/posts/lissabon_lx_factory/</link>
+      <pubDate>Mon, 13 Oct 2025 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/lissabon_lx_factory/</guid>
+      <description>📍 Lisboa, Portugal</description>
+    </item>
+    
+    <item>
+      <title>Saigon</title>
+      <link>/posts/saigon/</link>
+      <pubDate>Mon, 09 Jun 2025 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/saigon/</guid>
+      <description>📍 Saigon, Vietnam</description>
+    </item>
+    
+    <item>
+      <title>Holbox</title>
+      <link>/posts/holbox_3/</link>
+      <pubDate>Sun, 23 Mar 2025 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/holbox_3/</guid>
+      <description>📍 Holbox, Mexico</description>
+    </item>
+    
+    <item>
+      <title>Holbox Beach</title>
+      <link>/posts/holbox/</link>
+      <pubDate>Sun, 23 Mar 2025 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/holbox/</guid>
+      <description>📍 Holbox, Mexico</description>
+    </item>
+    
+    <item>
+      <title>Holbox Campfire</title>
+      <link>/posts/holbox_2/</link>
+      <pubDate>Sat, 22 Mar 2025 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/holbox_2/</guid>
+      <description>📍 Holbox, Mexico</description>
     </item>
     
     <item>
@@ -35,45 +89,18 @@
     </item>
     
     <item>
-      <title>Saigon</title>
-      <link>/posts/saigon/</link>
-      <pubDate>Sat, 22 Jun 2024 20:44:30 +0100</pubDate>
+      <title>Hamburg Chilehaus</title>
+      <link>/posts/chilehaus/</link>
+      <pubDate>Tue, 20 Feb 2024 20:44:30 +0100</pubDate>
       
-      <guid>/posts/saigon/</guid>
-      <description>📍 Saigon, Vietnam</description>
-    </item>
-    
-    <item>
-      <title>Holbox</title>
-      <link>/posts/holbox_3/</link>
-      <pubDate>Fri, 22 Mar 2024 20:44:30 +0100</pubDate>
-      
-      <guid>/posts/holbox_3/</guid>
-      <description>📍 Holbox, Mexico</description>
-    </item>
-    
-    <item>
-      <title>Holbox Beach</title>
-      <link>/posts/holbox/</link>
-      <pubDate>Fri, 22 Mar 2024 20:44:30 +0100</pubDate>
-      
-      <guid>/posts/holbox/</guid>
-      <description>📍 Holbox, Mexico</description>
-    </item>
-    
-    <item>
-      <title>Holbox Campfire</title>
-      <link>/posts/holbox_2/</link>
-      <pubDate>Fri, 22 Mar 2024 20:44:30 +0100</pubDate>
-      
-      <guid>/posts/holbox_2/</guid>
-      <description>📍 Holbox, Mexico</description>
+      <guid>/posts/chilehaus/</guid>
+      <description>📍 Hamburg, Germany</description>
     </item>
     
     <item>
       <title>Bari Mincuzzi Building</title>
       <link>/posts/bari_2/</link>
-      <pubDate>Thu, 10 Aug 2023 20:44:30 +0100</pubDate>
+      <pubDate>Wed, 04 Oct 2023 20:44:30 +0100</pubDate>
       
       <guid>/posts/bari_2/</guid>
       <description>📍 Bari, Spain</description>
@@ -82,10 +109,21 @@
     <item>
       <title>Summer in Bari</title>
       <link>/posts/bari/</link>
-      <pubDate>Fri, 04 Aug 2023 20:44:30 +0100</pubDate>
+      <pubDate>Mon, 02 Oct 2023 20:44:30 +0100</pubDate>
       
       <guid>/posts/bari/</guid>
       <description>📍 Bari, Italy</description>
+    </item>
+    
+    <item>
+      <title>Tour de Wallonie</title>
+      <link>/posts/tour_de_wallonie/</link>
+      <pubDate>Sat, 16 Sep 2023 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/tour_de_wallonie/</guid>
+      <description>📍 Wallonie, Belgium
+Cycling 520 km through Beglium, Germany and Luxembourg.
+ Aachen - Bomal (85 km) Bomal - Chimay (131 km) Chimay - La Champagne (52 km) La Champagne - Betrix (64 km) Betrix - Troisvierges (88 km) Troisvierges - Monschau (83 km) Monschau - Aachen (62 km)  </description>
     </item>
     
     <item>
@@ -107,29 +145,9 @@
     </item>
     
     <item>
-      <title>Hamburg Chilehaus</title>
-      <link>/posts/chilehaus/</link>
-      <pubDate>Wed, 01 Feb 2023 20:44:30 +0100</pubDate>
-      
-      <guid>/posts/chilehaus/</guid>
-      <description>📍 Hamburg, Germany</description>
-    </item>
-    
-    <item>
-      <title>Tour de Wallonie</title>
-      <link>/posts/tour_de_wallonie/</link>
-      <pubDate>Sat, 10 Sep 2022 20:44:30 +0100</pubDate>
-      
-      <guid>/posts/tour_de_wallonie/</guid>
-      <description>📍 Wallonie, Belgium
-Cycling 520 km through Beglium, Germany and Luxembourg.
- Aachen - Bomal (85 km) Bomal - Chimay (131 km) Chimay - La Champagne (52 km) La Champagne - Betrix (64 km) Betrix - Troisvierges (88 km) Troisvierges - Monschau (83 km) Monschau - Aachen (62 km)  </description>
-    </item>
-    
-    <item>
       <title>Chania Harbor</title>
       <link>/posts/chania2/</link>
-      <pubDate>Thu, 01 Sep 2022 20:44:30 +0100</pubDate>
+      <pubDate>Sat, 11 Jun 2022 20:44:30 +0100</pubDate>
       
       <guid>/posts/chania2/</guid>
       <description>📍 Chania, Greece</description>
@@ -138,7 +156,7 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     <item>
       <title>Chania Lighthouse</title>
       <link>/posts/chania/</link>
-      <pubDate>Thu, 01 Sep 2022 20:44:30 +0100</pubDate>
+      <pubDate>Sat, 11 Jun 2022 20:44:30 +0100</pubDate>
       
       <guid>/posts/chania/</guid>
       <description>📍 Chania, Greece</description>
@@ -174,7 +192,7 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     <item>
       <title>Sunrise in Schleswig-Holstein</title>
       <link>/posts/cow/</link>
-      <pubDate>Thu, 15 Oct 2020 20:44:30 +0100</pubDate>
+      <pubDate>Tue, 22 Sep 2020 20:44:30 +0100</pubDate>
       
       <guid>/posts/cow/</guid>
       <description>📍 Schleswig-Holstein</description>

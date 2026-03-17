@@ -1,11 +1,10 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-	<meta name="generator" content="Hugo 0.81.0" />
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lars blog</title>
+    <title>LX Factory | Lars blog</title>
     <meta name="description" content="my blog" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -241,180 +240,109 @@
     <div class="container">
       
 <style>
-  .page-container {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;  
+  .post-container {
     max-width: 580px;  
-    padding: 0 20px;  
+    margin: 0 auto;
+    padding: 0 20px;
   }
   
-  .content-column {
+  .post-header {
+    margin-bottom: 40px;
+  }
+  
+  .post-title {
+    font-family: "Google Sans", sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #4a4b4f;
+  }
+  
+  .post-date {
+    color: #9d9d9d;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  
+  .post-description {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 17px;
+  }
+  
+  .post-content {
+    line-height: 1.8;
+  }
+  
+  .post-content h2 {
+    font-family: "Google Sans", sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 30px 0 20px 0;
+    color: #4a4b4f;
+  }
+  
+  .post-content p {
+    margin-bottom: 20px;
+  }
+
+  img {
+    width: 580px;
+}
+  
+  .post-content img {
+    display: block;
     width: 100%;
-    box-sizing: border-box;
-    min-width: auto;
-    max-width: 580px;  
-    font-size: 15px;
+    max-width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    border-radius: 0px;
   }
   
-  @media (max-width: 992px) {
-    .page-container {
-      flex-direction: column;
-    }
-    
-    .content-column {
-      width: 100%;
-      padding-right: 0;
-      min-width: auto;  
-      max-width: 580px;  
-      margin: 0 auto;  
-    }
+   
+  .post-content img + em {
+    display: block;
+    text-align: center;
+    font-size: 0.9em;
+    color: #777;
+    margin-top: -0.5rem;
+    margin-bottom: 2rem;
+    max-width: 580px;
   }
-
+  
+  .post-content em {
+    color: #666;
+  }
+  
+  .back-link {
+    display: inline-block;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    color: #4285F4;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  
+  .back-link:hover {
+    color: #4285F4;
+  }
 </style>
 
-<div class="page-container">
-  <div class="content-column">
-    <div class="section">
-      <h1>Hello World :)</h1>
-      Hi, my name is Lars and I would like to share some photos with you. In my free time, you’ll find me on the tennis court or on my gravel bike. I'm based in Hamburg, Germany but I love to discover 
-      new places around the world. You'll find all my posts in the <a href="/posts/archive/">archive</a>.
-    </div>    
-    <p></p>
-    <div class="section">
-      <div class="works-title">My Postcards from around the world</div>
-      <p></p>
-      
-      <div class="work-item">
-          <span class="work-title">Sunrise in Schleswig-Holstein</span>
-          <span class="year">(2020)</span>
-          <p>
-          <div><p><img src="/posts/images/cow.jpg" alt="Descriptive alt text"></p>
-<p>📍 Schleswig-Holstein</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Bucher Stausee</span>
-          <span class="year">(2020)</span>
-          <p>
-          <div><p><img src="/posts/images/bucher_stausee.jpg" alt="Descriptive alt text"></p>
-<p>📍 Bucher Stausee, Germany</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Ronda</span>
-          <span class="year">(2020)</span>
-          <p>
-          <div><p><img src="/posts/images/ronda.JPEG" alt="Descriptive alt text"></p>
-<p>📍 Ronda, Spain</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Porto from above</span>
-          <span class="year">(2019)</span>
-          <p>
-          <div><p><img src="/posts/images/porto.jpg" alt="Descriptive alt text"></p>
-<p>📍 Porto, Portugal</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Basketball Crailsheim Merlins</span>
-          <span class="year">(2019)</span>
-          <p>
-          <div><p><img src="/posts/images/merlins.jpg" alt="Descriptive alt text"></p>
-<p>📍 Crailsheim, Germany</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Sunrise in the Alps</span>
-          <span class="year">(2019)</span>
-          <p>
-          <div><p><img src="/posts/images/alps.jpg" alt="Descriptive alt text"></p>
-<p>📍 Switzerland</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Chiang Mai</span>
-          <span class="year">(2018)</span>
-          <p>
-          <div><p><img src="/posts/images/chiangmai.jpg" alt="Descriptive alt text"></p>
-<p>📍 Chiang Mai, Thailand</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Bangkok</span>
-          <span class="year">(2018)</span>
-          <p>
-          <div><p><img src="/posts/images/bangkok.jpg" alt="Descriptive alt text"></p>
-<p>📍 Bangkok, Thailand</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Archive</span>
-          <span class="year">(2010)</span>
-          <p>
-          <div></dic>
-          <div class="gap"></div>
-      </div>
-      
-      <p></p>
-      <style>
-ul.pagination {
-  display: flex;
-  justify-content: space-between;  
-  list-style-type: none; 
-  padding: 0;
-  width: 100%;              
-}
-
- 
-.page-item.disabled {
-  opacity: 0.5;
-  pointer-events: none;
-}
-</style>
-
-
-
-<nav class="blog-pagination">
-    <ul class="pagination">
-        
-        <li class="page-item ">
-            <a class="page-link" href="/page/2/" aria-label="Previous">
-                <span aria-hidden="true">&larr; Previous Page</span>
-            </a>
-        </li>
-
-        <li class="page-item disabled">
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">Next Page &rarr;</span>
-            </a>
-        </li>
-
-    </ul>
-</nav>
-
-    </div>
-    <div class="contact">
-        created in Hamburg, Germany &#x2764;
-    </div>
+<div class="post-container">
+  <div class="post-header">
+    <h1 class="post-title">LX Factory</h1>
+    <div class="post-date">October 13, 2025</div>
   </div>
+  
+  <div class="post-content">
+    <p><img src="/posts/images/lx_factory.jpg" alt="Descriptive alt text"></p>
+<p>📍 Lisboa, Portugal</p>
+
+  </div>
+  
+  <a href="/" class="back-link">← Back to home</a>
 </div>
 
     </div>
