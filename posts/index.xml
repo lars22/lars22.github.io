@@ -262,6 +262,15 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     </item>
     
     <item>
+      <title>About me</title>
+      <link>/posts/map/</link>
+      <pubDate>Fri, 01 Jan 2010 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/map/</guid>
+      <description>Map</description>
+    </item>
+    
+    <item>
       <title>Archive</title>
       <link>/posts/archive/</link>
       <pubDate>Fri, 01 Jan 2010 00:00:00 +0000</pubDate>
