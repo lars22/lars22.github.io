@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Lars blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 30 Dec 2025 20:44:30 +0100</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 17 Mar 2026 20:44:30 +0100</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hauptkirche Sankt Katharinen</title>
+      <link>/posts/hamburg_winter/</link>
+      <pubDate>Tue, 17 Mar 2026 20:44:30 +0100</pubDate>
+      
+      <guid>/posts/hamburg_winter/</guid>
+      <description>📍 Hamburg, Germany</description>
+    </item>
+    
     <item>
       <title>Secret bar in Palermo</title>
       <link>/posts/bar_palermo/</link>
@@ -263,10 +272,10 @@ Cycling 520 km through Beglium, Germany and Luxembourg.
     
     <item>
       <title>About me</title>
-      <link>/posts/map/</link>
+      <link>/posts/about_me/</link>
       <pubDate>Fri, 01 Jan 2010 00:00:00 +0000</pubDate>
       
-      <guid>/posts/map/</guid>
+      <guid>/posts/about_me/</guid>
       <description>Map</description>
     </item>
     

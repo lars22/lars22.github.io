@@ -1,11 +1,10 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-	<meta name="generator" content="Hugo 0.81.0" />
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lars blog</title>
+    <title>About me | Lars blog</title>
     <meta name="description" content="my blog" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -241,192 +240,200 @@
     <div class="container">
       
 <style>
-  .page-container {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;  
+  .post-container {
     max-width: 580px;  
-    padding: 0 20px;  
+    margin: 0 auto;
+    padding: 0 20px;
   }
   
-  .content-column {
+  .post-header {
+    margin-bottom: 40px;
+  }
+  
+  .post-title {
+    font-family: "Google Sans", sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #4a4b4f;
+  }
+  
+  .post-date {
+    color: #9d9d9d;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  
+  .post-description {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 17px;
+  }
+  
+  .post-content {
+    line-height: 1.8;
+  }
+  
+  .post-content h2 {
+    font-family: "Google Sans", sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 30px 0 20px 0;
+    color: #4a4b4f;
+  }
+  
+  .post-content p {
+    margin-bottom: 20px;
+  }
+
+  img {
+    width: 580px;
+}
+  
+  .post-content img {
+    display: block;
     width: 100%;
-    box-sizing: border-box;
-    min-width: auto;
-    max-width: 580px;  
-    font-size: 15px;
+    max-width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    border-radius: 0px;
   }
   
-  @media (max-width: 992px) {
-    .page-container {
-      flex-direction: column;
-    }
-    
-    .content-column {
-      width: 100%;
-      padding-right: 0;
-      min-width: auto;  
-      max-width: 580px;  
-      margin: 0 auto;  
-    }
+   
+  .post-content img + em {
+    display: block;
+    text-align: center;
+    font-size: 0.9em;
+    color: #777;
+    margin-top: -0.5rem;
+    margin-bottom: 2rem;
+    max-width: 580px;
   }
-
+  
+  .post-content em {
+    color: #666;
+  }
+  
+  .back-link {
+    display: inline-block;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    color: #4285F4;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  
+  .back-link:hover {
+    color: #4285F4;
+  }
 </style>
 
-<div class="page-container">
-  <div class="content-column">
-    <div class="section">
-      <h1>Hello World :)</h1>
-      Hi, my name is Lars and I would like to share some photos with you. In my free time, you’ll find me on the tennis court or on my gravel bike. I'm based in Hamburg, Germany but I love to discover 
-      new places around the world. You'll find all my posts in the <a href="/posts/archive/">archive</a>.
-    </div>    
-    <p></p>
-    <div class="section">
-      <div class="works-title">My Postcards from around the world</div>
-      <p></p>
-      
-      <div class="work-item">
-          <span class="work-title">Hauptkirche Sankt Katharinen</span>
-          <span class="year">(2026)</span>
-          <p>
-          <div><p><img src="/posts/images/hamburg_winter.jpg" alt="Descriptive alt text"></p>
-<p>📍 Hamburg, Germany</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Secret bar in Palermo</span>
-          <span class="year">(2025)</span>
-          <p>
-          <div><p><img src="/posts/images/bar_palermo.jpg" alt="Descriptive alt text"></p>
-<p>📍 Palermo, Italia</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Alfama Lisboa</span>
-          <span class="year">(2025)</span>
-          <p>
-          <div><p><img src="/posts/images/lissabon_2.jpg" alt="Descriptive alt text"></p>
-<p>📍 Lisboa, Portugal</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">LX Factory</span>
-          <span class="year">(2025)</span>
-          <p>
-          <div><p><img src="/posts/images/lx_factory.jpg" alt="Descriptive alt text"></p>
-<p>📍 Lisboa, Portugal</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Saigon</span>
-          <span class="year">(2025)</span>
-          <p>
-          <div><p><img src="/posts/images/saigon.jpg" alt="Descriptive alt text"></p>
-<p>📍 Saigon, Vietnam</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Holbox</span>
-          <span class="year">(2025)</span>
-          <p>
-          <div><p><img src="/posts/images/holbox_3.jpg" alt="Descriptive alt text"></p>
-<p>📍 Holbox, Mexico</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Holbox Beach</span>
-          <span class="year">(2025)</span>
-          <p>
-          <div><p><img src="/posts/images/holbox.jpg" alt="Descriptive alt text"></p>
-<p>📍 Holbox, Mexico</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Holbox Campfire</span>
-          <span class="year">(2025)</span>
-          <p>
-          <div><p><img src="/posts/images/holbox_2.jpg" alt="Descriptive alt text"></p>
-<p>📍 Holbox, Mexico</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Sunset in Rome</span>
-          <span class="year">(2024)</span>
-          <p>
-          <div><p><img src="/posts/images/monumento_vittorio_emanuele2.jpg" alt="Descriptive alt text"></p>
-<p>📍 Roma, Italia</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <div class="work-item">
-          <span class="work-title">Sunset in Firenze</span>
-          <span class="year">(2024)</span>
-          <p>
-          <div><p><img src="/posts/images/florenz.jpg" alt="Descriptive alt text"></p>
-<p>📍 Firenze, Italia</p>
-</dic>
-          <div class="gap"></div>
-      </div>
-      
-      <p></p>
-      <style>
-ul.pagination {
-  display: flex;
-  justify-content: space-between;  
-  list-style-type: none; 
-  padding: 0;
-  width: 100%;              
-}
-
- 
-.page-item.disabled {
-  opacity: 0.5;
-  pointer-events: none;
-}
-</style>
-
-
-
-<nav class="blog-pagination">
-    <ul class="pagination">
-        
-        <li class="page-item disabled">
-            <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&larr; Previous Page</span>
-            </a>
-        </li>
-
-        <li class="page-item ">
-            <a class="page-link" href="/page/2/" aria-label="Next">
-                <span aria-hidden="true">Next Page &rarr;</span>
-            </a>
-        </li>
-
-    </ul>
-</nav>
-
-    </div>
-    <div class="contact">
-        created in Hamburg, Germany &#x2764;
-    </div>
+<div class="post-container">
+  <div class="post-header">
+    <h1 class="post-title">About me</h1>
+    <div class="post-date">January 1, 2010</div>
   </div>
+  
+  <div class="post-content">
+    <p>Hi, my name is Lars and I would like to share some photos with you. In my free time, you’ll find me on the tennis court or on my gravel bike. I&rsquo;m based in Hamburg, Germany but I love to discover new places around the world. With this blog I want to share my postcards with you.</p>
+<p>On the Map you can see all the countries I have visited so far (April 2026).</p>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+    #map {
+        height: 500px;
+        width: 100%;
+        background-color: #e0f2fe; /* Your light blue ocean color */
+        border-radius: 8px;
+    }
+    .leaflet-container {
+        background: #e0f2fe !important; /* Forces the background color */
+    }
+</style>
+<div id="map"></div>
+<script>
+    // 1. List the countries you've visited (use ISO 3-letter codes)
+    const visitedCountries = ["FRA", "DEU", "ESP", "PRT", "ITA", "SWE", "POL", "BEL", "NLD", "DNK", "CHE", "AUT", "LUX", "EST", "GBR", "SVN", "CZE", "TUR", "MEX", "VNM", "THA", "GRC"];
+
+    // 2. Initialize map without zoom controls for a cleaner look
+    const map = L.map('map', {
+        center: [20, 0],
+        zoom: 2,
+        zoomControl: false,
+        attributionControl: false
+    });
+
+    // 3. Fetch World GeoJSON (Low-res for speed)
+    fetch('https://raw.githubusercontent.com/datasets/geo-boundaries-world-110m/master/countries.geojson')
+        .then(response => response.json())
+        .then(data => {
+            L.geoJson(data, {
+                style: function(feature) {
+                    const isVisited = visitedCountries.includes(feature.properties.iso_a3);
+                    return {
+                        fillColor: isVisited ? '#4285F4' : '#ffffff', // Green for visited, white for others
+                        weight: 1,
+                        opacity: 1,
+                        color: '#cbd5e1', // Country borders
+                        fillOpacity: 1
+                    };
+                }
+            }).addTo(map);
+        });
+</script>
+<pre><code>🇦🇹 Austria
+
+🇧🇪 Belgium
+
+🇨🇿 Czech Republic
+
+🇩🇰 Denmark
+
+🇪🇪 Estonia
+
+🇫🇷 France
+
+🇩🇪 Germany
+
+🇬🇷 Greece
+
+🇮🇹 Italy
+
+🇱🇮 Liechtenstein
+
+🇱🇺 Luxembourg
+
+🇲🇽 Mexico
+
+🇳🇱 Netherlands
+
+🇵🇱 Poland
+
+🇵🇹 Portugal
+
+🇸🇮 Slovenia
+
+🇪🇸 Spain
+
+🇸🇪 Sweden
+
+🇨🇭 Switzerland
+
+🇹🇭 Thailand
+
+🇹🇷 Turkey
+
+🇬🇧 United Kingdom
+
+🇻🇦 Vatican City
+
+🇻🇳 Vietnam</code></pre>
+
+  </div>
+  
+  <a href="/" class="back-link">← Back to home</a>
 </div>
 
     </div>
