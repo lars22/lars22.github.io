@@ -207,7 +207,7 @@
 				<link>https://example.org/posts/_about/</link>
 				<pubDate>Thu, 22 Mar 1990 07:00:00 +0100</pubDate>
 				<guid>https://example.org/posts/_about/</guid>
-				<description>Hi, my name is Lars and I would like to share some photos with you. In my free time, you’ll find me on the tennis court or on my gravel bike. I&amp;rsquo;m based in Hamburg, Germany but I love to discover new places around the world. You&amp;rsquo;ll find all my posts in the &lt;a href=&#34;&#39;/Users/lars/Documents/blog/public/archive/index.html&#39;&#34;&gt;archive&lt;/a&gt;.</description>
+				<description>Hi, my name is Lars and I would like to share some photos with you. In my free time, you’ll find me on the tennis court or on my gravel bike. I&amp;rsquo;m based in Hamburg, Germany but I love to discover new places around the world. You&amp;rsquo;ll find all my posts in the &lt;a href=&#34;&#39;www.lars22.github.io/archive&#34;&gt;archive&lt;/a&gt;.</description>
 			</item>
 	</channel>
 </rss>
