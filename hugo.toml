@@ -1,0 +1,5 @@
+baseURL = 'https://example.org/'
+locale = 'en-us'
+title = 'Lars'
+Theme = 'ritzy'
+favicon = "/static/favicon/favicon.svg"
