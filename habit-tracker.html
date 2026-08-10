@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Habit Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Google Fonts Material Symbols -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,600,0,0" />
+
+<style>
+  :root {
+    --bg: #24395F;
+    --surface: #2D4A70;
+    --surface-soft: #385985;
+    --ink: #D8E0EA;
+    --ink-soft: #8FA4BF;
+    --ink-faint: #5E7799;
+    --line: #3D6190;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.15);
+    --radius-lg: 22px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+  }
+
+  ::selection { background: rgba(255, 255, 255, 0.15); }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .material-symbols-rounded {
+    font-family: 'Material Symbols Rounded';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 22px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  header.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    gap: 16px;
+  }
+
+  header.top h1 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  header.top p {
+    margin: 4px 0 0;
+    color: var(--ink-soft);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    border-radius: 999px;
+    padding: 12px 20px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.15s ease, background 0.15s ease, filter 0.15s ease;
+    flex-shrink: 0;
+  }
+  .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .habit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .habit-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    cursor: grab;
+    user-select: none;
+    border: 1.5px solid transparent;
+    transition: border-color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: left;
+    width: 100%;
+    color: var(--ink);
+  }
+  .habit-card:hover { transform: translateY(-1px); border-color: rgba(255, 255, 255, 0.1); }
+  .habit-card:active { cursor: grabbing; }
+
+  /* Drag & Drop Styles */
+  .habit-card.dragging {
+    opacity: 0.4;
+    border: 1.5px dashed var(--ink-soft);
+  }
+  .habit-card.drag-over {
+    border-color: var(--ink);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+  }
+
+  .drag-handle {
+    color: var(--ink-faint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: -4px;
+    cursor: grab;
+  }
+  .drag-handle .material-symbols-rounded { font-size: 20px; }
+
+  .habit-icon,
+  .quick-check {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .quick-check {
+    border: 1.5px solid var(--line);
+    background: var(--surface-soft);
+    color: transparent;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .quick-check:hover { transform: scale(1.08); border-color: var(--card-color); }
+  .quick-check:active { transform: scale(0.9); }
+  .quick-check.done {
+    background: var(--card-color);
+    border-color: var(--card-color);
+    color: #121D2D;
+  }
+
+  .habit-icon {
+    background: var(--card-color-soft);
+    color: var(--card-color);
+  }
+
+  .habit-card .meta { flex: 1; min-width: 0; }
+
+  .habit-card .name {
+    font-weight: 800;
+    font-size: 18px;
+    margin: 0 0 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.01em;
+  }
+
+  .dot-trail {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    margin-top: 4px;
+  }
+
+  .dot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .dot-trail .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--surface-soft);
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .dot-trail .dot.on {
+    background: var(--card-color);
+    box-shadow: 0 0 10px var(--card-color-glow);
+  }
+
+  .dot-col .day-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+
+  .dot-col.is-today .day-label {
+    color: var(--card-color);
+    font-weight: 800;
+  }
+
+  .streak-tag {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--card-color);
+    margin-left: 6px;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+    align-self: center;
+  }
+
+  .empty-list {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 32px 20px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 15px;
+    box-shadow: var(--shadow);
+  }
+
+  .detail-modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 26px;
+    width: 100%;
+    max-width: 420px;
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+
+  .detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 22px;
+    gap: 12px;
+  }
+
+  .detail-header-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .detail-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .detail-title .habit-icon { width: 48px; height: 48px; }
+  .detail-title .habit-icon .material-symbols-rounded { font-size: 26px; }
+
+  .detail-title h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .icon-btn {
+    border: none;
+    background: var(--surface-soft);
+    color: var(--ink-soft);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .icon-btn:hover { background: var(--line); color: var(--ink); }
+  .icon-btn.danger:hover { background: rgba(239, 68, 68, 0.2); color: #EF4444; }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .stat-box {
+    background: var(--surface-soft);
+    border-radius: var(--radius-sm);
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat-box .val { font-size: 20px; font-weight: 800; color: var(--ink); }
+  .stat-box .lbl { font-size: 11px; color: var(--ink-soft); font-weight: 600; margin-top: 2px; }
+
+  .month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .month-nav .title { font-weight: 700; font-size: 15px; color: var(--ink); }
+  .month-nav button {
+    border: none;
+    background: none;
+    color: var(--card-color);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 6px;
+    font-weight: 700;
+  }
+  .month-nav button:disabled { color: var(--ink-faint); cursor: default; }
+
+  .weekday-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 6px;
+  }
+  .weekday-row span {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+
+  .day-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 6px;
+  }
+
+  .day-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .day-btn {
+    width: 78%;
+    height: 78%;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface-soft);
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease;
+    position: relative;
+  }
+  .day-btn:hover:not(:disabled) { transform: scale(1.08); }
+  .day-btn:active:not(:disabled) { transform: scale(0.94); }
+  .day-btn:disabled { color: var(--ink-faint); cursor: default; opacity: 0.5; }
+
+  .day-btn.done {
+    background: var(--card-color);
+    color: #121D2D;
+    font-weight: 800;
+  }
+  .day-btn.today:not(.done) {
+    box-shadow: inset 0 0 0 1.5px var(--card-color);
+  }
+
+  .day-btn.burst::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid var(--card-color);
+    opacity: 1;
+    animation: burst 0.45s ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes burst {
+    to { transform: scale(1.55); opacity: 0; }
+  }
+
+  /* Modal Overlay */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(18, 28, 48, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    z-index: 50;
+  }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    width: 100%;
+    max-width: 420px;
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+  .modal h3 { margin: 0 0 18px; font-size: 19px; font-weight: 800; color: var(--ink); }
+  .field-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+    display: block;
+  }
+  .name-input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--line);
+    font-family: inherit;
+    font-size: 16px;
+    margin-bottom: 20px;
+    background: var(--surface-soft);
+    color: var(--ink);
+  }
+  .name-input:focus { outline: none; border-color: var(--ink-soft); }
+
+  .swatch-row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 22px;
+    padding: 4px 2px;
+  }
+
+  .swatch-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px transparent;
+    transition: box-shadow 0.15s ease, transform 0.12s ease;
+  }
+  .swatch-wrap:hover { transform: scale(1.12); }
+  .swatch-wrap.selected {
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--sw-color);
+  }
+
+  .swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 2px;
+  }
+  .icon-choice {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface-soft);
+    color: var(--ink-soft);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.12s ease, transform 0.12s ease, color 0.12s ease;
+  }
+  .icon-choice:hover { color: var(--ink); }
+  .icon-choice.selected {
+    background: var(--sel-color-soft);
+    color: var(--sel-color);
+    transform: scale(1.05);
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  .btn-ghost {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 11px 16px;
+    cursor: pointer;
+    border-radius: 999px;
+  }
+  .btn-ghost:hover { background: var(--surface-soft); color: var(--ink); }
+
+  .confirm-text { font-size: 14px; color: var(--ink-soft); margin-bottom: 22px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="app" id="app"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  const COLORS = [
+    "#FF5964", // Red
+    "#FF9A3C", // Orange
+    "#FBBF24", // Yellow
+    "#10B981", // Green
+    "#2DD4BF", // Teal/Mint
+    "#38BDF8", // Light Blue
+    "#3B82F6", // Blue
+    "#C084FC"  // Purple
+  ];
+
+  const HABIT_ICONS = [
+    "water_drop",
+    "menu_book",
+    "directions_run",
+    "bedtime",
+    "wb_sunny",
+    "eco",
+    "local_cafe",
+    "fitness_center",
+    "favorite",
+    "psychology",
+    "pedal_bike",
+    "restaurant",
+    "auto_awesome",
+    "ads_click",
+    "sentiment_satisfied",
+    "edit_note",
+    "savings",
+    "cleaning_services",
+    "brush",
+    "local_fire_department"
+  ];
+
+  const SHORT_WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const STORAGE_KEY = "habit-tracker-data-v5";
+
+  let state = {
+    habits: [],       
+    completions: {},  
+    openHabitId: null,  
+    viewMonth: startOfMonth(new Date()),
+    modal: null,        
+    editingHabit: null, 
+    confirmDeleteId: null,
+    loaded: false,
+    burstKey: null
+  };
+
+  let draggedIndex = null;
+  let isDragging = false;
+
+  // ---------- Date Helpers ----------
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function toKey(date) { return date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate()); }
+  function startOfDay(d) { const c = new Date(d); c.setHours(0,0,0,0); return c; }
+  function startOfMonth(d) { return new Date(d.getFullYear(), d.getMonth(), 1); }
+  function isSameDay(a, b) { return toKey(a) === toKey(b); }
+  function addDays(d, n) { const c = new Date(d); c.setDate(c.getDate() + n); return c; }
+  function addMonths(d, n) { return new Date(d.getFullYear(), d.getMonth() + n, 1); }
+  function isFuture(d) { return startOfDay(d) > startOfDay(new Date()); }
+
+  // ---------- Persistence ----------
+  function loadData() {
+    try {
+      const savedData = localStorage.getItem(STORAGE_KEY);
+      if (savedData) {
+        const parsed = JSON.parse(savedData);
+        state.habits = parsed.habits || [];
+        state.completions = parsed.completions || {};
+      }
+    } catch (e) {
+      console.error("Loading failed:", e);
+    }
+
+    state.loaded = true;
+    render();
+  }
+
+  function persist() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        habits: state.habits,
+        completions: state.completions
+      }));
+    } catch (e) {
+      console.error("Saving failed:", e);
+    }
+  }
+
+  // ---------- Derived Data ----------
+  function habitDays(habitId) {
+    return new Set(state.completions[habitId] || []);
+  }
+
+  function isDone(habitId, date) {
+    return habitDays(habitId).has(toKey(date));
+  }
+
+  function currentStreak(habitId) {
+    const days = habitDays(habitId);
+    if (days.size === 0) return 0;
+    let streak = 0;
+    let cursor = startOfDay(new Date());
+    if (!days.has(toKey(cursor))) cursor = addDays(cursor, -1);
+    while (days.has(toKey(cursor))) {
+      streak++;
+      cursor = addDays(cursor, -1);
+    }
+    return streak;
+  }
+
+  function monthCount(habitId, monthDate) {
+    const days = state.completions[habitId] || [];
+    const y = monthDate.getFullYear(), m = monthDate.getMonth();
+    return days.filter(k => {
+      const [ky, km] = k.split("-").map(Number);
+      return ky === y && km === m + 1;
+    }).length;
+  }
+
+  function lastNDays(n) {
+    const today = startOfDay(new Date());
+    const out = [];
+    for (let i = n - 1; i >= 0; i--) out.push(addDays(today, -i));
+    return out;
+  }
+
+  function getNextColor() {
+    const usedColors = state.habits.map(h => h.color);
+    for (const color of COLORS) {
+      if (!usedColors.includes(color)) return color;
+    }
+    return COLORS[state.habits.length % COLORS.length];
+  }
+
+  // ---------- State Mutations ----------
+  function toggleDay(habitId, date) {
+    if (isFuture(date)) return;
+    const key = toKey(date);
+    const list = state.completions[habitId] ? state.completions[habitId].slice() : [];
+    const idx = list.indexOf(key);
+    let justCompleted = false;
+    if (idx >= 0) {
+      list.splice(idx, 1);
+    } else {
+      list.push(key);
+      justCompleted = true;
+    }
+    state.completions[habitId] = list;
+    if (justCompleted) {
+      state.burstKey = habitId + "|" + key;
+      setTimeout(() => { state.burstKey = null; render(); }, 450);
+    }
+    persist();
+    render();
+  }
+
+  function addHabit(draft) {
+    const habit = {
+      id: "h_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8),
+      name: draft.name.trim(),
+      icon: draft.icon,
+      color: draft.color,
+      createdAt: new Date().toISOString()
+    };
+    state.habits.push(habit);
+    state.completions[habit.id] = [];
+    persist();
+  }
+
+  function updateHabit(draft) {
+    const habit = state.habits.find(h => h.id === draft.id);
+    if (!habit) return;
+    habit.name = draft.name.trim();
+    habit.color = draft.color;
+    habit.icon = draft.icon;
+    persist();
+  }
+
+  function deleteHabit(id) {
+    state.habits = state.habits.filter(h => h.id !== id);
+    delete state.completions[id];
+    if (state.openHabitId === id) state.openHabitId = null;
+    persist();
+  }
+
+  function saveHabitForm() {
+    if (!state.editingHabit || !state.editingHabit.name.trim()) return;
+    if (state.modal === "edit") {
+      updateHabit(state.editingHabit);
+    } else {
+      addHabit(state.editingHabit);
+    }
+    state.modal = null;
+    state.editingHabit = null;
+    render();
+  }
+
+  // ---------- Rendering ----------
+  function esc(s) {
+    const div = document.createElement("div");
+    div.textContent = s;
+    return div.outerHTML.replace(/^<div>|<\/div>$/g, "");
+  }
+
+  function renderIcon(iconName) {
+    return `<span class="material-symbols-rounded">${iconName}</span>`;
+  }
+
+  function render() {
+    const app = document.getElementById("app");
+    if (!state.loaded) {
+      app.innerHTML = "";
+      return;
+    }
+
+    const existingDetailModal = document.querySelector(".detail-modal");
+    const scrollTop = existingDetailModal ? existingDetailModal.scrollTop : 0;
+
+    app.innerHTML = `
+      <header class="top">
+        <div>
+          <h1>Habit Tracker</h1>
+          <p>${state.habits.length} ${state.habits.length === 1 ? "habit" : "habits"}</p>
+        </div>
+        <button class="btn-primary" id="openAdd">＋ New Habit</button>
+      </header>
+      <div class="habit-list" id="habitList">
+        ${state.habits.length ? state.habits.map((h, i) => renderHabitCard(h, i)).join("") : `
+          <div class="empty-list">No habits added yet.<br>Click "New Habit" above to create one.</div>
+        `}
+      </div>
+      ${state.openHabitId ? renderDetailOverlay() : ""}
+      ${state.modal ? renderModal() : ""}
+    `;
+
+    const newDetailModal = document.querySelector(".detail-modal");
+    if (newDetailModal && existingDetailModal) {
+      newDetailModal.scrollTop = scrollTop;
+    }
+
+    attachEvents();
+  }
+
+  function renderHabitCard(h, index) {
+    const days = lastNDays(7);
+    const todayDate = new Date();
+
+    const dotsHtml = days.map(d => {
+      const done = isDone(h.id, d);
+      const isToday = isSameDay(d, todayDate);
+      const dayName = SHORT_WEEKDAYS[d.getDay()];
+
+      return `
+        <div class="dot-col ${isToday ? "is-today" : ""}">
+          <span class="dot ${done ? "on" : ""}"></span>
+          <span class="day-label">${dayName}</span>
+        </div>
+      `;
+    }).join("");
+
+    const streak = currentStreak(h.id);
+    const doneToday = isDone(h.id, todayDate);
+
+    return `
+      <div class="habit-card" data-open="${h.id}" data-index="${index}" draggable="true"
+        style="--card-color:${h.color}; --card-color-soft:${h.color}25; --card-color-glow:${h.color}50;">
+        <div class="drag-handle" title="Drag to reorder">${renderIcon('drag_indicator')}</div>
+        <div class="habit-icon">${renderIcon(h.icon)}</div>
+        <div class="meta">
+          <p class="name">${esc(h.name)}</p>
+          <div class="dot-trail">
+            ${dotsHtml}
+            ${streak > 0 ? `<span class="streak-tag">✦ ${streak}</span>` : ""}
+          </div>
+        </div>
+        <div class="quick-check ${doneToday ? "done" : ""}" data-quick-check="${h.id}" title="Completed today">
+          ${doneToday ? renderIcon('check') : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderDetailOverlay() {
+    const habit = state.habits.find(h => h.id === state.openHabitId);
+    if (!habit) return "";
+
+    const month = state.viewMonth;
+    const monthLabel = MONTHS[month.getMonth()] + " " + month.getFullYear();
+    const isCurrentMonth = month.getFullYear() === new Date().getFullYear() && month.getMonth() === new Date().getMonth();
+
+    const firstOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
+    const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+    const startWeekday = (firstOfMonth.getDay() + 6) % 7; 
+
+    let cells = "";
+    for (let i = 0; i < startWeekday; i++) cells += `<div class="day-cell"></div>`;
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(month.getFullYear(), month.getMonth(), day);
+      const done = isDone(habit.id, date);
+      const future = isFuture(date);
+      const today = isSameDay(date, new Date());
+      const burst = state.burstKey === (habit.id + "|" + toKey(date));
+      cells += `
+        <div class="day-cell">
+          <button class="day-btn ${done ? "done" : ""} ${today ? "today" : ""} ${burst ? "burst" : ""}"
+            data-toggle-day="${toKey(date)}" ${future ? "disabled" : ""}
+            style="--card-color:${habit.color}">${day}</button>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="overlay" id="detailOverlay">
+        <div class="detail-modal" style="--card-color:${habit.color}">
+          <div class="detail-header">
+            <div class="detail-title">
+              <div class="habit-icon" style="background:${habit.color}25; color:${habit.color};">${renderIcon(habit.icon)}</div>
+              <h2>${esc(habit.name)}</h2>
+            </div>
+            <div class="detail-header-actions">
+              <button class="icon-btn" id="editHabitBtn" title="Edit">${renderIcon('edit')}</button>
+              <button class="icon-btn danger" id="deleteHabitBtn" title="Delete">${renderIcon('delete')}</button>
+              <button class="icon-btn" id="closeDetailBtn" title="Close">${renderIcon('close')}</button>
+            </div>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat-box"><div class="val">${currentStreak(habit.id)}</div><div class="lbl">Streak</div></div>
+            <div class="stat-box"><div class="val">${monthCount(habit.id, month)}</div><div class="lbl">This Month</div></div>
+            <div class="stat-box"><div class="val">${(state.completions[habit.id] || []).length}</div><div class="lbl">Total</div></div>
+          </div>
+
+          <div>
+            <div class="month-nav">
+              <button data-month="-1">‹</button>
+              <span class="title">${monthLabel}</span>
+              <button data-month="1" ${isCurrentMonth ? "disabled" : ""}>›</button>
+            </div>
+            <div class="weekday-row">${WEEKDAYS.map(w => `<span>${w}</span>`).join("")}</div>
+            <div class="day-grid">${cells}</div>
+          </div>
+        </div>
+      </div>
+
+      ${state.confirmDeleteId === habit.id ? renderDeleteConfirm(habit) : ""}
+    `;
+  }
+
+  function renderDeleteConfirm(habit) {
+    return `
+      <div class="overlay" id="deleteOverlay">
+        <div class="modal" style="max-width:360px;">
+          <h3>Delete "${esc(habit.name)}"?</h3>
+          <p class="confirm-text">All completed days recorded for this habit will be permanently deleted.</p>
+          <div class="modal-actions">
+            <button class="btn-ghost" id="cancelDelete">Cancel</button>
+            <button class="btn-primary" id="confirmDelete" style="background:#EF4444; color:white;">Delete</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderModal() {
+    const draft = state.editingHabit;
+    const isEdit = state.modal === "edit";
+    return `
+      <div class="overlay" id="addOverlay">
+        <div class="modal">
+          <h3>${isEdit ? "Edit Habit" : "New Habit"}</h3>
+          <label class="field-label">Name</label>
+          <input class="name-input" id="habitNameInput" placeholder="e.g., Drink water" value="${esc(draft.name)}" autofocus />
+
+          <label class="field-label">Choose Color</label>
+          <div class="swatch-row">
+            ${COLORS.map(c => `
+              <div class="swatch-wrap ${draft.color === c ? "selected" : ""}" data-color="${c}" style="--sw-color:${c}">
+                <div class="swatch" style="background:${c}"></div>
+              </div>
+            `).join("")}
+          </div>
+
+          <label class="field-label">Choose Icon</label>
+          <div class="icon-grid" style="--sel-color-soft:${draft.color}25; --sel-color:${draft.color};">
+            ${HABIT_ICONS.map(key => `<button class="icon-choice ${draft.icon === key ? "selected" : ""}" data-icon="${key}">${renderIcon(key)}</button>`).join("")}
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn-ghost" id="cancelAdd">Cancel</button>
+            <button class="btn-primary" id="saveAdd" ${draft.name.trim() ? "" : "disabled"}>${isEdit ? "Save" : "Create"}</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ---------- Events ----------
+  function attachEvents() {
+    const openAdd = document.getElementById("openAdd");
+    if (openAdd) openAdd.addEventListener("click", () => {
+      state.modal = "add";
+      state.editingHabit = { name: "", color: getNextColor(), icon: HABIT_ICONS[0] };
+      render();
+      const input = document.getElementById("habitNameInput");
+      if (input) input.focus();
+    });
+
+    document.querySelectorAll(".habit-card").forEach((card) => {
+      const index = parseInt(card.getAttribute("data-index"), 10);
+
+      // Open detail modal when clicking card (and not dragging)
+      card.addEventListener("click", (e) => {
+        if (isDragging) return;
+        state.openHabitId = card.getAttribute("data-open");
+        state.viewMonth = startOfMonth(new Date());
+        state.confirmDeleteId = null;
+        render();
+      });
+
+      // Drag & Drop event handlers
+      card.addEventListener("dragstart", (e) => {
+        draggedIndex = index;
+        isDragging = true;
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", index);
+        card.classList.add("dragging");
+      });
+
+      card.addEventListener("dragend", () => {
+        card.classList.remove("dragging");
+        document.querySelectorAll(".habit-card").forEach(c => c.classList.remove("drag-over"));
+        setTimeout(() => { isDragging = false; }, 50);
+      });
+
+      card.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+        if (draggedIndex === null || draggedIndex === index) return;
+        card.classList.add("drag-over");
+      });
+
+      card.addEventListener("dragleave", () => {
+        card.classList.remove("drag-over");
+      });
+
+      card.addEventListener("drop", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        card.classList.remove("drag-over");
+        if (draggedIndex === null || draggedIndex === index) return;
+
+        const movedItem = state.habits.splice(draggedIndex, 1)[0];
+        state.habits.splice(index, 0, movedItem);
+
+        draggedIndex = null;
+        persist();
+        render();
+      });
+    });
+
+    document.querySelectorAll("[data-quick-check]").forEach(el => {
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleDay(el.getAttribute("data-quick-check"), new Date());
+      });
+    });
+
+    document.querySelectorAll("[data-toggle-day]").forEach(el => {
+      el.addEventListener("click", () => {
+        const key = el.getAttribute("data-toggle-day");
+        const [y, m, d] = key.split("-").map(Number);
+        toggleDay(state.openHabitId, new Date(y, m - 1, d));
+      });
+    });
+
+    document.querySelectorAll("[data-month]").forEach(el => {
+      el.addEventListener("click", () => {
+        const delta = parseInt(el.getAttribute("data-month"), 10);
+        state.viewMonth = addMonths(state.viewMonth, delta);
+        render();
+      });
+    });
+
+    const closeDetailBtn = document.getElementById("closeDetailBtn");
+    if (closeDetailBtn) closeDetailBtn.addEventListener("click", () => {
+      state.openHabitId = null;
+      render();
+    });
+    const detailOverlay = document.getElementById("detailOverlay");
+    if (detailOverlay) detailOverlay.addEventListener("click", (e) => {
+      if (e.target === detailOverlay) {
+        state.openHabitId = null;
+        render();
+      }
+    });
+
+    const editBtn = document.getElementById("editHabitBtn");
+    if (editBtn) editBtn.addEventListener("click", () => {
+      const habit = state.habits.find(h => h.id === state.openHabitId);
+      if (!habit) return;
+      state.modal = "edit";
+      state.editingHabit = { id: habit.id, name: habit.name, color: habit.color, icon: habit.icon };
+      render();
+      const input = document.getElementById("habitNameInput");
+      if (input) { input.focus(); input.select(); }
+    });
+
+    const deleteBtn = document.getElementById("deleteHabitBtn");
+    if (deleteBtn) deleteBtn.addEventListener("click", () => {
+      state.confirmDeleteId = state.openHabitId;
+      render();
+    });
+    const cancelDelete = document.getElementById("cancelDelete");
+    if (cancelDelete) cancelDelete.addEventListener("click", () => {
+      state.confirmDeleteId = null;
+      render();
+    });
+    const confirmDelete = document.getElementById("confirmDelete");
+    if (confirmDelete) confirmDelete.addEventListener("click", () => {
+      deleteHabit(state.confirmDeleteId);
+      state.openHabitId = null;
+      state.confirmDeleteId = null;
+      render();
+    });
+
+    const nameInput = document.getElementById("habitNameInput");
+    if (nameInput) {
+      nameInput.addEventListener("input", (e) => {
+        state.editingHabit.name = e.target.value;
+        const saveBtn = document.getElementById("saveAdd");
+        if (saveBtn) saveBtn.disabled = !state.editingHabit.name.trim();
+      });
+      nameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && state.editingHabit.name.trim()) {
+          saveHabitForm();
+        }
+      });
+    }
+    const addOverlay = document.getElementById("addOverlay");
+    if (addOverlay) addOverlay.addEventListener("click", (e) => {
+      if (e.target === addOverlay) {
+        state.modal = null;
+        state.editingHabit = null;
+        render();
+      }
+    });
+    document.querySelectorAll("[data-color]").forEach(el => {
+      el.addEventListener("click", () => {
+        state.editingHabit.color = el.getAttribute("data-color");
+        render();
+        const input = document.getElementById("habitNameInput");
+        if (input) { input.focus(); input.setSelectionRange(input.value.length, input.value.length); }
+      });
+    });
+    document.querySelectorAll("[data-icon]").forEach(el => {
+      el.addEventListener("click", () => {
+        state.editingHabit.icon = el.getAttribute("data-icon");
+        render();
+        const input = document.getElementById("habitNameInput");
+        if (input) { input.focus(); input.setSelectionRange(input.value.length, input.value.length); }
+      });
+    });
+    const cancelAdd = document.getElementById("cancelAdd");
+    if (cancelAdd) cancelAdd.addEventListener("click", () => {
+      state.modal = null;
+      state.editingHabit = null;
+      render();
+    });
+    const saveAdd = document.getElementById("saveAdd");
+    if (saveAdd) saveAdd.addEventListener("click", saveHabitForm);
+  }
+
+  loadData();
+})();
+</script>
+</body>
+</html>
