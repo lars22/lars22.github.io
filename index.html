@@ -1,637 +1,1376 @@
-<!doctype html>
-<html lang="en-us">
-  <head>
-	<meta name="generator" content="Hugo 0.164.0">
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lars</title>
-    <meta name="description" content="" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0" />
+<title>Habit Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Google Fonts Material Symbols -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,600,0,0" />
 
-    
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght,MONO@0,300..800,1;1,300..800,1&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
-
-
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: "Google Sans Code", monospace;
-        font-size: 14px;
-        line-height: 1.6;
-        color: #4a4b4f;
-        background-color: #fbfbfb;
-        text-align: justify;
-      }
-
-      .container {
-        max-width: 580px;  
-        margin: 0 auto;
-        padding: 60px 20px;
-      }
-
-      .name-stack {
-        position: relative;
-        width: 420px;
-        height: 120px;
-        margin-left: -6px;
-      }
-
-      .layer {
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-family: 'Google Sans', sans-serif;
-        font-size: 88px;
-        font-weight: 700;
-        line-height: 1;
-        letter-spacing: -0.04em;
-        user-select: none;
-      }
-
-       
-      .blue {
-        color: #A7E8FF;
-        transform: translate(0px, 0px);
-      }
-
-       
-      .yellow {
-        color: #FFF1A8;
-        transform: translate(10px, 10px);
-      }
-
-       
-      .pink {
-        color: #FFB8D2;
-        transform: translate(20px, 20px);
-      }
-
-      @media (max-width: 768px) {
-      .container {
-        padding: 40px 10px;
-      }
-
-       
-      .name-stack {
-        width: 100%;
-        max-width: 100%;
-        height: 80px;  
-      }
-
-      .layer {
-        font-size: 56px;  
-      }
-
-      .yellow {
-        transform: translate(6px, 6px);  
-      }
-
-      .pink {
-        transform: translate(12px, 12px);
-      }
-
-      h1 {
-        font-size: 22px;
-      }
-
-      body {
-        font-size: 15px;
-      }
-      }
-
-      .helloworld {
-        font-family: 'Google Sans', sans-serif;
-        font-size: 24px;
-        font-weight: bold;
-        color: #6BBFE8;
-        margin-bottom: 10px;
-      }
-
-      h1 {
-        font-family: 'Google Sans', sans-serif;
-        font-size: 24px;
-        font-weight: 600;
-        margin: 0 0 40px 0;
-        color: #4a4b4f;
-      }
-
-      p {
-        margin: 0 0 20px 0;
-        line-height: 1.7;
-      }
-
-      a {
-        color: #FFB8D2;
-        text-decoration: underline;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 2px;
-      }
-
-      a:hover {
-        color: #6BBFE8;
-      }
-
-      .section {
-        margin-bottom: 40px;
-      }
-
-      ::selection {
-        background-color: #A7E8FF ;  
-      }
-
-      .works-title {
-        font-family: "Google Sans Code", monospace;
-        font-size: 15px;
-        font-weight: 600;
-        margin-bottom: 15px;
-        color: #4a4b4f;
-      }
-
-      .work-item {
-        margin-bottom: 12px;
-        line-height: 1.6;
-      }
-
-      .work-link {
-        display: block;
-        text-decoration: none;
-        color: #4a4b4f;
-      }
-
-      .work-link:hover {
-        opacity: 0.8;
-      }
-
-      .work-title {
-        font-weight: 500;
-        font-family: 'Google Sans', sans-serif;
-        font-size: 24px;
-      }
-
-      .publication {
-        color: #8f6a60;
-      }
-
-      .year {
-        color: #9d9d9d;
-      }
-
-      .description {
-        color: #9d9d9d;
-        font-style: italic;
-        margin-top: 4px;
-      }
-
-      .contact {
-        margin-top: 50px;
-        padding-top: 5px;
-        border-top: 1px solid #e5e5e5;
-        text-align: right;
-      }
-
-      .footer-image {
-        margin-top: 30px;
-        text-align: left;
-      }
-
-      .footer-image img {
-        width: 60px;
-        height: auto;
-        opacity: 0.7;
-      }
-
-      @media (max-width: 768px) {
-        .container {
-          padding: 40px 10px;
-        }
-
-        h1 {
-          font-size: 22px;
-        }
-
-        body {
-          font-size: 15px;
-        }
-      }
-      
-       
-      pre {
-        background-color: #f5f5f5;
-        padding: 16px;
-        border-radius: 4px;
-        overflow-x: auto;
-        margin: 20px 0;
-      }
-      
-      code {
-        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-        font-size: 14px;
-        line-height: 1.5;
-      }
-      
-      pre code {
-        display: block;
-        white-space: pre !important;
-        word-wrap: normal !important;
-        word-break: normal;
-        overflow-x: auto;
-      }
-      
-       
-      p code, li code, h1 code, h2 code, h3 code {
-        background-color: #f5f5f5;
-        padding: 3px 5px;
-        border-radius: 3px;
-        font-size: 0.9em;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-      }
-
-       
-      .post-content mjx-container[display="true"] {
-        display: block;
-        text-align: center;
-        margin: 1em 0;
-        overflow-x: auto !important;
-        overflow-y: visible !important;
-        max-width: 100% !important;
-        width: 100% !important;
-        box-sizing: border-box;
-        padding-top: 1em;
-        padding-bottom: 1em;
-        min-height: unset;
-      }
-       
-      .post-content mjx-container[display="true"] mjx-math {
-        min-width: 0 !important;
-        max-width: 100% !important;
-        overflow-x: auto !important;
-        overflow-y: visible !important;
-        white-space: pre;
-        box-sizing: border-box;
-        min-height: unset;
-      }
-       
-      .post-content {
-        overflow-x: auto;
-        overflow-y: visible;
-      }
-      
-       
-      .post-content img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 100%;
-        height: auto;
-        border-radius: 0px;
-        margin-top: 1.5em;
-        margin-bottom: 1.5em;
-      }
-
-      .post-content {
-        line-height: 1.8;
-        font-family: "Google Sans Code", monospace;
-        font-size: 14px;
-  }
-      
-       
-      .post-content img + em {
-        display: block;
-        text-align: center;
-        font-size: 0.9em;
-        color: #777;
-        margin-top: -1em;
-        margin-bottom: 1.5em;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      
 <style>
-  .page-container {
+  :root {
+    --bg: #24395F;
+    --surface: #2D4A70;
+    --surface-soft: #385985;
+    --ink: #D8E0EA;
+    --ink-soft: #8FA4BF;
+    --ink-faint: #5E7799;
+    --line: #3D6190;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.15);
+    --radius-lg: 22px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+  }
+
+  ::selection { background: rgba(255, 255, 255, 0.15); }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .material-symbols-rounded {
+    font-family: 'Material Symbols Rounded';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 22px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+    padding-bottom: max(80px, calc(env(safe-area-inset-bottom) + 40px));
+    overflow-x: hidden;
+  }
+
+  header.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  header.top h1 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  header.top p {
+    margin: 4px 0 0;
+    color: var(--ink-soft);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    border-radius: 999px;
+    padding: 12px 20px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.15s ease, background 0.15s ease, filter 0.15s ease;
+    flex-shrink: 0;
+  }
+  .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .habit-list {
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
-    max-width: 580px;
-    padding: 0 20px;
-  }
-  
-  .content-column {
-    width: 100%;
-    box-sizing: border-box;
-    min-width: auto;
-    max-width: 580px;
-    font-size: 15px;
+    gap: 12px;
   }
 
-  .pagination {
+  .habit-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    cursor: grab;
+    user-select: none;
+    border: 1.5px solid transparent;
+    transition: border-color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: left;
+    width: 100%;
+    color: var(--ink);
+  }
+  .habit-card:hover { transform: translateY(-1px); border-color: rgba(255, 255, 255, 0.1); }
+  .habit-card:active { cursor: grabbing; }
+
+  /* Drag & Drop Styles */
+  .habit-card.dragging {
+    opacity: 0.4;
+    border: 1.5px dashed var(--ink-soft);
+  }
+  .habit-card.drag-over {
+    border-color: var(--ink);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+  }
+
+  .drag-handle {
+    color: var(--ink-faint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: -4px;
+    cursor: grab;
+  }
+  .drag-handle .material-symbols-rounded { font-size: 20px; }
+
+  .habit-icon,
+  .quick-check {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .quick-check {
+    border: 1.5px solid var(--line);
+    background: var(--surface-soft);
+    color: transparent;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .quick-check:hover { transform: scale(1.08); border-color: var(--card-color); }
+  .quick-check:active { transform: scale(0.9); }
+  .quick-check.done {
+    background: var(--card-color);
+    border-color: var(--card-color);
+    color: #121D2D;
+  }
+
+  .habit-icon {
+    background: var(--card-color-soft);
+    color: var(--card-color);
+  }
+
+  .habit-card .meta { flex: 1; min-width: 0; overflow: hidden; }
+
+  .habit-card .name {
+    font-weight: 800;
+    font-size: 18px;
+    margin: 0 0 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.01em;
+  }
+
+  .dot-trail {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    margin-top: 4px;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 1px;
+  }
+  .dot-trail::-webkit-scrollbar { display: none; }
+
+  .dot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .dot-trail .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--surface-soft);
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .dot-trail .dot.on {
+    background: var(--card-color);
+    box-shadow: 0 0 10px var(--card-color-glow);
+  }
+
+  .dot-col .day-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+
+  .dot-col.is-today .day-label {
+    color: var(--card-color);
+    font-weight: 800;
+  }
+
+  .streak-tag {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--card-color);
+    margin-left: 6px;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+    align-self: center;
+  }
+
+  .empty-list {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 32px 20px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 15px;
+    box-shadow: var(--shadow);
+  }
+
+  .detail-modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 26px;
+    width: 100%;
+    max-width: 420px;
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+
+  .detail-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    padding-bottom: 20px;
-    width: 100%;
+    align-items: flex-start;
+    margin-bottom: 22px;
+    gap: 12px;
   }
 
-  .pagination a {
-    text-decoration: none;
+  .detail-header-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
   }
-  
-  @media (max-width: 992px) {
-    .page-container {
-      flex-direction: column;
+
+  .detail-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .detail-title .habit-icon { width: 48px; height: 48px; }
+  .detail-title .habit-icon .material-symbols-rounded { font-size: 26px; }
+
+  .detail-title h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .icon-btn {
+    border: none;
+    background: var(--surface-soft);
+    color: var(--ink-soft);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .icon-btn:hover { background: var(--line); color: var(--ink); }
+  .icon-btn.danger:hover { background: rgba(239, 68, 68, 0.2); color: #EF4444; }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .stat-box {
+    background: var(--surface-soft);
+    border-radius: var(--radius-sm);
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat-box .val { font-size: 20px; font-weight: 800; color: var(--ink); }
+  .stat-box .lbl { font-size: 11px; color: var(--ink-soft); font-weight: 600; margin-top: 2px; }
+
+  .month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .month-nav .title { font-weight: 700; font-size: 15px; color: var(--ink); }
+  .month-nav button {
+    border: none;
+    background: none;
+    color: var(--card-color);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 6px;
+    font-weight: 700;
+  }
+  .month-nav button:disabled { color: var(--ink-faint); cursor: default; }
+
+  .weekday-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 6px;
+  }
+  .weekday-row span {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+
+  .day-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 6px;
+  }
+
+  .day-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .day-btn {
+    width: 78%;
+    height: 78%;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface-soft);
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease;
+    position: relative;
+  }
+  .day-btn:hover:not(:disabled) { transform: scale(1.08); }
+  .day-btn:active:not(:disabled) { transform: scale(0.94); }
+  .day-btn:disabled { color: var(--ink-faint); cursor: default; opacity: 0.5; }
+
+  .day-btn.done {
+    background: var(--card-color);
+    color: #121D2D;
+    font-weight: 800;
+  }
+  .day-btn.today:not(.done) {
+    box-shadow: inset 0 0 0 1.5px var(--card-color);
+  }
+
+  .day-btn.burst::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid var(--card-color);
+    opacity: 1;
+    animation: burst 0.45s ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes burst {
+    to { transform: scale(1.55); opacity: 0; }
+  }
+
+  /* Modal Overlay */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(18, 28, 48, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    z-index: 50;
+  }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    width: 100%;
+    max-width: 420px;
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+  .modal h3 { margin: 0 0 18px; font-size: 19px; font-weight: 800; color: var(--ink); }
+  .field-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+    display: block;
+  }
+  .name-input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--line);
+    font-family: inherit;
+    font-size: 16px;
+    margin-bottom: 20px;
+    background: var(--surface-soft);
+    color: var(--ink);
+  }
+  .name-input:focus { outline: none; border-color: var(--ink-soft); }
+
+  .swatch-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px 8px;
+    margin-bottom: 22px;
+    padding: 5px 6px;
+  }
+
+  .swatch-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px transparent;
+    transition: box-shadow 0.15s ease, transform 0.12s ease;
+  }
+  .swatch-wrap:hover { transform: scale(1.12); }
+  .swatch-wrap.selected {
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--sw-color);
+  }
+
+  .swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+    max-height: 260px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 2px;
+  }
+  .icon-choice {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: none;
+    background: var(--surface-soft);
+    color: var(--ink-soft);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.12s ease, transform 0.12s ease, color 0.12s ease;
+  }
+  .icon-choice:hover { color: var(--ink); }
+  .icon-choice.selected {
+    background: var(--sel-color-soft);
+    color: var(--sel-color);
+    transform: scale(1.05);
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  .btn-ghost {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 11px 16px;
+    cursor: pointer;
+    border-radius: 999px;
+  }
+  .btn-ghost:hover { background: var(--surface-soft); color: var(--ink); }
+
+  .confirm-text { font-size: 14px; color: var(--ink-soft); margin-bottom: 22px; line-height: 1.5; }
+
+  .loading-state {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 60px 20px;
+  }
+  .loading-state.error { color: #FF9A8C; }
+
+  /* ===================== Mobile (iPhone) ===================== */
+  @media (max-width: 600px) {
+    .app {
+      padding: 24px 14px 40px;
+      padding-left: max(14px, env(safe-area-inset-left));
+      padding-right: max(14px, env(safe-area-inset-right));
     }
-    
-    .content-column {
+
+    header.top { margin-bottom: 22px; }
+    header.top h1 { font-size: 22px; }
+    .btn-primary {
       width: 100%;
-      padding-right: 0;
-      min-width: auto;
-      max-width: 580px;
-      margin: 0 auto;
+      justify-content: center;
+      padding: 13px 20px;
     }
+
+    .habit-card {
+      padding: 14px 14px;
+      gap: 10px;
+    }
+
+    /* Drag handle relies on HTML5 DnD, which isn't usable via touch on iOS anyway */
+    .drag-handle { display: none; }
+
+    .habit-icon, .quick-check {
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+    }
+    .habit-icon .material-symbols-rounded { font-size: 19px; }
+
+    .habit-card .name { font-size: 16px; margin-bottom: 5px; }
+
+    .dot-trail { gap: 7px; }
+    .dot-trail .dot { width: 9px; height: 9px; }
+    .dot-col { gap: 4px; }
+    .dot-col .day-label { font-size: 9px; }
+    .streak-tag { font-size: 12px; margin-left: 4px; }
+
+    .detail-modal, .modal {
+      padding: 20px;
+      max-width: 100%;
+      border-radius: var(--radius-md);
+    }
+
+    .overlay { padding: 12px; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+
+    .stat-row { gap: 8px; }
+    .stat-box { padding: 12px 6px; }
+    .stat-box .val { font-size: 18px; }
+
+    .icon-grid {
+      grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+      gap: 8px;
+      max-height: 240px;
+    }
+
+    .swatch-wrap { width: 32px; height: 32px; }
+    .swatch { width: 22px; height: 22px; }
+  }
+
+  @media (max-width: 380px) {
+    .app { padding-left: max(10px, env(safe-area-inset-left)); padding-right: max(10px, env(safe-area-inset-right)); }
+    .habit-card { padding: 12px 10px; gap: 8px; }
+    .dot-trail { gap: 5px; }
+    .streak-tag { display: none; }
   }
 </style>
+</head>
+<body>
 
-<div class="page-container">
-  <div class="content-column">
+<div class="app" id="app"></div>
 
-    <div class="section">
-      <div class="name-stack">
-        <a href="wwww.lars.wf">
-        <span class="layer blue">Lars</span>
-        <span class="layer yellow">Lars</span>
-        <span class="layer pink">Lars</span>
-        </a>
-    </div>
-
-      
-        Hi, my name is Lars and I would like to share some photos with you. In my free time, you’ll find me on the tennis court or on my gravel bike. I&rsquo;m based in Hamburg, Germany but I love to discover new places around the world. You&rsquo;ll find all my posts in the <a href="archive">archive</a>.
-      
-    </div>
-    
-    <div class="section">
-      <div class="works-title">My Postcards from around the world</div>
-
-      
-      
-
-      
-      <div class="work-item">
-
-        <a href="/posts/hamburg_tower/hamburg_tower/" class="work-link">
-          <span class="work-title">Heinrich Hertz-Turm</span> 
-          <span class="year">
-            (2026)
-          </span>
-
-          <div class="description">
-            
-          </div>
-        </a>
-
-        <div class="post-content">
-          <p><img src="/posts/hamburg_tower/hamburg_tower.JPG" alt="image"></p>
-<p>📍 Hamburg, Germany</p>
-
-        </div>
-
-      </div>
-      
-      <div class="work-item">
-
-        <a href="/posts/palermo_bar/palermo/" class="work-link">
-          <span class="work-title">Secret bar in Palermo</span> 
-          <span class="year">
-            (2025)
-          </span>
-
-          <div class="description">
-            
-          </div>
-        </a>
-
-        <div class="post-content">
-          <p><img src="/posts/palermo_bar/bar_palermo.jpg" alt="image"></p>
-<p>📍 Palermo, Italia</p>
-
-        </div>
-
-      </div>
-      
-      <div class="work-item">
-
-        <a href="/posts/lisboa_lxfactory/lx_factory/" class="work-link">
-          <span class="work-title">LX Factory</span> 
-          <span class="year">
-            (2025)
-          </span>
-
-          <div class="description">
-            
-          </div>
-        </a>
-
-        <div class="post-content">
-          <p><img src="/posts/lisboa_lxfactory/lx_factory.jpg" alt="image"></p>
-<p>📍 Lisboa, Portugal</p>
-
-        </div>
-
-      </div>
-      
-      <div class="work-item">
-
-        <a href="/posts/lisboa_alfama/lx_factory/" class="work-link">
-          <span class="work-title">Lisboa Alfama</span> 
-          <span class="year">
-            (2025)
-          </span>
-
-          <div class="description">
-            
-          </div>
-        </a>
-
-        <div class="post-content">
-          <p><img src="/posts/lisboa_alfama/lissabon_2.jpg" alt="image"></p>
-<p>📍 Lisboa, Portugal</p>
-
-        </div>
-
-      </div>
-      
-      <div class="work-item">
-
-        <a href="/posts/saigon/saigon/" class="work-link">
-          <span class="work-title">Saigon</span> 
-          <span class="year">
-            (2025)
-          </span>
-
-          <div class="description">
-            
-          </div>
-        </a>
-
-        <div class="post-content">
-          <p><img src="/posts/saigon/saigon.jpg" alt="image"></p>
-<p>📍 Saigon, Vietnam</p>
-
-        </div>
-
-      </div>
-      
-      <div class="work-item">
-
-        <a href="/posts/holbox_3/holbox_3/" class="work-link">
-          <span class="work-title">Holbox</span> 
-          <span class="year">
-            (2025)
-          </span>
-
-          <div class="description">
-            
-          </div>
-        </a>
-
-        <div class="post-content">
-          <p><img src="/posts/holbox_3/holbox_3.jpg" alt="image"></p>
-<p>📍 Holbox, Mexico</p>
-
-        </div>
-
-      </div>
-      
-      <div class="work-item">
-
-        <a href="/posts/holbox/holbox/" class="work-link">
-          <span class="work-title">Holbox Beach</span> 
-          <span class="year">
-            (2025)
-          </span>
-
-          <div class="description">
-            
-          </div>
-        </a>
-
-        <div class="post-content">
-          <p><img src="/posts/holbox/holbox.jpg" alt="image"></p>
-<p>📍 Holbox, Mexico</p>
-
-        </div>
-
-      </div>
-      
-      <div class="work-item">
-
-        <a href="/posts/holbox_2/holbox_2/" class="work-link">
-          <span class="work-title">Holbox Campfire</span> 
-          <span class="year">
-            (2025)
-          </span>
-
-          <div class="description">
-            
-          </div>
-        </a>
-
-        <div class="post-content">
-          <p><img src="/posts/holbox_2/holbox_2.jpg" alt="image"></p>
-<p>📍 Holbox, Mexico</p>
-
-        </div>
-
-      </div>
-      
-      <div class="work-item">
-
-        <a href="/posts/rome/rome/" class="work-link">
-          <span class="work-title">Sunset in Rome</span> 
-          <span class="year">
-            (2024)
-          </span>
-
-          <div class="description">
-            
-          </div>
-        </a>
-
-        <div class="post-content">
-          <p><img src="/posts/rome/monumento_vittorio_emanuele2.jpg" alt="image"></p>
-<p>📍 Roma, Italia</p>
-
-        </div>
-
-      </div>
-      
-      <div class="work-item">
-
-        <a href="/posts/florenz/florenz/" class="work-link">
-          <span class="work-title">Sunset in Firenze</span> 
-          <span class="year">
-            (2024)
-          </span>
-
-          <div class="description">
-            
-          </div>
-        </a>
-
-        <div class="post-content">
-          <p><img src="/posts/florenz/florenz.jpg" alt="image"></p>
-<p>📍 Firenze, Italia</p>
-
-        </div>
-
-      </div>
-      
-
-      <div class="pagination">
-
-        <div class="pagination-back">
-          
-        </div>
-
-        <div class="pagination-next">
-          
-            <a href="/page/2/">Next →</a>
-          
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="contact">
-      created in Hamburg, Germany ❤
-    </div>
-
-  </div>
-</div>
-
-    </div>
-    
+<!-- sql.js: SQLite compiled to WebAssembly, runs entirely in the browser -->
+<script src="https://cdn.jsdelivr.net/npm/sql.js@1.10.2/dist/sql-wasm.js"></script>
 <script>
-  MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']],
-      processEscapes: true,
-      processEnvironments: true
-    },
-    options: {
-      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-    }
-  };
-</script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+(function () {
+  "use strict";
 
-  </body>
+  const COLORS = [
+    "#FF5964", // Red
+    "#FF9A3C", // Orange
+    "#FBBF24", // Yellow
+    "#10B981", // Green
+    "#2DD4BF", // Teal/Mint
+    "#38BDF8", // Light Blue
+    "#3B82F6", // Blue
+    "#C084FC"  // Purple
+  ];
+
+  const HABIT_ICONS = [
+    "water_drop",
+    "menu_book",
+    "directions_run",
+    "bedtime",
+    "wb_sunny",
+    "eco",
+    "local_cafe",
+    "fitness_center",
+    "favorite",
+    "psychology",
+    "pedal_bike",
+    "restaurant",
+    "auto_awesome",
+    "ads_click",
+    "sentiment_satisfied",
+    "edit_note",
+    "savings",
+    "cleaning_services",
+    "brush",
+    "local_fire_department",
+    "self_improvement",
+    "spa",
+    "nightlight",
+    "alarm",
+    "timer",
+    "checklist",
+    "task_alt",
+    "school",
+    "work",
+    "code",
+    "music_note",
+    "headphones",
+    "piano",
+    "palette",
+    "photo_camera",
+    "hiking",
+    "pool",
+    "sports_soccer",
+    "sports_basketball",
+    "directions_walk",
+    "pets",
+    "child_care",
+    "volunteer_activism",
+    "park",
+    "local_florist",
+    "icecream",
+    "monitor_heart",
+    "medication",
+    "shower",
+    "account_balance"
+  ];
+
+  const SHORT_WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  // sql.js loads the wasm binary from this CDN folder at runtime
+  const SQL_WASM_CDN = "https://cdn.jsdelivr.net/npm/sql.js@1.10.2/dist/";
+  // IndexedDB is only used to store the exported SQLite file bytes between visits
+  const IDB_NAME = "habit-tracker-sqlite";
+  const IDB_STORE = "files";
+  const IDB_KEY = "db";
+  // one-time migration source from the previous localStorage-based version
+  const LEGACY_STORAGE_KEY = "habit-tracker-data-v5";
+
+  let db = null; // the sql.js Database instance
+
+  let state = {
+    habits: [],       
+    completions: {},  
+    openHabitId: null,  
+    viewMonth: startOfMonth(new Date()),
+    modal: null,        
+    editingHabit: null, 
+    confirmDeleteId: null,
+    loaded: false,
+    initError: null,
+    burstKey: null
+  };
+
+  let draggedIndex = null;
+  let isDragging = false;
+
+  // ---------- Date Helpers ----------
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function toKey(date) { return date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate()); }
+  function startOfDay(d) { const c = new Date(d); c.setHours(0,0,0,0); return c; }
+  function startOfMonth(d) { return new Date(d.getFullYear(), d.getMonth(), 1); }
+  function isSameDay(a, b) { return toKey(a) === toKey(b); }
+  function addDays(d, n) { const c = new Date(d); c.setDate(c.getDate() + n); return c; }
+  function addMonths(d, n) { return new Date(d.getFullYear(), d.getMonth() + n, 1); }
+  function isFuture(d) { return startOfDay(d) > startOfDay(new Date()); }
+
+  // ---------- IndexedDB (stores the raw SQLite file) ----------
+  function idbOpen() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(IDB_NAME, 1);
+      req.onupgradeneeded = () => { req.result.createObjectStore(IDB_STORE); };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async function idbLoadDbFile() {
+    try {
+      const conn = await idbOpen();
+      return await new Promise((resolve, reject) => {
+        const tx = conn.transaction(IDB_STORE, "readonly");
+        const req = tx.objectStore(IDB_STORE).get(IDB_KEY);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => reject(req.error);
+      });
+    } catch (e) {
+      console.error("IndexedDB read failed:", e);
+      return null;
+    }
+  }
+
+  async function idbSaveDbFile(bytes) {
+    try {
+      const conn = await idbOpen();
+      await new Promise((resolve, reject) => {
+        const tx = conn.transaction(IDB_STORE, "readwrite");
+        tx.objectStore(IDB_STORE).put(bytes, IDB_KEY);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+    } catch (e) {
+      console.error("IndexedDB write failed:", e);
+    }
+  }
+
+  // ---------- SQLite helpers ----------
+  function dbAll(sql, params = []) {
+    const stmt = db.prepare(sql);
+    stmt.bind(params);
+    const rows = [];
+    while (stmt.step()) rows.push(stmt.getAsObject());
+    stmt.free();
+    return rows;
+  }
+
+  function ensureSchema() {
+    db.run(`
+      CREATE TABLE IF NOT EXISTS habits (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        icon TEXT NOT NULL,
+        color TEXT NOT NULL,
+        position INTEGER NOT NULL DEFAULT 0,
+        created_at TEXT NOT NULL
+      );
+      CREATE TABLE IF NOT EXISTS completions (
+        habit_id TEXT NOT NULL,
+        date TEXT NOT NULL,
+        PRIMARY KEY (habit_id, date)
+      );
+      CREATE INDEX IF NOT EXISTS idx_completions_habit ON completions(habit_id);
+    `);
+  }
+
+  // Imports data from the old localStorage version, once, if the new DB is still empty
+  function migrateLegacyDataIfNeeded() {
+    const count = dbAll("SELECT COUNT(*) AS c FROM habits")[0].c;
+    if (count > 0) return;
+
+    let legacy = null;
+    try {
+      const raw = localStorage.getItem(LEGACY_STORAGE_KEY);
+      if (raw) legacy = JSON.parse(raw);
+    } catch (e) { /* ignore malformed legacy data */ }
+    if (!legacy || !Array.isArray(legacy.habits) || legacy.habits.length === 0) return;
+
+    legacy.habits.forEach((h, i) => {
+      db.run("INSERT INTO habits (id, name, icon, color, position, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+        [h.id, h.name, h.icon, h.color, i, h.createdAt || new Date().toISOString()]);
+      const days = (legacy.completions && legacy.completions[h.id]) || [];
+      days.forEach(dateKey => {
+        db.run("INSERT OR IGNORE INTO completions (habit_id, date) VALUES (?, ?)", [h.id, dateKey]);
+      });
+    });
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
+  }
+
+  function loadStateFromDb() {
+    const habitRows = dbAll("SELECT id, name, icon, color, created_at FROM habits ORDER BY position ASC");
+    state.habits = habitRows.map(r => ({ id: r.id, name: r.name, icon: r.icon, color: r.color, createdAt: r.created_at }));
+
+    const compRows = dbAll("SELECT habit_id, date FROM completions");
+    const map = {};
+    compRows.forEach(r => {
+      if (!map[r.habit_id]) map[r.habit_id] = [];
+      map[r.habit_id].push(r.date);
+    });
+    state.completions = map;
+  }
+
+  // ---------- Persistence ----------
+  async function loadData() {
+    try {
+      const initSqlJs = window.initSqlJs;
+      const SQLModule = await initSqlJs({ locateFile: file => SQL_WASM_CDN + file });
+      const savedBytes = await idbLoadDbFile();
+      db = savedBytes ? new SQLModule.Database(new Uint8Array(savedBytes)) : new SQLModule.Database();
+      ensureSchema();
+      migrateLegacyDataIfNeeded();
+      loadStateFromDb();
+      persist();
+    } catch (e) {
+      console.error("Database init failed:", e);
+      state.initError = "Die Datenbank konnte nicht geladen werden. Bitte prüfe deine Internetverbindung und lade die Seite neu.";
+    }
+
+    state.loaded = true;
+    render();
+  }
+
+  function persist() {
+    if (!db) return;
+    try {
+      const bytes = db.export();
+      idbSaveDbFile(bytes);
+    } catch (e) {
+      console.error("Saving failed:", e);
+    }
+  }
+
+  // ---------- Derived Data ----------
+  function habitDays(habitId) {
+    return new Set(state.completions[habitId] || []);
+  }
+
+  function isDone(habitId, date) {
+    return habitDays(habitId).has(toKey(date));
+  }
+
+  function currentStreak(habitId) {
+    const days = habitDays(habitId);
+    if (days.size === 0) return 0;
+    let streak = 0;
+    let cursor = startOfDay(new Date());
+    if (!days.has(toKey(cursor))) cursor = addDays(cursor, -1);
+    while (days.has(toKey(cursor))) {
+      streak++;
+      cursor = addDays(cursor, -1);
+    }
+    return streak;
+  }
+
+  function monthCount(habitId, monthDate) {
+    const days = state.completions[habitId] || [];
+    const y = monthDate.getFullYear(), m = monthDate.getMonth();
+    return days.filter(k => {
+      const [ky, km] = k.split("-").map(Number);
+      return ky === y && km === m + 1;
+    }).length;
+  }
+
+  function lastNDays(n) {
+    const today = startOfDay(new Date());
+    const out = [];
+    for (let i = n - 1; i >= 0; i--) out.push(addDays(today, -i));
+    return out;
+  }
+
+  function getNextColor() {
+    const usedColors = state.habits.map(h => h.color);
+    for (const color of COLORS) {
+      if (!usedColors.includes(color)) return color;
+    }
+    return COLORS[state.habits.length % COLORS.length];
+  }
+
+  // ---------- State Mutations ----------
+  function toggleDay(habitId, date) {
+    if (isFuture(date)) return;
+    const key = toKey(date);
+    const list = state.completions[habitId] ? state.completions[habitId].slice() : [];
+    const idx = list.indexOf(key);
+    let justCompleted = false;
+    if (idx >= 0) {
+      list.splice(idx, 1);
+      db.run("DELETE FROM completions WHERE habit_id = ? AND date = ?", [habitId, key]);
+    } else {
+      list.push(key);
+      justCompleted = true;
+      db.run("INSERT OR IGNORE INTO completions (habit_id, date) VALUES (?, ?)", [habitId, key]);
+    }
+    state.completions[habitId] = list;
+    if (justCompleted) {
+      state.burstKey = habitId + "|" + key;
+      setTimeout(() => { state.burstKey = null; render(); }, 450);
+    }
+    persist();
+    render();
+  }
+
+  function addHabit(draft) {
+    const habit = {
+      id: "h_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8),
+      name: draft.name.trim(),
+      icon: draft.icon,
+      color: draft.color,
+      createdAt: new Date().toISOString()
+    };
+    const position = state.habits.length;
+    db.run("INSERT INTO habits (id, name, icon, color, position, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+      [habit.id, habit.name, habit.icon, habit.color, position, habit.createdAt]);
+    state.habits.push(habit);
+    state.completions[habit.id] = [];
+    persist();
+  }
+
+  function updateHabit(draft) {
+    const habit = state.habits.find(h => h.id === draft.id);
+    if (!habit) return;
+    habit.name = draft.name.trim();
+    habit.color = draft.color;
+    habit.icon = draft.icon;
+    db.run("UPDATE habits SET name = ?, color = ?, icon = ? WHERE id = ?",
+      [habit.name, habit.color, habit.icon, habit.id]);
+    persist();
+  }
+
+  function deleteHabit(id) {
+    state.habits = state.habits.filter(h => h.id !== id);
+    delete state.completions[id];
+    if (state.openHabitId === id) state.openHabitId = null;
+    db.run("DELETE FROM completions WHERE habit_id = ?", [id]);
+    db.run("DELETE FROM habits WHERE id = ?", [id]);
+    persist();
+  }
+
+  function saveHabitForm() {
+    if (!state.editingHabit || !state.editingHabit.name.trim()) return;
+    if (state.modal === "edit") {
+      updateHabit(state.editingHabit);
+    } else {
+      addHabit(state.editingHabit);
+    }
+    state.modal = null;
+    state.editingHabit = null;
+    render();
+  }
+
+  // ---------- Rendering ----------
+  function esc(s) {
+    const div = document.createElement("div");
+    div.textContent = s;
+    return div.outerHTML.replace(/^<div>|<\/div>$/g, "");
+  }
+
+  function renderIcon(iconName) {
+    return `<span class="material-symbols-rounded">${iconName}</span>`;
+  }
+
+  function render() {
+    const app = document.getElementById("app");
+    if (!state.loaded) {
+      app.innerHTML = `<div class="loading-state">Wird geladen …</div>`;
+      return;
+    }
+    if (state.initError) {
+      app.innerHTML = `<div class="loading-state error">${esc(state.initError)}</div>`;
+      return;
+    }
+
+    const existingDetailModal = document.querySelector(".detail-modal");
+    const scrollTop = existingDetailModal ? existingDetailModal.scrollTop : 0;
+
+    app.innerHTML = `
+      <header class="top">
+        <div>
+          <h1>Habit Tracker</h1>
+          <p>${state.habits.length} ${state.habits.length === 1 ? "habit" : "habits"}</p>
+        </div>
+        <button class="btn-primary" id="openAdd">＋ New Habit</button>
+      </header>
+      <div class="habit-list" id="habitList">
+        ${state.habits.length ? state.habits.map((h, i) => renderHabitCard(h, i)).join("") : `
+          <div class="empty-list">No habits added yet.<br>Click "New Habit" above to create one.</div>
+        `}
+      </div>
+      ${state.openHabitId ? renderDetailOverlay() : ""}
+      ${state.modal ? renderModal() : ""}
+    `;
+
+    const newDetailModal = document.querySelector(".detail-modal");
+    if (newDetailModal && existingDetailModal) {
+      newDetailModal.scrollTop = scrollTop;
+    }
+
+    attachEvents();
+  }
+
+  function renderHabitCard(h, index) {
+    const days = lastNDays(7);
+    const todayDate = new Date();
+
+    const dotsHtml = days.map(d => {
+      const done = isDone(h.id, d);
+      const isToday = isSameDay(d, todayDate);
+      const dayName = SHORT_WEEKDAYS[d.getDay()];
+
+      return `
+        <div class="dot-col ${isToday ? "is-today" : ""}">
+          <span class="dot ${done ? "on" : ""}"></span>
+          <span class="day-label">${dayName}</span>
+        </div>
+      `;
+    }).join("");
+
+    const streak = currentStreak(h.id);
+    const doneToday = isDone(h.id, todayDate);
+
+    return `
+      <div class="habit-card" data-open="${h.id}" data-index="${index}" draggable="true"
+        style="--card-color:${h.color}; --card-color-soft:${h.color}25; --card-color-glow:${h.color}50;">
+        <div class="drag-handle" title="Drag to reorder">${renderIcon('drag_indicator')}</div>
+        <div class="habit-icon">${renderIcon(h.icon)}</div>
+        <div class="meta">
+          <p class="name">${esc(h.name)}</p>
+          <div class="dot-trail">
+            ${dotsHtml}
+            ${streak > 0 ? `<span class="streak-tag">✦ ${streak}</span>` : ""}
+          </div>
+        </div>
+        <div class="quick-check ${doneToday ? "done" : ""}" data-quick-check="${h.id}" title="Completed today">
+          ${doneToday ? renderIcon('check') : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderDetailOverlay() {
+    const habit = state.habits.find(h => h.id === state.openHabitId);
+    if (!habit) return "";
+
+    const month = state.viewMonth;
+    const monthLabel = MONTHS[month.getMonth()] + " " + month.getFullYear();
+    const isCurrentMonth = month.getFullYear() === new Date().getFullYear() && month.getMonth() === new Date().getMonth();
+
+    const firstOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
+    const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+    const startWeekday = (firstOfMonth.getDay() + 6) % 7; 
+
+    let cells = "";
+    for (let i = 0; i < startWeekday; i++) cells += `<div class="day-cell"></div>`;
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(month.getFullYear(), month.getMonth(), day);
+      const done = isDone(habit.id, date);
+      const future = isFuture(date);
+      const today = isSameDay(date, new Date());
+      const burst = state.burstKey === (habit.id + "|" + toKey(date));
+      cells += `
+        <div class="day-cell">
+          <button class="day-btn ${done ? "done" : ""} ${today ? "today" : ""} ${burst ? "burst" : ""}"
+            data-toggle-day="${toKey(date)}" ${future ? "disabled" : ""}
+            style="--card-color:${habit.color}">${day}</button>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="overlay" id="detailOverlay">
+        <div class="detail-modal" style="--card-color:${habit.color}">
+          <div class="detail-header">
+            <div class="detail-title">
+              <div class="habit-icon" style="background:${habit.color}25; color:${habit.color};">${renderIcon(habit.icon)}</div>
+              <h2>${esc(habit.name)}</h2>
+            </div>
+            <div class="detail-header-actions">
+              <button class="icon-btn" id="editHabitBtn" title="Edit">${renderIcon('edit')}</button>
+              <button class="icon-btn danger" id="deleteHabitBtn" title="Delete">${renderIcon('delete')}</button>
+              <button class="icon-btn" id="closeDetailBtn" title="Close">${renderIcon('close')}</button>
+            </div>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat-box"><div class="val">${currentStreak(habit.id)}</div><div class="lbl">Streak</div></div>
+            <div class="stat-box"><div class="val">${monthCount(habit.id, month)}</div><div class="lbl">This Month</div></div>
+            <div class="stat-box"><div class="val">${(state.completions[habit.id] || []).length}</div><div class="lbl">Total</div></div>
+          </div>
+
+          <div>
+            <div class="month-nav">
+              <button data-month="-1">‹</button>
+              <span class="title">${monthLabel}</span>
+              <button data-month="1" ${isCurrentMonth ? "disabled" : ""}>›</button>
+            </div>
+            <div class="weekday-row">${WEEKDAYS.map(w => `<span>${w}</span>`).join("")}</div>
+            <div class="day-grid">${cells}</div>
+          </div>
+        </div>
+      </div>
+
+      ${state.confirmDeleteId === habit.id ? renderDeleteConfirm(habit) : ""}
+    `;
+  }
+
+  function renderDeleteConfirm(habit) {
+    return `
+      <div class="overlay" id="deleteOverlay">
+        <div class="modal" style="max-width:360px;">
+          <h3>Delete "${esc(habit.name)}"?</h3>
+          <p class="confirm-text">All completed days recorded for this habit will be permanently deleted.</p>
+          <div class="modal-actions">
+            <button class="btn-ghost" id="cancelDelete">Cancel</button>
+            <button class="btn-primary" id="confirmDelete" style="background:#EF4444; color:white;">Delete</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderModal() {
+    const draft = state.editingHabit;
+    const isEdit = state.modal === "edit";
+    return `
+      <div class="overlay" id="addOverlay">
+        <div class="modal">
+          <h3>${isEdit ? "Edit Habit" : "New Habit"}</h3>
+          <label class="field-label">Name</label>
+          <input class="name-input" id="habitTitleInput" name="habit-title" placeholder="e.g., Drink water" value="${esc(draft.name)}"
+            autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false"
+            data-lpignore="true" data-1p-ignore autofocus />
+
+          <label class="field-label">Choose Color</label>
+          <div class="swatch-row">
+            ${COLORS.map(c => `
+              <div class="swatch-wrap ${draft.color === c ? "selected" : ""}" data-color="${c}" style="--sw-color:${c}">
+                <div class="swatch" style="background:${c}"></div>
+              </div>
+            `).join("")}
+          </div>
+
+          <label class="field-label">Choose Icon</label>
+          <div class="icon-grid" style="--sel-color-soft:${draft.color}25; --sel-color:${draft.color};">
+            ${HABIT_ICONS.map(key => `<button class="icon-choice ${draft.icon === key ? "selected" : ""}" data-icon="${key}">${renderIcon(key)}</button>`).join("")}
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn-ghost" id="cancelAdd">Cancel</button>
+            <button class="btn-primary" id="saveAdd" ${draft.name.trim() ? "" : "disabled"}>${isEdit ? "Save" : "Create"}</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ---------- Events ----------
+  function attachEvents() {
+    const openAdd = document.getElementById("openAdd");
+    if (openAdd) openAdd.addEventListener("click", () => {
+      state.modal = "add";
+      state.editingHabit = { name: "", color: getNextColor(), icon: HABIT_ICONS[0] };
+      render();
+      const input = document.getElementById("habitTitleInput");
+      if (input) input.focus();
+    });
+
+    document.querySelectorAll(".habit-card").forEach((card) => {
+      const index = parseInt(card.getAttribute("data-index"), 10);
+
+      // Open detail modal when clicking card (and not dragging)
+      card.addEventListener("click", (e) => {
+        if (isDragging) return;
+        state.openHabitId = card.getAttribute("data-open");
+        state.viewMonth = startOfMonth(new Date());
+        state.confirmDeleteId = null;
+        render();
+      });
+
+      // Drag & Drop event handlers
+      card.addEventListener("dragstart", (e) => {
+        draggedIndex = index;
+        isDragging = true;
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", index);
+        card.classList.add("dragging");
+      });
+
+      card.addEventListener("dragend", () => {
+        card.classList.remove("dragging");
+        document.querySelectorAll(".habit-card").forEach(c => c.classList.remove("drag-over"));
+        setTimeout(() => { isDragging = false; }, 50);
+      });
+
+      card.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+        if (draggedIndex === null || draggedIndex === index) return;
+        card.classList.add("drag-over");
+      });
+
+      card.addEventListener("dragleave", () => {
+        card.classList.remove("drag-over");
+      });
+
+      card.addEventListener("drop", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        card.classList.remove("drag-over");
+        if (draggedIndex === null || draggedIndex === index) return;
+
+        const movedItem = state.habits.splice(draggedIndex, 1)[0];
+        state.habits.splice(index, 0, movedItem);
+        state.habits.forEach((h, i) => db.run("UPDATE habits SET position = ? WHERE id = ?", [i, h.id]));
+
+        draggedIndex = null;
+        persist();
+        render();
+      });
+    });
+
+    document.querySelectorAll("[data-quick-check]").forEach(el => {
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleDay(el.getAttribute("data-quick-check"), new Date());
+      });
+    });
+
+    document.querySelectorAll("[data-toggle-day]").forEach(el => {
+      el.addEventListener("click", () => {
+        const key = el.getAttribute("data-toggle-day");
+        const [y, m, d] = key.split("-").map(Number);
+        toggleDay(state.openHabitId, new Date(y, m - 1, d));
+      });
+    });
+
+    document.querySelectorAll("[data-month]").forEach(el => {
+      el.addEventListener("click", () => {
+        const delta = parseInt(el.getAttribute("data-month"), 10);
+        state.viewMonth = addMonths(state.viewMonth, delta);
+        render();
+      });
+    });
+
+    const closeDetailBtn = document.getElementById("closeDetailBtn");
+    if (closeDetailBtn) closeDetailBtn.addEventListener("click", () => {
+      state.openHabitId = null;
+      render();
+    });
+    const detailOverlay = document.getElementById("detailOverlay");
+    if (detailOverlay) detailOverlay.addEventListener("click", (e) => {
+      if (e.target === detailOverlay) {
+        state.openHabitId = null;
+        render();
+      }
+    });
+
+    const editBtn = document.getElementById("editHabitBtn");
+    if (editBtn) editBtn.addEventListener("click", () => {
+      const habit = state.habits.find(h => h.id === state.openHabitId);
+      if (!habit) return;
+      state.modal = "edit";
+      state.editingHabit = { id: habit.id, name: habit.name, color: habit.color, icon: habit.icon };
+      render();
+      const input = document.getElementById("habitTitleInput");
+      if (input) { input.focus(); input.select(); }
+    });
+
+    const deleteBtn = document.getElementById("deleteHabitBtn");
+    if (deleteBtn) deleteBtn.addEventListener("click", () => {
+      state.confirmDeleteId = state.openHabitId;
+      render();
+    });
+    const cancelDelete = document.getElementById("cancelDelete");
+    if (cancelDelete) cancelDelete.addEventListener("click", () => {
+      state.confirmDeleteId = null;
+      render();
+    });
+    const confirmDelete = document.getElementById("confirmDelete");
+    if (confirmDelete) confirmDelete.addEventListener("click", () => {
+      deleteHabit(state.confirmDeleteId);
+      state.openHabitId = null;
+      state.confirmDeleteId = null;
+      render();
+    });
+
+    const nameInput = document.getElementById("habitTitleInput");
+    if (nameInput) {
+      nameInput.addEventListener("input", (e) => {
+        state.editingHabit.name = e.target.value;
+        const saveBtn = document.getElementById("saveAdd");
+        if (saveBtn) saveBtn.disabled = !state.editingHabit.name.trim();
+      });
+      nameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && state.editingHabit.name.trim()) {
+          saveHabitForm();
+        }
+      });
+    }
+    const addOverlay = document.getElementById("addOverlay");
+    if (addOverlay) addOverlay.addEventListener("click", (e) => {
+      if (e.target === addOverlay) {
+        state.modal = null;
+        state.editingHabit = null;
+        render();
+      }
+    });
+    document.querySelectorAll("[data-color]").forEach(el => {
+      el.addEventListener("click", () => {
+        state.editingHabit.color = el.getAttribute("data-color");
+        render();
+      });
+    });
+    document.querySelectorAll("[data-icon]").forEach(el => {
+      el.addEventListener("click", () => {
+        state.editingHabit.icon = el.getAttribute("data-icon");
+        render();
+      });
+    });
+    const cancelAdd = document.getElementById("cancelAdd");
+    if (cancelAdd) cancelAdd.addEventListener("click", () => {
+      state.modal = null;
+      state.editingHabit = null;
+      render();
+    });
+    const saveAdd = document.getElementById("saveAdd");
+    if (saveAdd) saveAdd.addEventListener("click", saveHabitForm);
+  }
+
+  loadData();
+})();
+</script>
+</body>
 </html>
