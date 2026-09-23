@@ -2,13 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://example.org/posts/hamburg_tower/hamburg_tower/</loc>
-    <lastmod>2026-08-09T07:00:00+01:00</lastmod>
+    <loc>https://example.org/posts/seceda/seceda/</loc>
+    <lastmod>2026-09-23T07:00:00+01:00</lastmod>
   </url><url>
     <loc>https://example.org/</loc>
-    <lastmod>2026-08-09T07:00:00+01:00</lastmod>
+    <lastmod>2026-09-23T07:00:00+01:00</lastmod>
   </url><url>
     <loc>https://example.org/posts/</loc>
+    <lastmod>2026-09-23T07:00:00+01:00</lastmod>
+  </url><url>
+    <loc>https://example.org/posts/hamburg_tower/hamburg_tower/</loc>
     <lastmod>2026-08-09T07:00:00+01:00</lastmod>
   </url><url>
     <loc>https://example.org/posts/palermo_bar/palermo/</loc>

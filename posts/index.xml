@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Sun, 09 Aug 2026 07:00:00 +0100</lastBuildDate>
+			<lastBuildDate>Wed, 23 Sep 2026 07:00:00 +0100</lastBuildDate>
 		
 			<atom:link href="https://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Eine kurze Anleitung zum Wandern auf die Seceda-Alm</title>
+				<link>https://example.org/posts/seceda/seceda/</link>
+				<pubDate>Wed, 23 Sep 2026 07:00:00 +0100</pubDate>
+				<guid>https://example.org/posts/seceda/seceda/</guid>
+				<description>&lt;p&gt;&lt;img src=&#34;https://example.org/posts/Seceda/IMG_2090.jpeg&#34; alt=&#34;image&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Die grüne Seceda-Alm mit ihrer schroffen Felskante ist wohl einer der schönsten Orte in den Dolomiten und eines der beliebtesten Fotomotive in Südtirol. Sie ist Teil des UNESCO-Welterbes Dolomiten. Auf 2.500 Metern Höhe bietet sich ein fantastischer Blick in alle Richtungen. Doch der Ort ist so beliebt, dass es in der Hauptsaison ziemlich schwierig sein kann, einen Parkplatz zu bekommen, um die Wanderung überhaupt zu starten.&#xA;Viele starten ihre Wanderung in St. Ulrich oder nehmen von dort die Seilbahn direkt zur Seceda. Ich habe dort allerdings vergeblich einen Parkplatz gesucht und bin daher eher zufällig in St. Christina gelandet. Dort gibt es sowohl im Ort als auch direkt an der Seilbahn Col Raiser viele Parkmöglichkeiten.&lt;/p&gt;</description>
+			</item>
 			<item>
 				<title>Heinrich Hertz-Turm</title>
 				<link>https://example.org/posts/hamburg_tower/hamburg_tower/</link>
