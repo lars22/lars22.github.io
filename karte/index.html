@@ -168,10 +168,23 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
 // automatisch aus den Dateien im Ordner karte/_cafes (eine .md-Datei pro Café).
 let cafes = [];
 
+const menu = document.getElementById('menu'), menuBtn = document.getElementById('menuBtn');
+menuBtn.addEventListener('click', () => { menu.hidden = !menu.hidden; menuBtn.setAttribute('aria-expanded', String(!menu.hidden)); });
+function show(view) {
+  ['map', 'list', 'suggest', 'about'].forEach(v => document.getElementById('view-' + v).hidden = v !== view);
+  menu.querySelectorAll('button').forEach(b => {
+    if (b.dataset.view === view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+  });
+  menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false');
+  if (view === 'map' && window.map && map.invalidateSize) setTimeout(() => map.invalidateSize(), 0);
+  if (view === 'suggest') { document.getElementById('suggestForm').hidden = false; document.getElementById('thanks').hidden = true; }
+}
+document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
+
 const cup = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/></svg>';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-const map = L.map('map', { zoomControl: false, scrollWheelZoom: false }).setView([52.3759, 9.7320], 13);
+var map = L.map('map', { zoomControl: false, scrollWheelZoom: false, minZoom: 3, maxZoom: 19 }).setView([52.3759, 9.7320], 13);
 const ico = d => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="' + d + '"/></svg>';
 L.control.zoom({
   position: 'bottomright',
@@ -223,7 +236,8 @@ fetch('https://tiles.openfreemap.org/styles/positron')
 const markers = {};
 // Ab dieser Zoomstufe: Namen an den Pins zeigen und nicht mehr gruppieren
 const NAME_ZOOM = 15;
-const cluster = L.markerClusterGroup({
+// Gruppierung; falls die Erweiterung nicht lädt, werden die Pins einfach einzeln gezeigt
+const cluster = !L.markerClusterGroup ? L.layerGroup().addTo(map) : L.markerClusterGroup({
   maxClusterRadius: 56,
   disableClusteringAtZoom: NAME_ZOOM,
   showCoverageOnHover: false,
@@ -276,18 +290,6 @@ fetch('cafes.json', { cache: 'no-cache' })
     drawCafes();
   });
 
-const menu = document.getElementById('menu'), menuBtn = document.getElementById('menuBtn');
-menuBtn.addEventListener('click', () => { menu.hidden = !menu.hidden; menuBtn.setAttribute('aria-expanded', String(!menu.hidden)); });
-function show(view) {
-  ['map', 'list', 'suggest', 'about'].forEach(v => document.getElementById('view-' + v).hidden = v !== view);
-  menu.querySelectorAll('button').forEach(b => {
-    if (b.dataset.view === view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
-  });
-  menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false');
-  if (view === 'map') setTimeout(() => map.invalidateSize(), 0);
-  if (view === 'suggest') { document.getElementById('suggestForm').hidden = false; document.getElementById('thanks').hidden = true; }
-}
-document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
 document.getElementById('list').addEventListener('click', e => {
   const b = e.target.closest('[data-cafe]'); if (!b) return;
   show('map'); const c = cafes.find(x => x.id === b.dataset.cafe);
