@@ -19,6 +19,7 @@
   --pink: #FFB8D2;
   --yellow: #FFF1A8;
   --link: #8A3D5C;
+  --lift: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
   --font-display: 'Source Serif 4', Georgia, serif;
   --font-body: 'Google Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'Google Sans Code', ui-monospace, Menlo, monospace;
@@ -31,7 +32,7 @@ html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: v
 
 header { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; padding: 8px 0; position: relative; z-index: 1000; }
 .menu-wrap { position: relative; }
-.round { width: 48px; height: 48px; border: none; border-radius: 999px; background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05); }
+.round { width: 48px; height: 48px; border: none; border-radius: 999px; background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--lift); }
 nav { position: absolute; top: 58px; left: 0; width: 260px; background: var(--surface); border-radius: 20px; padding: 8px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.12); }
 nav button { min-height: 48px; padding: 0 14px; border: none; border-radius: 14px; background: var(--surface); text-align: left; font: 500 16px var(--font-body); color: var(--ink); cursor: pointer; }
 nav button[aria-current="page"], nav button:hover { background: var(--bg); }
@@ -40,8 +41,24 @@ nav button[aria-current="page"], nav button:hover { background: var(--bg); }
 .logo span { font: 700 28px var(--font-body); letter-spacing: -0.01em; }
 button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 
-#map { height: clamp(360px, 60vh, 620px); border-radius: 28px; overflow: hidden; background: #ECEDEA; z-index: 0; }
+#map { height: clamp(360px, 60vh, 620px); border-radius: 28px; overflow: hidden; background: #ECEDEA; z-index: 0; box-shadow: var(--lift); }
 .leaflet-container { font-family: var(--font-body); }
+/* Kartensteuerung im Stil des Menü-Buttons */
+.leaflet-touch .leaflet-bar, .leaflet-bar { border: none; box-shadow: none; background: transparent; display: flex; flex-direction: column; gap: 8px; }
+.leaflet-touch .leaflet-bar a, .leaflet-bar a, .leaflet-bar a:first-child, .leaflet-bar a:last-child {
+  width: 44px; height: 44px; line-height: 44px; border: none; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface); color: var(--ink); box-shadow: var(--lift);
+}
+.leaflet-bar a:hover { background: var(--bg); color: var(--ink); }
+.leaflet-bar a.leaflet-disabled { color: #B5B5B5; background: var(--surface); }
+.leaflet-control-scale-line {
+  border: 2px solid var(--ink); border-top: none; border-radius: 0 0 6px 6px;
+  background: rgba(255,255,255,.85); color: var(--ink); font: 500 12px var(--font-mono); padding: 1px 8px 2px;
+}
+.leaflet-bottom.leaflet-left .leaflet-control-scale { margin: 0 0 16px 16px; }
+.leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 16px 16px 0; }
+.leaflet-control-attribution { border-radius: 10px 0 0 0; font-size: 11px; }
 .osm-muted { filter: grayscale(0.85) brightness(1.06) contrast(0.92); }
 .pin { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px 0 10px; border-radius: 999px; background: var(--ink); color: #fff; font: 600 14px var(--font-body); white-space: nowrap; box-shadow: 0 6px 18px rgba(0,0,0,.2); transform: translate(-50%, -50%); transition: transform 140ms ease; }
 .pin svg { stroke: var(--pink); }
@@ -69,7 +86,7 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .search { position: relative; z-index: 900; }
 .search-ico { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); pointer-events: none; }
-.search input { width: 100%; height: 52px; border: none; border-radius: 999px; padding: 0 20px 0 48px; background: var(--surface); box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05); }
+.search input { width: 100%; height: 52px; border: none; border-radius: 999px; padding: 0 20px 0 48px; background: var(--surface); box-shadow: var(--lift); }
 .search input:focus { outline: 3px solid var(--pink); outline-offset: 0; }
 #results { position: absolute; top: 60px; left: 0; right: 0; margin: 0; padding: 8px; list-style: none; background: var(--surface); border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.12); max-height: 320px; overflow-y: auto; }
 #results button { width: 100%; min-height: 48px; padding: 8px 14px; border: none; border-radius: 14px; background: var(--surface); text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 2px; font: 500 16px var(--font-body); color: var(--ink); }
@@ -150,7 +167,13 @@ const cup = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 const map = L.map('map', { zoomControl: false, scrollWheelZoom: false }).setView([52.3759, 9.7320], 13);
-L.control.zoom({ position: 'bottomright' }).addTo(map);
+const ico = d => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="' + d + '"/></svg>';
+L.control.zoom({
+  position: 'bottomright',
+  zoomInText: ico('M12 6v12M6 12h12'), zoomInTitle: 'Hineinzoomen',
+  zoomOutText: ico('M6 12h12'), zoomOutTitle: 'Herauszoomen'
+}).addTo(map);
+L.control.scale({ position: 'bottomleft', imperial: false, maxWidth: 110 }).addTo(map);
 // Moderne Vektorkarte von OpenFreeMap (kostenlos, ohne Schlüssel), reduziert und
 // in den Blog-Farben eingefärbt. Falls das nicht klappt: einfache OpenStreetMap-Karte.
 const MAP_COLORS = {
