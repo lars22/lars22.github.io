@@ -7,5 +7,14 @@
     "lat": 52.3858333,
     "lng": 9.7244444,
     "text": "Kaffeerösterei 24grad."
+  },
+  {
+    "id": "black_delight",
+    "name": "Black Delight",
+    "area": "Hamburg",
+    "address": "Friedensallee 32, 22765 Altona",
+    "lat": 53.5551647,
+    "lng": 9.9268324,
+    "text": "Hippes Café in Altona"
   }
 ]
