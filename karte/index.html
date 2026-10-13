@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bearista Café-Karte</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500&family=Google+Sans:opsz,wght@17..18,400..700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
@@ -43,27 +44,30 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 
 #map { height: clamp(360px, 60vh, 620px); border-radius: 28px; overflow: hidden; background: #ECEDEA; z-index: 0; box-shadow: var(--lift); }
 .leaflet-container { font-family: var(--font-body); }
-/* Kartensteuerung im Stil des Menü-Buttons */
-.leaflet-touch .leaflet-bar, .leaflet-bar { border: none; box-shadow: none; background: transparent; display: flex; flex-direction: column; gap: 8px; }
-.leaflet-touch .leaflet-bar a, .leaflet-bar a, .leaflet-bar a:first-child, .leaflet-bar a:last-child {
-  width: 44px; height: 44px; line-height: 44px; border: none; border-radius: 999px;
+/* Kartensteuerung: runde Buttons wie der Menü-Button (#map erhöht die Priorität gegenüber Leaflet) */
+#map .leaflet-bar { border: none; box-shadow: none; background: transparent; display: flex; flex-direction: column; gap: 10px; }
+#map .leaflet-bar a {
+  width: 44px; height: 44px; line-height: 44px; padding: 0; border: none; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   background: var(--surface); color: var(--ink); box-shadow: var(--lift);
 }
-.leaflet-bar a:hover { background: var(--bg); color: var(--ink); }
-.leaflet-bar a.leaflet-disabled { color: #B5B5B5; background: var(--surface); }
-.leaflet-control-scale-line {
-  border: 2px solid var(--ink); border-top: none; border-radius: 0 0 6px 6px;
-  background: rgba(255,255,255,.85); color: var(--ink); font: 500 12px var(--font-mono); padding: 1px 8px 2px;
-}
-.leaflet-bottom.leaflet-left .leaflet-control-scale { margin: 0 0 16px 16px; }
-.leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 16px 16px 0; }
+#map .leaflet-bar a:hover { background: var(--bg); }
+#map .leaflet-bar a.leaflet-disabled { color: #B5B5B5; background: var(--surface); }
+#map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 16px 16px 0; }
 .leaflet-control-attribution { border-radius: 10px 0 0 0; font-size: 11px; }
 .osm-muted { filter: grayscale(0.85) brightness(1.06) contrast(0.92); }
-.pin { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px 0 10px; border-radius: 999px; background: var(--ink); color: #fff; font: 600 14px var(--font-body); white-space: nowrap; box-shadow: 0 6px 18px rgba(0,0,0,.2); transform: translate(-50%, -50%); transition: transform 140ms ease; }
-.pin svg { stroke: var(--pink); }
+/* Pins: runder Kreis mit Tasse; Name erst ab Zoomstufe 15 (Klasse .show-names) oder beim gewählten Café */
+.pin { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 40px; height: 40px; padding: 0 12px; border-radius: 999px; background: var(--ink); color: #fff; font: 600 14px var(--font-body); white-space: nowrap; box-shadow: 0 6px 18px rgba(0,0,0,.2); border: 2px solid #fff; transform: translate(-50%, -50%); transition: transform 140ms ease; box-sizing: border-box; }
+.pin-name { display: none; }
+.show-names .pin, .pin.on { padding: 0 14px 0 10px; }
+.show-names .pin-name, .pin.on .pin-name { display: inline; }
+.pin svg { stroke: var(--pink); flex: none; }
 .pin.on { background: var(--pink); color: var(--ink); transform: translate(-50%, -50%) scale(1.08); }
 .pin.on svg { stroke: var(--ink); }
+/* Gruppen: Kreis mit Anzahl der Cafés */
+.cluster-icon { background: none; border: none; display: flex; align-items: center; justify-content: center; }
+.cluster { width: 48px; height: 48px; border-radius: 50%; background: var(--pink); color: var(--ink); border: 3px solid #fff; display: flex; align-items: center; justify-content: center; font: 700 16px var(--font-body); box-shadow: 0 6px 18px rgba(0,0,0,.2); font-variant-numeric: tabular-nums; }
+.cluster.big { width: 58px; height: 58px; font-size: 17px; }
 .leaflet-div-icon.pin-icon { background: none; border: none; }
 
 .card { background: var(--surface); border-radius: 28px; padding: 28px 32px; min-height: 132px; }
@@ -156,6 +160,7 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@maplibre/maplibre-gl-leaflet@0.0.22/leaflet-maplibre-gl.js"></script>
 <script>
@@ -173,7 +178,6 @@ L.control.zoom({
   zoomInText: ico('M12 6v12M6 12h12'), zoomInTitle: 'Hineinzoomen',
   zoomOutText: ico('M6 12h12'), zoomOutTitle: 'Herauszoomen'
 }).addTo(map);
-L.control.scale({ position: 'bottomleft', imperial: false, maxWidth: 110 }).addTo(map);
 // Moderne Vektorkarte von OpenFreeMap (kostenlos, ohne Schlüssel), reduziert und
 // in den Blog-Farben eingefärbt. Falls das nicht klappt: einfache OpenStreetMap-Karte.
 const MAP_COLORS = {
@@ -217,9 +221,27 @@ fetch('https://tiles.openfreemap.org/styles/positron')
   .catch(osmFallback);
 
 const markers = {};
+// Ab dieser Zoomstufe: Namen an den Pins zeigen und nicht mehr gruppieren
+const NAME_ZOOM = 15;
+const cluster = L.markerClusterGroup({
+  maxClusterRadius: 56,
+  disableClusteringAtZoom: NAME_ZOOM,
+  showCoverageOnHover: false,
+  spiderfyOnMaxZoom: false,
+  iconCreateFunction: g => {
+    const n = g.getChildCount();
+    return L.divIcon({
+      className: 'cluster-icon', iconSize: [58, 58],
+      html: '<div class="cluster' + (n >= 10 ? ' big' : '') + '" aria-label="' + n + ' Cafés">' + n + '</div>'
+    });
+  }
+}).addTo(map);
+function updateNames() { map.getContainer().classList.toggle('show-names', map.getZoom() >= NAME_ZOOM); }
+map.on('zoomend', updateNames);
+updateNames();
 let selected = null;
 function icon(c, on) {
-  return L.divIcon({ className: 'pin-icon', iconSize: null, html: '<div class="pin' + (on ? ' on' : '') + '">' + cup + esc(c.name) + '</div>' });
+  return L.divIcon({ className: 'pin-icon', iconSize: null, html: '<div class="pin' + (on ? ' on' : '') + '">' + cup + '<span class="pin-name">' + esc(c.name) + '</span></div>' });
 }
 function select(id) {
   selected = id;
@@ -233,9 +255,10 @@ function select(id) {
 function drawCafes() {
   cafes.forEach(c => {
     markers[c.id] = L.marker([c.lat, c.lng], { icon: icon(c, false), title: c.name, keyboard: true })
-      .addTo(map).on('click', () => select(c.id));
+      .on('click', () => select(c.id));
+    cluster.addLayer(markers[c.id]);
   });
-  if (cafes.length > 1) map.fitBounds(cafes.map(c => [c.lat, c.lng]), { padding: [60, 60] });
+  if (cafes.length > 1) map.fitBounds(cafes.map(c => [c.lat, c.lng]), { padding: [60, 60], maxZoom: NAME_ZOOM });
   else if (cafes.length === 1) map.setView([cafes[0].lat, cafes[0].lng], 15);
 
   document.getElementById('list').innerHTML = cafes.length ? cafes.map(c =>
