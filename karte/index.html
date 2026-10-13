@@ -41,6 +41,7 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 
 #map { height: clamp(360px, 60vh, 620px); border-radius: 28px; overflow: hidden; background: #ECEDEA; z-index: 0; }
 .leaflet-container { font-family: var(--font-body); }
+.leaflet-tile-pane { filter: grayscale(0.85) brightness(1.06) contrast(0.92); }
 .pin { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px 0 10px; border-radius: 999px; background: var(--ink); color: #fff; font: 600 14px var(--font-body); white-space: nowrap; box-shadow: 0 6px 18px rgba(0,0,0,.2); transform: translate(-50%, -50%); transition: transform 140ms ease; }
 .pin svg { stroke: var(--pink); }
 .pin.on { background: var(--pink); color: var(--ink); transform: translate(-50%, -50%) scale(1.08); }
@@ -145,20 +146,11 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':
 
 const map = L.map('map', { zoomControl: false, scrollWheelZoom: false }).setView([52.3759, 9.7320], 13);
 L.control.zoom({ position: 'bottomright' }).addTo(map);
-const carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  maxZoom: 19, subdomains: 'abcd',
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+// OpenStreetMap-Karte, ohne Schlüssel; per CSS-Filter hell und ruhig eingefärbt
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
-// Falls die helle Karte nicht lädt: auf die Standard-OpenStreetMap-Karte wechseln
-let tileErrors = 0;
-carto.on('tileerror', () => {
-  if (++tileErrors === 3) {
-    map.removeLayer(carto);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-  }
-});
 
 const markers = {};
 let selected = null;
