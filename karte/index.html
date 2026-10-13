@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bearista Café-Karte</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500&family=Google+Sans:opsz,wght@17..18,400..700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* Layout: Kopfzeile (Menü links, Logo mittig) → Karte → Infokarte, eine Spalte, max. 1120px */
+:root {
+  --bg: #F5F5F5;
+  --surface: #FFFFFF;
+  --ink: #2B2C30;
+  --muted: #4A4B4F;
+  --line: #DCDCDC;
+  --pink: #FFB8D2;
+  --yellow: #FFF1A8;
+  --link: #8A3D5C;
+  --font-display: 'Source Serif 4', Georgia, serif;
+  --font-body: 'Google Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Google Sans Code', ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 16px 16px 56px; display: flex; flex-direction: column; gap: 20px; }
+
+header { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; padding: 8px 0; position: relative; z-index: 1000; }
+.menu-wrap { position: relative; }
+.round { width: 48px; height: 48px; border: none; border-radius: 999px; background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05); }
+nav { position: absolute; top: 58px; left: 0; width: 260px; background: var(--surface); border-radius: 20px; padding: 8px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.12); }
+nav button { min-height: 48px; padding: 0 14px; border: none; border-radius: 14px; background: var(--surface); text-align: left; font: 500 16px var(--font-body); color: var(--ink); cursor: pointer; }
+nav button[aria-current="page"], nav button:hover { background: var(--bg); }
+.logo { justify-self: center; display: flex; align-items: center; gap: 10px; background: none; border: none; cursor: pointer; color: var(--ink); padding: 4px 8px; }
+.logo img { height: 60px; width: auto; display: block; }
+.logo span { font: 700 28px var(--font-body); letter-spacing: -0.01em; }
+button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+
+#map { height: clamp(360px, 60vh, 620px); border-radius: 28px; overflow: hidden; background: #ECEDEA; z-index: 0; }
+.leaflet-container { font-family: var(--font-body); }
+.pin { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px 0 10px; border-radius: 999px; background: var(--ink); color: #fff; font: 600 14px var(--font-body); white-space: nowrap; box-shadow: 0 6px 18px rgba(0,0,0,.2); transform: translate(-50%, -50%); transition: transform 140ms ease; }
+.pin svg { stroke: var(--pink); }
+.pin.on { background: var(--pink); color: var(--ink); transform: translate(-50%, -50%) scale(1.08); }
+.pin.on svg { stroke: var(--ink); }
+.leaflet-div-icon.pin-icon { background: none; border: none; }
+
+.card { background: var(--surface); border-radius: 28px; padding: 28px 32px; min-height: 132px; }
+.card p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--muted); max-width: 680px; }
+.tag { align-self: flex-start; font: 13px var(--font-mono); padding: 4px 10px; border-radius: 999px; background: var(--yellow); color: var(--muted); }
+.stack { display: flex; flex-direction: column; gap: 10px; }
+h1, h2 { margin: 0; font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
+h1 { font-size: 36px; }
+h2 { font-size: 30px; }
+.addr { font: 14px var(--font-mono); color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.grid button { text-align: left; border: none; background: var(--surface); border-radius: 22px; padding: 22px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; font-family: var(--font-body); color: var(--ink); }
+.grid .name { font: 600 22px var(--font-display); }
+.grid .go { font-size: 14px; font-weight: 600; color: var(--link); }
+label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500; }
+input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; font: 16px var(--font-body); background: #FBFBFB; color: var(--ink); }
+.primary { align-self: flex-start; height: 48px; padding: 0 22px; border: none; border-radius: 999px; background: var(--ink); color: #fff; font: 600 15px var(--font-body); cursor: pointer; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.search { position: relative; z-index: 900; }
+.search-ico { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.search input { width: 100%; height: 52px; border: none; border-radius: 999px; padding: 0 20px 0 48px; background: var(--surface); box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05); }
+.search input:focus { outline: 3px solid var(--pink); outline-offset: 0; }
+#results { position: absolute; top: 60px; left: 0; right: 0; margin: 0; padding: 8px; list-style: none; background: var(--surface); border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.12); max-height: 320px; overflow-y: auto; }
+#results button { width: 100%; min-height: 48px; padding: 8px 14px; border: none; border-radius: 14px; background: var(--surface); text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 2px; font: 500 16px var(--font-body); color: var(--ink); }
+#results button:hover, #results button:focus-visible { background: var(--bg); }
+#results small { font: 13px var(--font-mono); color: var(--muted); }
+#results .empty { padding: 12px 14px; color: var(--muted); }
+@media (max-width: 480px) { .logo img { height: 48px; } .logo span { font-size: 24px; } .card { padding: 22px; } }
+@media (prefers-reduced-motion: reduce) { .pin { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="menu-wrap">
+      <button class="round" id="menuBtn" aria-label="Menü" aria-expanded="false" aria-controls="menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2B2C30" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h10"/></svg>
+      </button>
+      <nav id="menu" aria-label="Hauptmenü" hidden>
+        <button data-view="map">Karte</button>
+        <button data-view="list">Alle Cafés</button>
+        <button data-view="suggest">Café vorschlagen</button>
+        <button data-view="about">Über uns</button>
+      </nav>
+    </div>
+    <button class="logo" data-view="map" aria-label="Bearista – zur Karte">
+      <img src="data:image/png;base64,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" alt="">
+      <span>Bearista</span>
+    </button>
+    <div></div>
+  </header>
+
+  <main>
+    <section id="view-map" class="stack" style="gap:16px">
+      <div class="search" role="search">
+        <svg class="search-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A4B4F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label for="q" class="sr-only">Café oder Ort suchen</label>
+        <input id="q" type="search" placeholder="Café oder Ort suchen" autocomplete="off" aria-controls="results" aria-expanded="false">
+        <ul id="results" role="listbox" hidden></ul>
+      </div>
+      <div id="map" role="region" aria-label="Karte mit Cafés"></div>
+      <section class="card" aria-live="polite" id="info">
+        <p>Tippe auf einen Pin auf der Karte, um mehr über das Café zu erfahren.</p>
+      </section>
+    </section>
+
+    <section id="view-list" class="stack" hidden>
+      <h1>Alle Cafés</h1>
+      <div class="grid" id="list"></div>
+    </section>
+
+    <section id="view-suggest" class="card stack" style="max-width:640px;gap:16px" hidden>
+      <h1>Café vorschlagen</h1>
+      <form id="suggestForm" class="stack" style="gap:16px">
+        <label for="s-name">Name des Cafés<input id="s-name" type="text" placeholder="z. B. Café am Markt" required></label>
+        <label for="s-addr">Adresse oder Viertel<input id="s-addr" type="text" placeholder="Straße, Stadtteil"></label>
+        <label for="s-why">Warum ist es gut?<textarea id="s-why" rows="4" placeholder="Ein, zwei Sätze"></textarea></label>
+        <button class="primary" type="submit">Vorschlag senden</button>
+      </form>
+      <p id="thanks" hidden>Danke! Dein Vorschlag ist angekommen und wird bald geprüft.</p>
+    </section>
+
+    <section id="view-about" class="card stack" style="max-width:720px" hidden>
+      <h1>Über uns</h1>
+      <p>[Kurzer Text über die Seite] Bearista sammelt Cafés, die wir selbst besucht haben und gerne weiterempfehlen.</p>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// Die Cafés kommen aus cafes.json. Die GitHub Action erzeugt diese Datei
+// automatisch aus den Dateien im Ordner karte/_cafes (eine .md-Datei pro Café).
+let cafes = [];
+
+const cup = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/></svg>';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const map = L.map('map', { zoomControl: false, scrollWheelZoom: false }).setView([52.3759, 9.7320], 13);
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+const carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  maxZoom: 19, subdomains: 'abcd',
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+}).addTo(map);
+// Falls die helle Karte nicht lädt: auf die Standard-OpenStreetMap-Karte wechseln
+let tileErrors = 0;
+carto.on('tileerror', () => {
+  if (++tileErrors === 3) {
+    map.removeLayer(carto);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+  }
+});
+
+const markers = {};
+let selected = null;
+function icon(c, on) {
+  return L.divIcon({ className: 'pin-icon', iconSize: null, html: '<div class="pin' + (on ? ' on' : '') + '">' + cup + esc(c.name) + '</div>' });
+}
+function select(id) {
+  selected = id;
+  cafes.forEach(c => markers[c.id].setIcon(icon(c, c.id === id)));
+  const c = cafes.find(x => x.id === id);
+  document.getElementById('info').innerHTML =
+    '<div class="stack"><span class="tag">' + esc(c.area) + '</span><h2>' + esc(c.name) + '</h2>' +
+    '<span class="addr">' + esc(c.address) + '</span><p>' + esc(c.text) + '</p></div>';
+}
+function drawCafes() {
+  cafes.forEach(c => {
+    markers[c.id] = L.marker([c.lat, c.lng], { icon: icon(c, false), title: c.name, keyboard: true })
+      .addTo(map).on('click', () => select(c.id));
+  });
+  if (cafes.length > 1) map.fitBounds(cafes.map(c => [c.lat, c.lng]), { padding: [60, 60] });
+  else if (cafes.length === 1) map.setView([cafes[0].lat, cafes[0].lng], 15);
+
+  document.getElementById('list').innerHTML = cafes.length ? cafes.map(c =>
+    '<button data-cafe="' + esc(c.id) + '"><span class="addr">' + esc(c.area) + '</span><span class="name">' + esc(c.name) +
+    '</span><span style="font-size:15px;line-height:1.5;color:var(--muted)">' + esc(c.text) + '</span><span class="go">Auf der Karte zeigen →</span></button>'
+  ).join('') : '<p>Noch keine Cafés eingetragen.</p>';
+}
+fetch('cafes.json', { cache: 'no-cache' })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(data => { cafes = data.filter(c => isFinite(c.lat) && isFinite(c.lng)); drawCafes(); })
+  .catch(() => {
+    document.getElementById('info').innerHTML = '<p>Die Café-Liste (cafes.json) konnte nicht geladen werden. Öffne die Seite über lars22.github.io/karte/.</p>';
+    drawCafes();
+  });
+
+const menu = document.getElementById('menu'), menuBtn = document.getElementById('menuBtn');
+menuBtn.addEventListener('click', () => { menu.hidden = !menu.hidden; menuBtn.setAttribute('aria-expanded', String(!menu.hidden)); });
+function show(view) {
+  ['map', 'list', 'suggest', 'about'].forEach(v => document.getElementById('view-' + v).hidden = v !== view);
+  menu.querySelectorAll('button').forEach(b => {
+    if (b.dataset.view === view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+  });
+  menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false');
+  if (view === 'map') setTimeout(() => map.invalidateSize(), 0);
+  if (view === 'suggest') { document.getElementById('suggestForm').hidden = false; document.getElementById('thanks').hidden = true; }
+}
+document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
+document.getElementById('list').addEventListener('click', e => {
+  const b = e.target.closest('[data-cafe]'); if (!b) return;
+  show('map'); const c = cafes.find(x => x.id === b.dataset.cafe);
+  map.setView([c.lat, c.lng], 15); select(c.id);
+});
+// Suche: zuerst passende Cafés, danach Orte über OpenStreetMap (Nominatim)
+const q = document.getElementById('q'), results = document.getElementById('results');
+let placeMarker = null, timer = null, lastQuery = '';
+function openResults(html) { results.innerHTML = html; results.hidden = false; q.setAttribute('aria-expanded', 'true'); }
+function closeResults() { results.hidden = true; q.setAttribute('aria-expanded', 'false'); }
+function norm(s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+function render(term, places) {
+  const t = norm(term);
+  const hits = cafes.filter(c => norm(c.name + ' ' + c.area + ' ' + c.address).includes(t));
+  let html = hits.map(c => '<li><button data-hit-cafe="' + esc(c.id) + '">' + esc(c.name) + '<small>Café · ' + esc(c.area) + '</small></button></li>').join('');
+  if (places === 'loading') html += '<li class="empty">Orte werden gesucht …</li>';
+  else if (places) html += places.map((p, i) => '<li><button data-hit-place="' + i + '">' + esc(p.name || p.display_name.split(',')[0]) +
+    '<small>Ort · ' + esc(p.display_name.split(',').slice(1, 3).join(',').trim()) + '</small></button></li>').join('');
+  if (!html) html = '<li class="empty">Nichts gefunden.</li>';
+  openResults(html);
+}
+let placeHits = [];
+q.addEventListener('input', () => {
+  const term = q.value.trim(); clearTimeout(timer);
+  if (term.length < 2) { closeResults(); return; }
+  render(term, 'loading');
+  timer = setTimeout(async () => {
+    lastQuery = term;
+    try {
+      const r = await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=4&accept-language=de&q=' + encodeURIComponent(term));
+      const data = await r.json();
+      if (lastQuery !== term) return;
+      placeHits = data; render(term, data);
+    } catch (err) { if (lastQuery === term) { placeHits = []; render(term, []); } }
+  }, 600);
+});
+results.addEventListener('click', e => {
+  const cb = e.target.closest('[data-hit-cafe]'), pb = e.target.closest('[data-hit-place]');
+  if (cb) { const c = cafes.find(x => x.id === cb.dataset.hitCafe); map.setView([c.lat, c.lng], 16); select(c.id); }
+  if (pb) {
+    const p = placeHits[+pb.dataset.hitPlace];
+    map.setView([+p.lat, +p.lon], 15);
+    if (placeMarker) placeMarker.remove();
+    placeMarker = L.circleMarker([+p.lat, +p.lon], { radius: 9, color: '#2B2C30', weight: 3, fillColor: '#A7E8FF', fillOpacity: 1 }).addTo(map);
+  }
+  q.value = (cb || pb) ? (cb ? cafes.find(x => x.id === cb.dataset.hitCafe).name : q.value) : q.value;
+  closeResults();
+});
+q.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeResults();
+  if (e.key === 'Enter') { const first = results.querySelector('button'); if (first) { e.preventDefault(); first.click(); } }
+});
+document.addEventListener('click', e => { if (!e.target.closest('.search')) closeResults(); });
+
+document.getElementById('suggestForm').addEventListener('submit', e => {
+  e.preventDefault(); e.target.hidden = true; document.getElementById('thanks').hidden = false;
+});
+</script>
+</body>
+</html>
