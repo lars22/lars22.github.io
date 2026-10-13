@@ -1,6 +1,6 @@
 // Liest alle Café-Dateien aus karte/_cafes/*.md und schreibt karte/cafes.json.
 // Keine Abhängigkeiten nötig – läuft mit Node.js in der GitHub Action.
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join, basename } from 'node:path';
 
 const dir = 'karte/_cafes';
@@ -36,6 +36,12 @@ const cafes = readdirSync(dir)
       lng: Number(data.lng),
       text: body
     };
+    // Optionales Bild: "bild: 24grad.jpg" → Datei liegt in karte/bilder/
+    const img = String(data.bild ?? data.image ?? '').trim().replace(/^\/?(karte\/)?(bilder\/)?/, '');
+    if (img) {
+      if (!existsSync(join('karte/bilder', img))) errors.push(`${f}: Bild "${img}" nicht im Ordner karte/bilder gefunden`);
+      cafe.image = 'bilder/' + img;
+    }
     if (!cafe.name) errors.push(`${f}: name fehlt`);
     if (!Number.isFinite(cafe.lat) || !Number.isFinite(cafe.lng)) errors.push(`${f}: lat/lng fehlen oder sind keine Zahlen`);
     return cafe;

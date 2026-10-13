@@ -56,6 +56,8 @@ h1, h2 { margin: 0; font-family: var(--font-display); font-weight: 600; letter-s
 h1 { font-size: 36px; }
 h2 { font-size: 30px; }
 .addr { font: 14px var(--font-mono); color: var(--muted); }
+.photo { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 20px; margin-bottom: 20px; background: var(--bg); }
+.thumb { display: block; width: 100%; max-width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; margin-bottom: 6px; background: var(--bg); }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
 .grid button { text-align: left; border: none; background: var(--surface); border-radius: 22px; padding: 22px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; font-family: var(--font-body); color: var(--ink); }
 .grid .name { font: 600 22px var(--font-display); }
@@ -162,6 +164,7 @@ function select(id) {
   cafes.forEach(c => markers[c.id].setIcon(icon(c, c.id === id)));
   const c = cafes.find(x => x.id === id);
   document.getElementById('info').innerHTML =
+    (c.image ? '<img class="photo" src="' + esc(c.image) + '" alt="' + esc(c.name) + '" loading="lazy">' : '') +
     '<div class="stack"><span class="tag">' + esc(c.area) + '</span><h2>' + esc(c.name) + '</h2>' +
     '<span class="addr">' + esc(c.address) + '</span><p>' + esc(c.text) + '</p></div>';
 }
@@ -174,7 +177,9 @@ function drawCafes() {
   else if (cafes.length === 1) map.setView([cafes[0].lat, cafes[0].lng], 15);
 
   document.getElementById('list').innerHTML = cafes.length ? cafes.map(c =>
-    '<button data-cafe="' + esc(c.id) + '"><span class="addr">' + esc(c.area) + '</span><span class="name">' + esc(c.name) +
+    '<button data-cafe="' + esc(c.id) + '">' +
+    (c.image ? '<img class="thumb" src="' + esc(c.image) + '" alt="" loading="lazy">' : '') +
+    '<span class="addr">' + esc(c.area) + '</span><span class="name">' + esc(c.name) +
     '</span><span style="font-size:15px;line-height:1.5;color:var(--muted)">' + esc(c.text) + '</span><span class="go">Auf der Karte zeigen →</span></button>'
   ).join('') : '<p>Noch keine Cafés eingetragen.</p>';
 }
