@@ -1,0 +1,55 @@
+name: Neuer Ort für die Karte
+description: Café, Restaurant oder Sehenswürdigkeit eintragen. Die Seite wird automatisch aktualisiert.
+title: "[Ort] "
+labels: ["neuer-ort"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      placeholder: Black Delight
+    validations:
+      required: true
+  - type: dropdown
+    id: kategorie
+    attributes:
+      label: Kategorie
+      options:
+        - Café
+        - Essen & Trinken
+        - Sehenswürdigkeit
+      default: 0
+    validations:
+      required: true
+  - type: input
+    id: stadt
+    attributes:
+      label: Stadt
+      placeholder: Hamburg
+    validations:
+      required: true
+  - type: input
+    id: adresse
+    attributes:
+      label: Adresse
+      description: Straße, Hausnummer, PLZ und Ort. Die Koordinaten werden daraus automatisch ermittelt.
+      placeholder: Friedensallee 32, 22765 Hamburg
+    validations:
+      required: true
+  - type: input
+    id: koordinaten
+    attributes:
+      label: Koordinaten (optional)
+      description: Nur nötig, wenn die Adresse nicht gefunden wird. Zahlen aus Google Maps („53.5551, 9.9268“) oder ein Google-Maps-Link.
+  - type: textarea
+    id: beschreibung
+    attributes:
+      label: Beschreibung
+      description: Ein, zwei Sätze, warum es dort gut ist.
+    validations:
+      required: true
+  - type: textarea
+    id: bild
+    attributes:
+      label: Foto (optional)
+      description: Ein Foto hier hineinziehen oder über die Büroklammer anhängen.
