@@ -136,12 +136,9 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
         <ul id="results" role="listbox" hidden></ul>
       </div>
       <div id="map" role="region" aria-label="Karte mit Cafés"></div>
-      <section class="card" aria-live="polite" id="info">
-        <p>Tippe auf einen Pin auf der Karte, um mehr über das Café zu erfahren.</p>
-      </section>
       <section class="stack" aria-labelledby="visTitle">
         <h2 id="visTitle" class="vis-title">Cafés im Kartenausschnitt</h2>
-        <div class="grid" id="visible"></div>
+        <div class="grid" id="visible" aria-live="polite"></div>
       </section>
     </section>
 
@@ -175,7 +172,7 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
 <script>
 // Die Cafés kommen aus cafes.json. Die GitHub Action erzeugt diese Datei
 // automatisch aus den Dateien im Ordner karte/_cafes (eine .md-Datei pro Café).
-let cafes = [];
+let cafes = [], loadError = false;
 
 const menu = document.getElementById('menu'), menuBtn = document.getElementById('menuBtn');
 menuBtn.addEventListener('click', () => { menu.hidden = !menu.hidden; menuBtn.setAttribute('aria-expanded', String(!menu.hidden)); });
@@ -271,11 +268,6 @@ function icon(c, on) {
 function select(id) {
   selected = id;
   cafes.forEach(c => markers[c.id].setIcon(icon(c, c.id === id)));
-  const c = cafes.find(x => x.id === id);
-  document.getElementById('info').innerHTML =
-    (c.image ? '<img class="photo" src="' + esc(c.image) + '" alt="' + esc(c.name) + '" loading="lazy">' : '') +
-    '<div class="stack"><span class="tag">' + esc(c.area) + '</span><h2>' + esc(c.name) + '</h2>' +
-    '<span class="addr">' + esc(c.address) + '</span><p>' + esc(c.text) + '</p></div>';
   if (typeof updateVisible === 'function') updateVisible();
 }
 function drawCafes() {
@@ -294,25 +286,29 @@ function card(c, action) {
   return '<button data-cafe="' + esc(c.id) + '"' + (c.id === selected ? ' class="on" aria-current="true"' : '') + '>' +
     (c.image ? '<img class="thumb" src="' + esc(c.image) + '" alt="" loading="lazy">' : '') +
     '<span class="addr">' + esc(c.area) + '</span><span class="name">' + esc(c.name) +
-    '</span><span style="font-size:15px;line-height:1.5;color:var(--muted)">' + esc(c.text) + '</span><span class="go">' + action + '</span></button>';
+    '</span><span style="font-size:15px;line-height:1.5;color:var(--muted)">' + esc(c.text) + '</span>' +
+    (c.address ? '<span class="addr" style="font-size:13px">' + esc(c.address) + '</span>' : '') +
+    '<span class="go">' + action + '</span></button>';
 }
 // Kacheln unter der Karte: alle Cafés, die gerade im Kartenausschnitt liegen
 function updateVisible() {
   const box = document.getElementById('visible'), title = document.getElementById('visTitle');
-  if (!cafes.length) { title.textContent = 'Cafés im Kartenausschnitt'; box.innerHTML = '<p class="vis-empty">Noch keine Cafés eingetragen.</p>'; return; }
+  if (!cafes.length) {
+    title.textContent = 'Cafés im Kartenausschnitt';
+    box.innerHTML = '<p class="vis-empty">' + (loadError ? 'Die Café-Liste konnte nicht geladen werden. Lade die Seite bitte neu.' : 'Noch keine Cafés eingetragen.') + '</p>';
+    return;
+  }
   const b = map.getBounds();
-  const vis = cafes.filter(c => b.contains([c.lat, c.lng]));
+  const vis = cafes.filter(c => b.contains([c.lat, c.lng])).sort((x, y) => (y.id === selected) - (x.id === selected));
   title.textContent = vis.length === 1 ? '1 Café im Kartenausschnitt' : vis.length + ' Cafés im Kartenausschnitt';
-  box.innerHTML = vis.length ? vis.map(c => card(c, 'Auf der Karte zeigen ↑')).join('')
+  box.innerHTML = vis.length ? vis.map(c => card(c, 'Auf der Karte zeigen')).join('')
     : '<p class="vis-empty">Hier gibt es noch keine Cafés. Zoome heraus oder verschiebe die Karte.</p>';
 }
 map.on('moveend', updateVisible);
 // Café auf der Karte hervorheben, ohne den Ausschnitt unnötig zu ändern
 function focusCafe(c) {
   select(c.id);
-  const m = markers[c.id];
-  if (cluster.getVisibleParent && cluster.getVisibleParent(m) !== m) cluster.zoomToShowLayer(m);
-  else map.panTo([c.lat, c.lng]);
+  map.setView([c.lat, c.lng], Math.max(16, map.getZoom()));
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.getElementById('map').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
 }
@@ -323,15 +319,11 @@ document.getElementById('visible').addEventListener('click', e => {
 fetch('cafes.json', { cache: 'no-cache' })
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(data => { cafes = data.filter(c => isFinite(c.lat) && isFinite(c.lng)); drawCafes(); })
-  .catch(() => {
-    document.getElementById('info').innerHTML = '<p>Die Café-Liste (cafes.json) konnte nicht geladen werden. Öffne die Seite über lars22.github.io/karte/.</p>';
-    drawCafes();
-  });
+  .catch(() => { loadError = true; drawCafes(); });
 
 document.getElementById('list').addEventListener('click', e => {
   const b = e.target.closest('[data-cafe]'); if (!b) return;
-  show('map'); const c = cafes.find(x => x.id === b.dataset.cafe);
-  map.setView([c.lat, c.lng], 15); select(c.id);
+  show('map'); focusCafe(cafes.find(x => x.id === b.dataset.cafe));
 });
 // Suche: zuerst passende Cafés, danach Orte über OpenStreetMap (Nominatim)
 const q = document.getElementById('q'), results = document.getElementById('results');
