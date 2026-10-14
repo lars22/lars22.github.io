@@ -59,8 +59,8 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 /* Pins: runder Kreis mit Tasse; Name erst ab Zoomstufe 14 (Klasse .show-names) oder beim gewählten Café */
 .pin { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 40px; height: 40px; padding: 0 12px; border-radius: 999px; background: var(--ink); color: #fff; font: 600 14px var(--font-body); white-space: nowrap; box-shadow: 0 6px 18px rgba(0,0,0,.2); transform: translate(-50%, -50%); transition: transform 140ms ease; box-sizing: border-box; }
 .pin-name { display: none; }
-.pin { border: 2px solid #fff; }
-.show-names .pin, .pin.on { padding: 0 14px 0 10px; border: none; }
+.pin { width: 40px; padding: 0; border: 2px solid #fff; }
+.show-names .pin, .pin.on { width: auto; padding: 0 14px 0 10px; border: none; }
 .show-names .pin-name, .pin.on .pin-name { display: inline; }
 .pin svg { stroke: var(--pink); flex: none; }
 .pin.on { background: var(--pink); color: var(--ink); transform: translate(-50%, -50%) scale(1.08); }
