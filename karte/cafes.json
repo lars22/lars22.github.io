@@ -18,15 +18,6 @@
     "text": "Hippes Café in Altona"
   },
   {
-    "id": "test-cafe-formular",
-    "name": "Test-Café Formular",
-    "area": "Hannover",
-    "address": "Kröpcke, 30159 Hannover",
-    "lat": 52.3745088,
-    "lng": 9.738432,
-    "text": "Testeintrag aus dem Formular. Kann gelöscht werden."
-  },
-  {
     "id": "test-linden",
     "name": "Test-Café Linden",
     "area": "Hannover",

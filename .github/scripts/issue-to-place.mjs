@@ -53,7 +53,8 @@ if (lat === undefined) {
 
 // Foto: erste angehängte Bild-URL herunterladen
 let bildZeile = '';
-const img = bild.match(/https:\/\/[^\s)"']+/);
+// Nur echte GitHub-Bildanhänge, keine anderen Links
+const img = bild.match(/https:\/\/(?:github\.com\/user-attachments\/assets\/|(?:private-)?user-images\.githubusercontent\.com\/)[^\s)"'<>]+/);
 if (img) {
   try {
     const r = await fetch(img[0], { redirect: 'follow', headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` } });
