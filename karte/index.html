@@ -64,7 +64,18 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .show-names .pin, .pin.on { width: auto; padding: 0 14px 0 10px; border: none; }
 .show-names .pin-name, .pin.on .pin-name { display: inline; }
 .pin svg { stroke: var(--pink); flex: none; }
-.pin.on { background: var(--pink); color: var(--ink); transform: translate(-50%, -50%) scale(1.08); }
+.pin.on { background: var(--pink); color: var(--ink); }
+/* Mit Namen: Sprechblase wie bei Google Maps, die Spitze sitzt genau auf dem Café */
+.pin { position: relative; }
+.show-names .pin, .pin.on {
+  transform: translate(-50%, calc(-100% - 10px)); transform-origin: 50% calc(100% + 10px);
+  box-shadow: none; filter: drop-shadow(0 4px 8px rgba(0,0,0,.22));
+}
+.show-names .pin::after, .pin.on::after {
+  content: ''; position: absolute; left: 50%; bottom: -8px; width: 16px; height: 16px; margin-left: -8px;
+  background: inherit; transform: rotate(45deg); border-radius: 0 0 3px 0;
+}
+.pin.on { transform: translate(-50%, calc(-100% - 10px)) scale(1.08); }
 .pin.on svg { stroke: var(--ink); }
 /* Gruppen: Kreis mit Anzahl der Cafés */
 .cluster-icon { background: none; border: none; display: flex; align-items: center; justify-content: center; }
