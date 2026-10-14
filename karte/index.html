@@ -56,17 +56,18 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 #map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 16px 16px 0; }
 .leaflet-control-attribution { border-radius: 10px 0 0 0; font-size: 11px; }
 .osm-muted { filter: grayscale(0.85) brightness(1.06) contrast(0.92); }
-/* Pins: runder Kreis mit Tasse; Name erst ab Zoomstufe 15 (Klasse .show-names) oder beim gewählten Café */
+/* Pins: runder Kreis mit Tasse; Name erst ab Zoomstufe 14 (Klasse .show-names) oder beim gewählten Café */
 .pin { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 40px; height: 40px; padding: 0 12px; border-radius: 999px; background: var(--ink); color: #fff; font: 600 14px var(--font-body); white-space: nowrap; box-shadow: 0 6px 18px rgba(0,0,0,.2); transform: translate(-50%, -50%); transition: transform 140ms ease; box-sizing: border-box; }
 .pin-name { display: none; }
-.show-names .pin, .pin.on { padding: 0 14px 0 10px; }
+.pin { border: 2px solid #fff; }
+.show-names .pin, .pin.on { padding: 0 14px 0 10px; border: none; }
 .show-names .pin-name, .pin.on .pin-name { display: inline; }
 .pin svg { stroke: var(--pink); flex: none; }
 .pin.on { background: var(--pink); color: var(--ink); transform: translate(-50%, -50%) scale(1.08); }
 .pin.on svg { stroke: var(--ink); }
 /* Gruppen: Kreis mit Anzahl der Cafés */
 .cluster-icon { background: none; border: none; display: flex; align-items: center; justify-content: center; }
-.cluster { width: 48px; height: 48px; border-radius: 50%; background: var(--pink); color: var(--ink); border: 3px solid #fff; display: flex; align-items: center; justify-content: center; font: 700 16px var(--font-body); box-shadow: 0 6px 18px rgba(0,0,0,.2); font-variant-numeric: tabular-nums; }
+.cluster { width: 48px; height: 48px; border-radius: 50%; background: var(--pink); color: var(--ink); border: 2px solid #fff; display: flex; align-items: center; justify-content: center; font: 700 16px var(--font-body); box-shadow: 0 6px 18px rgba(0,0,0,.2); font-variant-numeric: tabular-nums; }
 .cluster.big { width: 58px; height: 58px; font-size: 17px; }
 .leaflet-div-icon.pin-icon { background: none; border: none; }
 
@@ -235,7 +236,7 @@ fetch('https://tiles.openfreemap.org/styles/positron')
 
 const markers = {};
 // Ab dieser Zoomstufe: Namen an den Pins zeigen und nicht mehr gruppieren
-const NAME_ZOOM = 15;
+const NAME_ZOOM = 14;
 // Gruppierung; falls die Erweiterung nicht lädt, werden die Pins einfach einzeln gezeigt
 const cluster = !L.markerClusterGroup ? L.layerGroup().addTo(map) : L.markerClusterGroup({
   maxClusterRadius: 56,
