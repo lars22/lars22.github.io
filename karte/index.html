@@ -54,7 +54,8 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 #map .leaflet-bar a:hover { background: var(--bg); }
 #map .leaflet-bar a.leaflet-disabled { color: #B5B5B5; background: var(--surface); }
 #map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 16px 16px 0; }
-.leaflet-control-attribution { border-radius: 10px 0 0 0; font-size: 11px; }
+#map .leaflet-control-attribution { border-radius: 8px 0 0 0; font-size: 10px; padding: 1px 6px; background: rgba(255,255,255,.7); color: var(--muted); }
+#map .leaflet-control-attribution a { color: var(--muted); text-decoration: none; }
 .osm-muted { filter: grayscale(0.85) brightness(1.06) contrast(0.92); }
 /* Pins: runder Kreis mit Tasse; Name erst ab Zoomstufe 14 (Klasse .show-names) oder beim gewählten Café */
 .pin { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 40px; height: 40px; padding: 0 12px; border-radius: 999px; background: var(--ink); color: #fff; font: 600 14px var(--font-body); white-space: nowrap; box-shadow: 0 6px 18px rgba(0,0,0,.2); transform: translate(-50%, -50%); transition: transform 140ms ease; box-sizing: border-box; }
@@ -186,6 +187,8 @@ const cup = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 var map = L.map('map', { zoomControl: false, scrollWheelZoom: false, minZoom: 3, maxZoom: 19 }).setView([52.3759, 9.7320], 13);
+// Leaflet-Hinweis ausblenden (Lizenz erlaubt das); die Kartendaten-Nennung muss bleiben
+map.attributionControl.setPrefix(false);
 const ico = d => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="' + d + '"/></svg>';
 L.control.zoom({
   position: 'bottomright',
