@@ -86,6 +86,9 @@ h2 { font-size: 30px; }
 .grid button { text-align: left; border: none; background: var(--surface); border-radius: 22px; padding: 22px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; font-family: var(--font-body); color: var(--ink); }
 .grid .name { font: 600 22px var(--font-display); }
 .grid .go { font-size: 14px; font-weight: 600; color: var(--link); }
+.grid button.on { box-shadow: inset 0 0 0 2px var(--ink); }
+.vis-title { font: 600 22px var(--font-display); margin: 8px 0 0; }
+.vis-empty { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; }
 label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500; }
 input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; font: 16px var(--font-body); background: #FBFBFB; color: var(--ink); }
 .primary { align-self: flex-start; height: 48px; padding: 0 22px; border: none; border-radius: 999px; background: var(--ink); color: #fff; font: 600 15px var(--font-body); cursor: pointer; }
@@ -135,6 +138,10 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
       <div id="map" role="region" aria-label="Karte mit Cafés"></div>
       <section class="card" aria-live="polite" id="info">
         <p>Tippe auf einen Pin auf der Karte, um mehr über das Café zu erfahren.</p>
+      </section>
+      <section class="stack" aria-labelledby="visTitle">
+        <h2 id="visTitle" class="vis-title">Cafés im Kartenausschnitt</h2>
+        <div class="grid" id="visible"></div>
       </section>
     </section>
 
@@ -269,6 +276,7 @@ function select(id) {
     (c.image ? '<img class="photo" src="' + esc(c.image) + '" alt="' + esc(c.name) + '" loading="lazy">' : '') +
     '<div class="stack"><span class="tag">' + esc(c.area) + '</span><h2>' + esc(c.name) + '</h2>' +
     '<span class="addr">' + esc(c.address) + '</span><p>' + esc(c.text) + '</p></div>';
+  if (typeof updateVisible === 'function') updateVisible();
 }
 function drawCafes() {
   cafes.forEach(c => {
@@ -279,13 +287,39 @@ function drawCafes() {
   if (cafes.length > 1) map.fitBounds(cafes.map(c => [c.lat, c.lng]), { padding: [60, 60], maxZoom: NAME_ZOOM });
   else if (cafes.length === 1) map.setView([cafes[0].lat, cafes[0].lng], 15);
 
-  document.getElementById('list').innerHTML = cafes.length ? cafes.map(c =>
-    '<button data-cafe="' + esc(c.id) + '">' +
+  document.getElementById('list').innerHTML = cafes.length ? cafes.map(c => card(c, 'Auf der Karte zeigen →')).join('') : '<p>Noch keine Cafés eingetragen.</p>';
+  updateVisible();
+}
+function card(c, action) {
+  return '<button data-cafe="' + esc(c.id) + '"' + (c.id === selected ? ' class="on" aria-current="true"' : '') + '>' +
     (c.image ? '<img class="thumb" src="' + esc(c.image) + '" alt="" loading="lazy">' : '') +
     '<span class="addr">' + esc(c.area) + '</span><span class="name">' + esc(c.name) +
-    '</span><span style="font-size:15px;line-height:1.5;color:var(--muted)">' + esc(c.text) + '</span><span class="go">Auf der Karte zeigen →</span></button>'
-  ).join('') : '<p>Noch keine Cafés eingetragen.</p>';
+    '</span><span style="font-size:15px;line-height:1.5;color:var(--muted)">' + esc(c.text) + '</span><span class="go">' + action + '</span></button>';
 }
+// Kacheln unter der Karte: alle Cafés, die gerade im Kartenausschnitt liegen
+function updateVisible() {
+  const box = document.getElementById('visible'), title = document.getElementById('visTitle');
+  if (!cafes.length) { title.textContent = 'Cafés im Kartenausschnitt'; box.innerHTML = '<p class="vis-empty">Noch keine Cafés eingetragen.</p>'; return; }
+  const b = map.getBounds();
+  const vis = cafes.filter(c => b.contains([c.lat, c.lng]));
+  title.textContent = vis.length === 1 ? '1 Café im Kartenausschnitt' : vis.length + ' Cafés im Kartenausschnitt';
+  box.innerHTML = vis.length ? vis.map(c => card(c, 'Auf der Karte zeigen ↑')).join('')
+    : '<p class="vis-empty">Hier gibt es noch keine Cafés. Zoome heraus oder verschiebe die Karte.</p>';
+}
+map.on('moveend', updateVisible);
+// Café auf der Karte hervorheben, ohne den Ausschnitt unnötig zu ändern
+function focusCafe(c) {
+  select(c.id);
+  const m = markers[c.id];
+  if (cluster.getVisibleParent && cluster.getVisibleParent(m) !== m) cluster.zoomToShowLayer(m);
+  else map.panTo([c.lat, c.lng]);
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('map').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+document.getElementById('visible').addEventListener('click', e => {
+  const b = e.target.closest('[data-cafe]'); if (!b) return;
+  focusCafe(cafes.find(x => x.id === b.dataset.cafe));
+});
 fetch('cafes.json', { cache: 'no-cache' })
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(data => { cafes = data.filter(c => isFinite(c.lat) && isFinite(c.lng)); drawCafes(); })
