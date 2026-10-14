@@ -83,8 +83,10 @@ h2 { font-size: 30px; }
 .photo { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 20px; margin-bottom: 20px; background: var(--bg); }
 .thumb { display: block; width: 100%; max-width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; margin-bottom: 6px; background: var(--bg); }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-.grid button { text-align: left; border: none; background: var(--surface); border-radius: 22px; padding: 22px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; font-family: var(--font-body); color: var(--ink); }
-.grid .name { font: 600 22px var(--font-display); }
+.grid button { text-align: left; border: none; background: var(--surface); border-radius: 28px; padding: 24px 26px; cursor: pointer; display: flex; flex-direction: column; gap: 10px; font-family: var(--font-body); color: var(--ink); }
+.grid .name { font: 600 26px/1.2 var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
+.grid .desc { font-size: 16px; line-height: 1.6; color: var(--muted); }
+.grid .thumb { aspect-ratio: 16 / 9; border-radius: 20px; margin-bottom: 4px; }
 .grid .go { font-size: 14px; font-weight: 600; color: var(--link); }
 .grid button.on { box-shadow: inset 0 0 0 2px var(--ink); }
 .vis-title { font: 600 22px var(--font-display); margin: 8px 0 0; }
@@ -279,16 +281,18 @@ function drawCafes() {
   if (cafes.length > 1) map.fitBounds(cafes.map(c => [c.lat, c.lng]), { padding: [60, 60], maxZoom: NAME_ZOOM });
   else if (cafes.length === 1) map.setView([cafes[0].lat, cafes[0].lng], 15);
 
-  document.getElementById('list').innerHTML = cafes.length ? cafes.map(c => card(c, 'Auf der Karte zeigen →')).join('') : '<p>Noch keine Cafés eingetragen.</p>';
+  document.getElementById('list').innerHTML = cafes.length ? cafes.map(c => card(c)).join('') : '<p>Noch keine Cafés eingetragen.</p>';
   updateVisible();
 }
-function card(c, action) {
+function card(c) {
+  // Gleiches Design wie die frühere Infokarte: Foto, gelbe Stadt-Marke, Name, Adresse, Text
   return '<button data-cafe="' + esc(c.id) + '"' + (c.id === selected ? ' class="on" aria-current="true"' : '') + '>' +
     (c.image ? '<img class="thumb" src="' + esc(c.image) + '" alt="" loading="lazy">' : '') +
-    '<span class="addr">' + esc(c.area) + '</span><span class="name">' + esc(c.name) +
-    '</span><span style="font-size:15px;line-height:1.5;color:var(--muted)">' + esc(c.text) + '</span>' +
-    (c.address ? '<span class="addr" style="font-size:13px">' + esc(c.address) + '</span>' : '') +
-    '<span class="go">' + action + '</span></button>';
+    (c.area ? '<span class="tag">' + esc(c.area) + '</span>' : '') +
+    '<span class="name">' + esc(c.name) + '</span>' +
+    (c.address ? '<span class="addr">' + esc(c.address) + '</span>' : '') +
+    (c.text ? '<span class="desc">' + esc(c.text) + '</span>' : '') +
+    '</button>';
 }
 // Kacheln unter der Karte: alle Cafés, die gerade im Kartenausschnitt liegen
 function updateVisible() {
@@ -301,7 +305,7 @@ function updateVisible() {
   const b = map.getBounds();
   const vis = cafes.filter(c => b.contains([c.lat, c.lng])).sort((x, y) => (y.id === selected) - (x.id === selected));
   title.textContent = vis.length === 1 ? '1 Café im Kartenausschnitt' : vis.length + ' Cafés im Kartenausschnitt';
-  box.innerHTML = vis.length ? vis.map(c => card(c, 'Auf der Karte zeigen')).join('')
+  box.innerHTML = vis.length ? vis.map(c => card(c)).join('')
     : '<p class="vis-empty">Hier gibt es noch keine Cafés. Zoome heraus oder verschiebe die Karte.</p>';
 }
 map.on('moveend', updateVisible);
