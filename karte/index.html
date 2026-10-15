@@ -19,7 +19,8 @@
   --line: #DCDCDC;
   --pink: #FFB8D2;
   --yellow: #FFF1A8;
-  --gold: #F2CB63;
+  --gold: #D9AE4E;
+  --gold-ink: #A87A1E;
   --link: #8A3D5C;
   --lift: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
   --font-display: 'Source Serif 4', Georgia, serif;
@@ -65,8 +66,9 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .show-names .pin, .pin.on { width: auto; padding: 0 14px 0 10px; border: none; }
 .show-names .pin-name, .pin.on .pin-name { display: inline; }
 .pin svg { stroke: var(--pink); flex: none; }
-.pin.fav { background: var(--gold); color: var(--ink); }
-.pin.fav svg { stroke: var(--ink); }
+.pin.fav { border-color: var(--gold); }
+.fav-star { display: inline-block; margin-left: 5px; vertical-align: -1px; color: var(--gold); }
+.pin.on .fav-star { color: var(--gold-ink); }
 .pin.on { background: var(--pink); color: var(--ink); }
 /* Mit Namen: Sprechblase wie bei Google Maps, die Spitze sitzt genau auf dem Café */
 .pin { position: relative; }
@@ -89,7 +91,8 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .card { background: var(--surface); border-radius: 28px; padding: 28px 32px; min-height: 132px; }
 .card p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--muted); max-width: 680px; }
 .tag { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font: 13px var(--font-mono); padding: 4px 10px; border-radius: 999px; background: var(--pink); color: var(--ink); }
-.tag.fav { background: var(--gold); }
+.tag.fav { background: transparent; box-shadow: inset 0 0 0 1.5px var(--gold); }
+.tag.fav svg { color: var(--gold-ink); }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .stack { display: flex; flex-direction: column; gap: 10px; }
 h1, h2 { margin: 0; font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
@@ -269,7 +272,7 @@ map.on('zoomend', updateNames);
 updateNames();
 let selected = null;
 function icon(c, on) {
-  return L.divIcon({ className: 'pin-icon', iconSize: null, html: '<div class="pin' + (c.favorite ? ' fav' : '') + (on ? ' on' : '') + '">' + cup + '<span class="pin-name">' + esc(c.name) + '</span></div>' });
+  return L.divIcon({ className: 'pin-icon', iconSize: null, html: '<div class="pin' + (c.favorite ? ' fav' : '') + (on ? ' on' : '') + '">' + cup + '<span class="pin-name">' + esc(c.name) + (c.favorite ? '<svg class="fav-star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-label="Favorit"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>' : '') + '</span></div>' });
 }
 function select(id) {
   selected = id;
