@@ -44,6 +44,8 @@ const cafes = readdirSync(dir)
       if (!existsSync(join('karte/bilder', img))) errors.push(`${f}: Bild "${img}" nicht im Ordner karte/bilder gefunden`);
       cafe.image = 'bilder/' + img;
     }
+    // Optional: eigener Google-Maps-Link ("google: https://maps.app.goo.gl/...")
+    if (/^https:\/\//.test(String(data.google ?? ''))) cafe.google = String(data.google);
     if (!cafe.name) errors.push(`${f}: name fehlt`);
     if (!Number.isFinite(cafe.lat) || !Number.isFinite(cafe.lng)) errors.push(`${f}: lat/lng fehlen oder sind keine Zahlen`);
     return cafe;
