@@ -34,7 +34,9 @@ const cafes = readdirSync(dir)
       address: String(data.address ?? ''),
       lat: Number(data.lat),
       lng: Number(data.lng),
-      text: body
+      text: body,
+      // Favorit: "favorit: true" (oder ja) in der Datei
+      favorite: ['true', 'ja', 'yes'].includes(String(data.favorit ?? '').toLowerCase())
     };
     // Optionales Bild: "bild: 24grad.jpg" → Datei liegt in karte/bilder/
     const img = String(data.bild ?? data.image ?? '').trim().replace(/^\/?(karte\/)?(bilder\/)?/, '');

@@ -6,7 +6,8 @@
     "address": "Engelbosteler Damm 52, 30167 Hannover",
     "lat": 52.3858333,
     "lng": 9.7244444,
-    "text": "Kaffeerösterei 24grad."
+    "text": "Kaffeerösterei 24grad.",
+    "favorite": true
   },
   {
     "id": "black_delight",
@@ -15,7 +16,8 @@
     "address": "Friedensallee 32, 22765 Altona",
     "lat": 53.5551647,
     "lng": 9.9268324,
-    "text": "Hippes Café in Altona"
+    "text": "Hippes Café in Altona",
+    "favorite": false
   },
   {
     "id": "breworld-coffee-kyoto",
@@ -24,7 +26,8 @@
     "address": "440-3 Santeicho, Kamigyo Ward, Kyoto, 602-0915, Japan",
     "lat": 35.025042,
     "lng": 135.755921,
-    "text": "Gemütliches und kleines Café. Super nette Inhaber!"
+    "text": "Gemütliches und kleines Café. Super nette Inhaber!",
+    "favorite": false
   },
   {
     "id": "test-linden",
@@ -33,7 +36,8 @@
     "address": "Testadresse, Linden",
     "lat": 52.3668,
     "lng": 9.7175,
-    "text": "Testeintrag in Linden. Kann gelöscht werden."
+    "text": "Testeintrag in Linden. Kann gelöscht werden.",
+    "favorite": false
   },
   {
     "id": "test-list",
@@ -42,7 +46,8 @@
     "address": "Testadresse, List",
     "lat": 52.3836,
     "lng": 9.748,
-    "text": "Testeintrag in der List. Kann gelöscht werden."
+    "text": "Testeintrag in der List. Kann gelöscht werden.",
+    "favorite": false
   },
   {
     "id": "test-nordstadt",
@@ -51,6 +56,7 @@
     "address": "Testadresse, Nordstadt",
     "lat": 52.3842,
     "lng": 9.7268,
-    "text": "Testeintrag ganz nah bei 24grad, um das Gruppieren zu testen. Kann gelöscht werden."
+    "text": "Testeintrag ganz nah bei 24grad, um das Gruppieren zu testen. Kann gelöscht werden.",
+    "favorite": false
   }
 ]
