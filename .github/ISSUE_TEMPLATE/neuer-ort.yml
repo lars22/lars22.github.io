@@ -1,6 +1,5 @@
 name: Neuer Ort für die Karte
 description: Café, Restaurant oder Sehenswürdigkeit eintragen. Die Seite wird automatisch aktualisiert.
-title: "[Ort] "
 labels: ["neuer-ort"]
 body:
   - type: input

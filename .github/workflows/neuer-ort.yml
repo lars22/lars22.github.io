@@ -2,7 +2,8 @@ name: Neuer Ort aus Formular
 
 on:
   issues:
-    types: [opened]
+    # Auch beim Bearbeiten, damit ein korrigiertes Formular nochmal verarbeitet wird
+    types: [opened, edited, reopened]
 
 permissions:
   contents: write
@@ -15,7 +16,12 @@ concurrency:
 jobs:
   anlegen:
     # Nur Formulare vom Repo-Besitzer verarbeiten, damit Fremde nichts eintragen können
-    if: startsWith(github.event.issue.title, '[Ort]') && github.event.issue.user.login == github.repository_owner
+    # Erkennt ein Orts-Formular am Inhalt (Felder „Name“ und „Adresse“), egal wie der Titel lautet
+    if: >-
+      github.event.issue.state == 'open' &&
+      github.event.issue.user.login == github.repository_owner &&
+      contains(github.event.issue.body, '### Name') &&
+      contains(github.event.issue.body, '### Adresse')
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
