@@ -30,6 +30,16 @@
     "favorite": false
   },
   {
+    "id": "cafe-roots",
+    "name": "Café Roots",
+    "area": "Hamburg",
+    "address": "Eppendorfer Weg 193, Hamburg",
+    "lat": 53.5807019,
+    "lng": 9.9685609,
+    "text": "[Text folgt]",
+    "favorite": false
+  },
+  {
     "id": "test-linden",
     "name": "Test-Café Linden",
     "area": "Hannover",
