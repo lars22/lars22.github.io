@@ -40,6 +40,16 @@
     "favorite": false
   },
   {
+    "id": "die-kaffeerei-stadtpark",
+    "name": "Die Kaffeerei Stadtpark",
+    "area": "Hamburg",
+    "address": "Alter Güterbahnhof 1B, 22303 Hamburg",
+    "lat": 53.5915122,
+    "lng": 10.0346192,
+    "text": "[Text folgt]",
+    "favorite": false
+  },
+  {
     "id": "test-linden",
     "name": "Test-Café Linden",
     "area": "Hannover",
