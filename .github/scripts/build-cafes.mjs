@@ -1,11 +1,12 @@
 // Liest alle Café-Dateien aus karte/_cafes/*.md und schreibt karte/cafes.json.
 // Keine Abhängigkeiten nötig – läuft mit Node.js in der GitHub Action.
-import { readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, basename } from 'node:path';
 
 const dir = 'karte/_cafes';
 const out = 'karte/cafes.json';
 const errors = [];
+const downloads = [];
 
 function parseValue(raw) {
   const v = raw.trim();
@@ -40,12 +41,21 @@ const cafes = readdirSync(dir)
       // Favorit: "favorit: true" (oder ja) in der Datei
       favorite: ['true', 'ja', 'yes'].includes(String(data.favorit ?? '').toLowerCase())
     };
-    // Optionales Bild: "bild: 24grad.jpg" → Datei liegt in karte/bilder/
-    const img = String(data.bild ?? data.image ?? '').trim().replace(/^\/?(karte\/)?(bilder\/)?/, '');
-    if (img) {
-      if (!existsSync(join('karte/bilder', img))) errors.push(`${f}: Bild "${img}" nicht im Ordner karte/bilder gefunden`);
-      cafe.image = 'bilder/' + img;
+    // Optionales Bild: "bild: 24grad.jpg" (Datei in karte/bilder/) oder ein https-Link,
+    // z. B. von Wikimedia Commons. Links werden beim Bauen einmal heruntergeladen.
+    const img = String(data.bild ?? data.image ?? '').trim();
+    if (/^https:\/\//.test(img)) {
+      const local = ['jpg', 'png', 'webp'].map(e => `bilder/${cafe.id}.${e}`).find(f => existsSync(join('karte', f)));
+      cafe.image = local || img;
+      if (!local) downloads.push({ cafe, url: img });
+    } else if (img) {
+      const file = img.replace(/^\/?(karte\/)?(bilder\/)?/, '');
+      if (!existsSync(join('karte/bilder', file))) errors.push(`${f}: Bild "${file}" nicht im Ordner karte/bilder gefunden`);
+      cafe.image = 'bilder/' + file;
     }
+    // Bildnachweis, z. B. bild_credit: "Foto: Staro1, CC BY-SA 3.0" und bild_link: Link zur Quelle
+    if (data.bild_credit) cafe.credit = String(data.bild_credit);
+    if (/^https:\/\//.test(String(data.bild_link ?? ''))) cafe.creditLink = String(data.bild_link);
     // Optional: eigener Google-Maps-Link ("google: https://maps.app.goo.gl/...")
     if (/^https:\/\//.test(String(data.google ?? ''))) cafe.google = String(data.google);
     if (!cafe.name) errors.push(`${f}: name fehlt`);
@@ -59,5 +69,19 @@ if (errors.length) {
   process.exit(1);
 }
 
+for (const { cafe, url } of downloads) {
+  try {
+    const r = await fetch(url, { redirect: 'follow', headers: { 'User-Agent': 'lars22.github.io Cafe-Karte (https://lars22.github.io/karte/)' } });
+    const type = r.headers.get('content-type') || '';
+    const ext = type.includes('png') ? 'png' : type.includes('webp') ? 'webp' : type.includes('jpeg') ? 'jpg' : '';
+    if (!r.ok || !ext) throw new Error(`${r.status} ${type}`);
+    mkdirSync('karte/bilder', { recursive: true });
+    writeFileSync(`karte/bilder/${cafe.id}.${ext}`, Buffer.from(await r.arrayBuffer()));
+    cafe.image = `bilder/${cafe.id}.${ext}`;
+    console.log(`Bild für ${cafe.id} heruntergeladen.`);
+  } catch (e) {
+    console.log(`Bild für ${cafe.id} nicht geladen (${e.message}), Link wird direkt verwendet.`);
+  }
+}
 writeFileSync(out, JSON.stringify(cafes, null, 2) + '\n');
 console.log(`${cafes.length} Café(s) nach ${out} geschrieben.`);

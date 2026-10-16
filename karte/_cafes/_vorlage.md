@@ -19,6 +19,8 @@ So fügst du ein neues Café hinzu:
 3. Bild (optional): Foto als JPG in den Ordner karte/bilder legen, z. B. mein-cafe.jpg,
    und den Dateinamen bei "bild:" eintragen. Ohne Bild die Zeile "bild:" einfach löschen.
    Große Fotos werden automatisch auf max. 1600 px verkleinert.
+   Fremde Fotos nur mit freier Lizenz (z. B. Wikimedia Commons): bei "bild:" den Link eintragen,
+   dazu bild_credit: "Foto: Name · Lizenz" und bild_link: Link zur Quelle. Das Bild wird automatisch übernommen.
    Kategorie: "cafe", "bar", "essen" oder "sehen".
    Favorit: "favorit: true" hebt den Ort auf der Karte hervor.
    Google Maps: Der Link wird automatisch aus Name und Adresse gebaut. Optional bei "google:"
