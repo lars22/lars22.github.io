@@ -108,6 +108,11 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .filters { display: flex; flex-direction: column; gap: 10px; }
 .filter-row { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .flabel { font: 13px var(--font-mono); color: var(--muted); }
+.select-wrap { position: relative; display: inline-flex; align-items: center; }
+.select-wrap svg { position: absolute; right: 14px; pointer-events: none; color: var(--ink); }
+.city-select { appearance: none; -webkit-appearance: none; height: 40px; padding: 0 38px 0 14px; border: none; border-radius: 999px; background: var(--surface); color: var(--ink); font: 13px var(--font-mono); cursor: pointer; box-shadow: var(--lift); }
+.city-select.on { background: var(--pink); }
+.city-select:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .cat:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .stack { display: flex; flex-direction: column; gap: 10px; }
 h1, h2 { margin: 0; font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
@@ -185,8 +190,10 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
     <section id="view-list" class="stack" hidden>
       <h1>Alle Orte</h1>
       <div class="filters">
+        <div class="filter-row"><label class="flabel" for="listCity">Ort</label>
+          <div class="select-wrap"><select id="listCity" class="city-select"></select>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div></div>
         <div class="filter-row"><span class="flabel" id="lblTyp">Typ</span><div class="cats" id="listCats" role="group" aria-labelledby="lblTyp"></div></div>
-        <div class="filter-row"><span class="flabel" id="lblOrt">Ort</span><div class="cats" id="listCities" role="group" aria-labelledby="lblOrt"></div></div>
       </div>
       <div class="grid" id="list"></div>
     </section>
@@ -385,8 +392,11 @@ function drawList() {
   const inCity = cafes.filter(byCity), inCat = cafes.filter(byCat);
   document.getElementById('listCats').innerHTML = chip('data-lcat', 'alle', 'Alle', 'var(--ink)', inCity.length, listCat === 'alle') +
     cats.map(k => chip('data-lcat', k, CATS[k].label, CATS[k].color, inCity.filter(c => catOf(c) === k).length, listCat === k)).join('');
-  document.getElementById('listCities').innerHTML = chip('data-lcity', 'alle', 'Alle', 'var(--ink)', inCat.length, listCity === 'alle') +
-    cities.map(k => chip('data-lcity', k, k, 'var(--pink)', inCat.filter(c => c.area === k).length, listCity === k)).join('');
+  const sel = document.getElementById('listCity');
+  sel.innerHTML = '<option value="alle">Alle Orte (' + inCat.length + ')</option>' +
+    cities.map(k => '<option value="' + esc(k) + '">' + esc(k) + ' (' + inCat.filter(c => c.area === k).length + ')</option>').join('');
+  sel.value = listCity;
+  sel.classList.toggle('on', listCity !== 'alle');
   const list = cafes.filter(c => byCat(c) && byCity(c)).sort((a, b) => a.name.localeCompare(b.name, 'de'));
   document.getElementById('list').innerHTML = list.length ? list.map(c => card(c)).join('')
     : '<p class="vis-empty">' + (cafes.length ? 'Keine Orte mit dieser Auswahl.' : 'Noch keine Orte eingetragen.') + '</p>';
@@ -394,9 +404,7 @@ function drawList() {
 document.getElementById('listCats').addEventListener('click', e => {
   const b = e.target.closest('[data-lcat]'); if (!b) return; listCat = b.dataset.lcat; drawList();
 });
-document.getElementById('listCities').addEventListener('click', e => {
-  const b = e.target.closest('[data-lcity]'); if (!b) return; listCity = b.dataset.lcity; drawList();
-});
+document.getElementById('listCity').addEventListener('change', e => { listCity = e.target.value; drawList(); });
 function updateVisible() {
   updateCounts();
   const box = document.getElementById('visible'), title = document.getElementById('visTitle');
