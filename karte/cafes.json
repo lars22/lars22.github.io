@@ -40,6 +40,16 @@
     "favorite": false
   },
   {
+    "id": "deathpresso",
+    "name": "Deathpresso",
+    "area": "Hamburg",
+    "address": "Beim Grünen Jäger 24, 20359 Hamburg",
+    "lat": 53.5588824,
+    "lng": 9.9635239,
+    "text": "[Text folgt]",
+    "favorite": false
+  },
+  {
     "id": "die-kaffeerei-stadtpark",
     "name": "Die Kaffeerei Stadtpark",
     "area": "Hamburg",
