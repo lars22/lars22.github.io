@@ -50,6 +50,16 @@
     "favorite": false
   },
   {
+    "id": "elbgold",
+    "name": "elbgold",
+    "area": "Hamburg",
+    "address": "Lagerstraße 34c, 20357 Hamburg",
+    "lat": 53.5631541,
+    "lng": 9.9669229,
+    "text": "[Text folgt]",
+    "favorite": false
+  },
+  {
     "id": "kiosque",
     "name": "kiosque.",
     "area": "Hamburg",
