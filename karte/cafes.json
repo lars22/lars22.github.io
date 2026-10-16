@@ -10,6 +10,16 @@
     "favorite": true
   },
   {
+    "id": "bean-there",
+    "name": "Bean There",
+    "area": "Hamburg",
+    "address": "Forsmannstraße 27, 22303 Hamburg",
+    "lat": 53.5846935,
+    "lng": 10.013285,
+    "text": "[Text folgt]",
+    "favorite": false
+  },
+  {
     "id": "black_delight",
     "name": "Black Delight",
     "area": "Hamburg",
