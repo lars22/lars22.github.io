@@ -58,5 +58,15 @@
     "lng": 9.7268,
     "text": "Testeintrag ganz nah bei 24grad, um das Gruppieren zu testen. Kann gelöscht werden.",
     "favorite": false
+  },
+  {
+    "id": "weidenkantine",
+    "name": "Weidenkantine",
+    "area": "Hamburg",
+    "address": "Weidenallee 61, 20357 Hamburg",
+    "lat": 53.5682858,
+    "lng": 9.9639077,
+    "text": "[Text folgt]",
+    "favorite": false
   }
 ]
