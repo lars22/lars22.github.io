@@ -80,6 +80,16 @@
     "favorite": false
   },
   {
+    "id": "milch",
+    "name": "Milch",
+    "area": "Hamburg",
+    "address": "Ditmar-Koel-Straße 22, 20459 Hamburg",
+    "lat": 53.5459929,
+    "lng": 9.9746958,
+    "text": "[Text folgt]",
+    "favorite": false
+  },
+  {
     "id": "public-coffee-roasters",
     "name": "Public Coffee Roasters",
     "area": "Hamburg",
