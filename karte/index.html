@@ -103,8 +103,11 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .cat .n { color: var(--muted); }
 .cat[aria-pressed="true"] { background: var(--c); }
 .cat[aria-pressed="true"] .n { color: var(--ink); }
-.cat[data-cat="alle"][aria-pressed="true"] { background: var(--ink); color: #fff; }
-.cat[data-cat="alle"][aria-pressed="true"] .n { color: #fff; }
+.cat:is([data-cat="alle"], [data-lcat="alle"], [data-lcity="alle"])[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.cat:is([data-cat="alle"], [data-lcat="alle"], [data-lcity="alle"])[aria-pressed="true"] .n { color: #fff; }
+.filters { display: flex; flex-direction: column; gap: 10px; }
+.filter-row { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.flabel { font: 13px var(--font-mono); color: var(--muted); }
 .cat:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .stack { display: flex; flex-direction: column; gap: 10px; }
 h1, h2 { margin: 0; font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
@@ -152,7 +155,7 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
       </button>
       <nav id="menu" aria-label="Hauptmenü" hidden>
         <button data-view="map">Karte</button>
-        <button data-view="list">Alle Cafés</button>
+        <button data-view="list">Alle Orte</button>
         <button data-view="about">Über uns</button>
       </nav>
     </div>
@@ -167,20 +170,24 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
     <section id="view-map" class="stack" style="gap:16px">
       <div class="search" role="search">
         <svg class="search-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A4B4F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <label for="q" class="sr-only">Café oder Ort suchen</label>
-        <input id="q" type="search" placeholder="Café oder Ort suchen" autocomplete="off" aria-controls="results" aria-expanded="false">
+        <label for="q" class="sr-only">Ort oder Adresse suchen</label>
+        <input id="q" type="search" placeholder="Ort oder Adresse suchen" autocomplete="off" aria-controls="results" aria-expanded="false">
         <ul id="results" role="listbox" hidden></ul>
       </div>
-      <div id="map" role="region" aria-label="Karte mit Cafés"></div>
+      <div id="map" role="region" aria-label="Karte mit Orten"></div>
       <div class="cats" id="cats" role="group" aria-label="Nach Kategorie filtern"></div>
       <section class="stack" aria-labelledby="visTitle">
-        <h2 id="visTitle" class="sr-only">Cafés im Kartenausschnitt</h2>
+        <h2 id="visTitle" class="sr-only">Orte im Kartenausschnitt</h2>
         <div class="grid" id="visible" aria-live="polite"></div>
       </section>
     </section>
 
     <section id="view-list" class="stack" hidden>
-      <h1>Alle Cafés</h1>
+      <h1>Alle Orte</h1>
+      <div class="filters">
+        <div class="filter-row"><span class="flabel" id="lblTyp">Typ</span><div class="cats" id="listCats" role="group" aria-labelledby="lblTyp"></div></div>
+        <div class="filter-row"><span class="flabel" id="lblOrt">Ort</span><div class="cats" id="listCities" role="group" aria-labelledby="lblOrt"></div></div>
+      </div>
       <div class="grid" id="list"></div>
     </section>
 
@@ -321,7 +328,7 @@ const cluster = !L.markerClusterGroup ? L.layerGroup().addTo(map) : L.markerClus
     const n = g.getChildCount();
     return L.divIcon({
       className: 'cluster-icon', iconSize: [58, 58],
-      html: '<div class="cluster' + (n >= 10 ? ' big' : '') + '" aria-label="' + n + ' Cafés">' + n + '</div>'
+      html: '<div class="cluster' + (n >= 10 ? ' big' : '') + '" aria-label="' + n + ' Orte">' + n + '</div>'
     });
   }
 }).addTo(map);
@@ -345,7 +352,7 @@ function drawCafes() {
   });
   drawFilter();
 
-  document.getElementById('list').innerHTML = cafes.length ? cafes.map(c => card(c)).join('') : '<p>Noch keine Cafés eingetragen.</p>';
+  drawList();
   updateVisible();
 }
 function card(c) {
@@ -366,12 +373,36 @@ function card(c) {
     'In Google Maps öffnen</a></div>';
 }
 // Kacheln unter der Karte: alle Cafés, die gerade im Kartenausschnitt liegen
+// „Alle Orte“: Filter nach Typ und Ort
+let listCat = 'alle', listCity = 'alle';
+function drawList() {
+  const byCat = c => listCat === 'alle' || catOf(c) === listCat;
+  const byCity = c => listCity === 'alle' || c.area === listCity;
+  const cities = [...new Set(cafes.map(c => c.area).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'de'));
+  const cats = Object.keys(CATS).filter(k => ['cafe', 'bar', 'essen'].includes(k) || cafes.some(c => catOf(c) === k));
+  const chip = (attr, k, label, color, n, on) => '<button class="cat" ' + attr + '="' + esc(k) + '" aria-pressed="' + on + '" style="--c:' + color + '">' +
+    (k === 'alle' ? '' : '<span class="dot" aria-hidden="true"></span>') + esc(label) + ' <span class="n">' + n + '</span></button>';
+  const inCity = cafes.filter(byCity), inCat = cafes.filter(byCat);
+  document.getElementById('listCats').innerHTML = chip('data-lcat', 'alle', 'Alle', 'var(--ink)', inCity.length, listCat === 'alle') +
+    cats.map(k => chip('data-lcat', k, CATS[k].label, CATS[k].color, inCity.filter(c => catOf(c) === k).length, listCat === k)).join('');
+  document.getElementById('listCities').innerHTML = chip('data-lcity', 'alle', 'Alle', 'var(--ink)', inCat.length, listCity === 'alle') +
+    cities.map(k => chip('data-lcity', k, k, 'var(--pink)', inCat.filter(c => c.area === k).length, listCity === k)).join('');
+  const list = cafes.filter(c => byCat(c) && byCity(c)).sort((a, b) => a.name.localeCompare(b.name, 'de'));
+  document.getElementById('list').innerHTML = list.length ? list.map(c => card(c)).join('')
+    : '<p class="vis-empty">' + (cafes.length ? 'Keine Orte mit dieser Auswahl.' : 'Noch keine Orte eingetragen.') + '</p>';
+}
+document.getElementById('listCats').addEventListener('click', e => {
+  const b = e.target.closest('[data-lcat]'); if (!b) return; listCat = b.dataset.lcat; drawList();
+});
+document.getElementById('listCities').addEventListener('click', e => {
+  const b = e.target.closest('[data-lcity]'); if (!b) return; listCity = b.dataset.lcity; drawList();
+});
 function updateVisible() {
   updateCounts();
   const box = document.getElementById('visible'), title = document.getElementById('visTitle');
   if (!cafes.length) {
     title.textContent = 'Cafés im Kartenausschnitt';
-    box.innerHTML = '<p class="vis-empty">' + (loadError ? 'Die Café-Liste konnte nicht geladen werden. Lade die Seite bitte neu.' : 'Noch keine Cafés eingetragen.') + '</p>';
+    box.innerHTML = '<p class="vis-empty">' + (loadError ? 'Die Liste der Orte konnte nicht geladen werden. Lade die Seite bitte neu.' : 'Noch keine Orte eingetragen.') + '</p>';
     return;
   }
   const b = map.getBounds();
