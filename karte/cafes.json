@@ -7,6 +7,7 @@
     "lat": 52.3858333,
     "lng": 9.7244444,
     "text": "Kaffeerösterei 24grad.",
+    "kategorie": "cafe",
     "favorite": true
   },
   {
@@ -17,6 +18,7 @@
     "lat": 53.5846935,
     "lng": 10.013285,
     "text": "[Text folgt]",
+    "kategorie": "cafe",
     "favorite": false
   },
   {
@@ -27,6 +29,7 @@
     "lat": 53.5551647,
     "lng": 9.9268324,
     "text": "Hippes Café in Altona",
+    "kategorie": "cafe",
     "favorite": false
   },
   {
@@ -37,6 +40,7 @@
     "lat": 35.025042,
     "lng": 135.755921,
     "text": "Gemütliches und kleines Café. Super nette Inhaber!",
+    "kategorie": "cafe",
     "favorite": false
   },
   {
@@ -47,6 +51,7 @@
     "lat": 53.5807019,
     "lng": 9.9685609,
     "text": "[Text folgt]",
+    "kategorie": "cafe",
     "favorite": false
   },
   {
@@ -57,6 +62,7 @@
     "lat": 53.5588824,
     "lng": 9.9635239,
     "text": "[Text folgt]",
+    "kategorie": "cafe",
     "favorite": false
   },
   {
@@ -67,6 +73,7 @@
     "lat": 53.5915122,
     "lng": 10.0346192,
     "text": "[Text folgt]",
+    "kategorie": "cafe",
     "favorite": false
   },
   {
@@ -77,6 +84,7 @@
     "lat": 53.5631541,
     "lng": 9.9669229,
     "text": "[Text folgt]",
+    "kategorie": "cafe",
     "favorite": false
   },
   {
@@ -87,6 +95,7 @@
     "lat": 53.5578868,
     "lng": 9.963021,
     "text": "[Text folgt]",
+    "kategorie": "essen",
     "favorite": false
   },
   {
@@ -97,6 +106,7 @@
     "lat": 53.5459929,
     "lng": 9.9746958,
     "text": "[Text folgt]",
+    "kategorie": "cafe",
     "favorite": false
   },
   {
@@ -107,6 +117,7 @@
     "lat": 53.5514309,
     "lng": 9.9826435,
     "text": "[Text folgt]",
+    "kategorie": "cafe",
     "favorite": false
   },
   {
@@ -117,6 +128,7 @@
     "lat": 53.5768673,
     "lng": 9.9696955,
     "text": "[Text folgt] Laut Google Maps derzeit vorübergehend geschlossen.",
+    "kategorie": "cafe",
     "favorite": false
   },
   {
@@ -127,6 +139,7 @@
     "lat": 53.5682858,
     "lng": 9.9639077,
     "text": "[Text folgt]",
+    "kategorie": "essen",
     "favorite": false
   },
   {
@@ -137,6 +150,7 @@
     "lat": 53.5495858,
     "lng": 9.9986311,
     "text": "[Text folgt] Laut Google Maps derzeit vorübergehend geschlossen.",
+    "kategorie": "cafe",
     "favorite": false
   }
 ]

@@ -19,8 +19,11 @@
   --line: #DCDCDC;
   --pink: #FFB8D2;
   --yellow: #FFF1A8;
-  --gold: #D9AE4E;
-  --gold-ink: #A87A1E;
+  --fav: #FFE38A;
+  --cat-cafe: #EBD9C6;
+  --cat-bar: #DCD4F6;
+  --cat-essen: #CDEBD6;
+  --cat-sehen: #CDE6F8;
   --link: #8A3D5C;
   --lift: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
   --font-display: 'Source Serif 4', Georgia, serif;
@@ -54,10 +57,6 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
   background: var(--surface); color: var(--ink); box-shadow: var(--lift);
 }
 #map .leaflet-bar a:hover { background: var(--bg); }
-#map .locate-control { margin: 0 16px 10px 0; }
-#toast { position: absolute; left: 50%; bottom: 16px; transform: translate(-50%, 12px); z-index: 1000; max-width: calc(100% - 140px); padding: 10px 16px; border-radius: 999px; background: var(--ink); color: #fff; font: 500 14px var(--font-body); box-shadow: var(--lift); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; text-align: center; }
-#toast.show { opacity: 1; transform: translate(-50%, 0); }
-@media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
 #map .leaflet-bar a.leaflet-disabled { color: #B5B5B5; background: var(--surface); }
 #map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 16px 16px 0; }
 #map .leaflet-control-attribution { border-radius: 8px 0 0 0; font-size: 10px; padding: 1px 6px; background: rgba(255,255,255,.7); color: var(--muted); }
@@ -69,9 +68,10 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .pin { width: 40px; padding: 0; border: 2px solid #fff; }
 .show-names .pin, .pin.on { width: auto; padding: 0 14px 0 10px; border: none; }
 .show-names .pin-name, .pin.on .pin-name { display: inline; }
-.pin svg { stroke: var(--pink); flex: none; }
-.pin.fav { border-color: var(--gold); }
-.pin .fav-star { margin-left: 6px; vertical-align: -3px; }
+.pin svg { stroke: var(--cat, var(--pink)); flex: none; }
+.pin.fav { border-color: var(--fav); }
+.pin .fav-star { margin-left: 6px; vertical-align: -3px; stroke: var(--fav); }
+.pin.on .fav-star { stroke: var(--ink); }
 .pin.on { background: var(--pink); color: var(--ink); }
 /* Mit Namen: Sprechblase wie bei Google Maps, die Spitze sitzt genau auf dem Café */
 .pin { position: relative; }
@@ -94,9 +94,18 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .card { background: var(--surface); border-radius: 28px; padding: 28px 32px; min-height: 132px; }
 .card p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--muted); max-width: 680px; }
 .tag { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font: 13px var(--font-mono); padding: 4px 10px; border-radius: 999px; background: var(--pink); color: var(--ink); }
-.tag.fav { background: transparent; box-shadow: inset 0 0 0 1.5px var(--gold); }
-.tag.fav svg { color: var(--gold-ink); }
+.tag.fav { background: var(--fav); }
+.tag.kind { background: var(--c); }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.cats { display: flex; flex-wrap: wrap; gap: 6px; }
+.cat { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 11px; border: none; border-radius: 999px; background: var(--surface); color: var(--ink); font: 13px var(--font-mono); cursor: pointer; box-shadow: var(--lift); }
+.cat .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.cat .n { color: var(--muted); }
+.cat[aria-pressed="true"] { background: var(--c); }
+.cat[aria-pressed="true"] .n { color: var(--ink); }
+.cat[data-cat="alle"][aria-pressed="true"] { background: var(--ink); color: #fff; }
+.cat[data-cat="alle"][aria-pressed="true"] .n { color: #fff; }
+.cat:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .stack { display: flex; flex-direction: column; gap: 10px; }
 h1, h2 { margin: 0; font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
 h1 { font-size: 36px; }
@@ -163,6 +172,7 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
         <ul id="results" role="listbox" hidden></ul>
       </div>
       <div id="map" role="region" aria-label="Karte mit Cafés"></div>
+      <div class="cats" id="cats" role="group" aria-label="Nach Kategorie filtern"></div>
       <section class="stack" aria-labelledby="visTitle">
         <h2 id="visTitle" class="vis-title">Cafés im Kartenausschnitt</h2>
         <div class="grid" id="visible" aria-live="polite"></div>
@@ -203,47 +213,44 @@ function show(view) {
 }
 document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
 
+const CATS = {
+  cafe:  { label: 'Café', one: 'Café', color: 'var(--cat-cafe)', pin: '#E2C6A6',
+           icon: '<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/>' },
+  bar:   { label: 'Bar', one: 'Bar', color: 'var(--cat-bar)', pin: '#C9BDF2',
+           icon: '<path d="M6 4h12l-6 8z"/><path d="M12 12v7"/><path d="M8.5 19h7"/>' },
+  essen: { label: 'Essen', one: 'Essen', color: 'var(--cat-essen)', pin: '#A9DDB9',
+           icon: '<path d="M7 3v8"/><path d="M5 3v4a2 2 0 0 0 4 0V3"/><path d="M7 11v10"/><path d="M17 21V3c-2 1.5-3 4-3 7h3"/>' },
+  sehen: { label: 'Sehenswertes', one: 'Sehenswert', color: 'var(--cat-sehen)', pin: '#AED6F4',
+           icon: '<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>' }
+};
+const catOf = c => CATS[c.kategorie] ? c.kategorie : 'cafe';
+const catIcon = k => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + CATS[k].icon + '</svg>';
+let activeCat = 'alle';
+const shown = c => activeCat === 'alle' || catOf(c) === activeCat;
+function drawFilter() {
+  // Café, Bar und Essen immer zeigen, weitere Kategorien nur, wenn es Einträge gibt
+  const present = Object.keys(CATS).filter(k => ['cafe', 'bar', 'essen'].includes(k) || cafes.some(c => catOf(c) === k));
+  const btn = (k, label, color, n) => '<button class="cat" data-cat="' + k + '" aria-pressed="' + (activeCat === k) + '" style="--c:' + color + '">' +
+    (k === 'alle' ? '' : '<span class="dot" aria-hidden="true"></span>') + label + ' <span class="n">' + n + '</span></button>';
+  document.getElementById('cats').innerHTML = btn('alle', 'Alle', 'var(--ink)', cafes.length) +
+    present.map(k => btn(k, CATS[k].label, CATS[k].color, cafes.filter(c => catOf(c) === k).length)).join('');
+}
+document.getElementById('cats').addEventListener('click', e => {
+  const b = e.target.closest('[data-cat]'); if (!b) return;
+  activeCat = b.dataset.cat;
+  cluster.clearLayers();
+  cafes.filter(shown).forEach(c => cluster.addLayer(markers[c.id]));
+  drawFilter(); updateVisible();
+});
 const cup = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/></svg>';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-// Start: Hamburg. „Mein Standort“ zentriert auf Wunsch auf den eigenen Standort.
+// Start: Hamburg
 const START = { center: [53.5600, 9.9700], zoom: 12 };
 var map = L.map('map', { zoomControl: false, scrollWheelZoom: false, minZoom: 3, maxZoom: 19 }).setView(START.center, START.zoom);
 // Leaflet-Hinweis ausblenden (Lizenz erlaubt das); die Kartendaten-Nennung muss bleiben
 map.attributionControl.setPrefix(false);
 const ico = d => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="' + d + '"/></svg>';
-const LocateControl = L.Control.extend({
-  options: { position: 'bottomright' },
-  onAdd() {
-    const bar = L.DomUtil.create('div', 'leaflet-bar leaflet-control locate-control');
-    const a = L.DomUtil.create('a', '', bar);
-    a.href = '#'; a.setAttribute('role', 'button'); a.title = 'Mein Standort'; a.setAttribute('aria-label', 'Karte auf meinen Standort zentrieren');
-    a.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>';
-    L.DomEvent.disableClickPropagation(bar);
-    L.DomEvent.on(a, 'click', e => { L.DomEvent.preventDefault(e); locateMe(); });
-    return bar;
-  }
-});
-let meMarker = null;
-function toast(msg) {
-  let t = document.getElementById('toast');
-  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.setAttribute('role', 'status'); document.getElementById('map').appendChild(t); }
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 3500);
-}
-function locateMe() {
-  if (!navigator.geolocation) { toast('Dein Browser kann den Standort nicht ermitteln.'); return; }
-  toast('Standort wird gesucht …');
-  navigator.geolocation.getCurrentPosition(pos => {
-    const ll = [pos.coords.latitude, pos.coords.longitude];
-    map.setView(ll, 14);
-    if (meMarker) meMarker.remove();
-    meMarker = L.circleMarker(ll, { radius: 8, color: '#FFFFFF', weight: 3, fillColor: '#3A7BD5', fillOpacity: 1 }).addTo(map);
-    toast('Du bist hier.');
-  }, () => toast('Standort nicht verfügbar. Erlaube den Zugriff in den Browser-Einstellungen.'),
-  { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
-}
-map.addControl(new LocateControl());
 L.control.zoom({
   position: 'bottomright',
   zoomInText: ico('M12 6v12M6 12h12'), zoomInTitle: 'Hineinzoomen',
@@ -313,7 +320,7 @@ map.on('zoomend', updateNames);
 updateNames();
 let selected = null;
 function icon(c, on) {
-  return L.divIcon({ className: 'pin-icon', iconSize: null, html: '<div class="pin' + (c.favorite ? ' fav' : '') + (on ? ' on' : '') + '">' + cup + '<span class="pin-name">' + esc(c.name) + (c.favorite ? '<svg class="fav-star" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Favorit"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></svg>' : '') + '</span></div>' });
+  return L.divIcon({ className: 'pin-icon', iconSize: null, html: '<div class="pin' + (c.favorite ? ' fav' : '') + (on ? ' on' : '') + '" style="--cat:' + CATS[catOf(c)].pin + '">' + catIcon(catOf(c)) + '<span class="pin-name">' + esc(c.name) + (c.favorite ? '<svg class="fav-star" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Favorit"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></svg>' : '') + '</span></div>' });
 }
 function select(id) {
   selected = id;
@@ -324,8 +331,9 @@ function drawCafes() {
   cafes.forEach(c => {
     markers[c.id] = L.marker([c.lat, c.lng], { icon: icon(c, false), title: c.name, keyboard: true })
       .on('click', () => select(c.id));
-    cluster.addLayer(markers[c.id]);
+    if (shown(c)) cluster.addLayer(markers[c.id]);
   });
+  drawFilter();
 
   document.getElementById('list').innerHTML = cafes.length ? cafes.map(c => card(c)).join('') : '<p>Noch keine Cafés eingetragen.</p>';
   updateVisible();
@@ -337,6 +345,7 @@ function card(c) {
     '<button data-cafe="' + esc(c.id) + '"' + (c.id === selected ? ' aria-current="true"' : '') + '>' +
     (c.image ? '<img class="thumb" src="' + esc(c.image) + '" alt="" loading="lazy">' : '') +
     '<span class="tags">' + (c.area ? '<span class="tag">' + esc(c.area) + '</span>' : '') +
+    '<span class="tag kind" style="--c:' + CATS[catOf(c)].color + '">' + CATS[catOf(c)].one + '</span>' +
     (c.favorite ? '<span class="tag fav"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>Favorit</span>' : '') + '</span>' +
     '<span class="name">' + esc(c.name) + '</span>' +
     (c.address ? '<span class="addr">' + esc(c.address) + '</span>' : '') +
@@ -355,10 +364,10 @@ function updateVisible() {
     return;
   }
   const b = map.getBounds();
-  const vis = cafes.filter(c => b.contains([c.lat, c.lng])).sort((x, y) => (y.id === selected) - (x.id === selected));
-  title.textContent = vis.length === 1 ? '1 Café im Kartenausschnitt' : vis.length + ' Cafés im Kartenausschnitt';
+  const vis = cafes.filter(c => shown(c) && b.contains([c.lat, c.lng])).sort((x, y) => (y.id === selected) - (x.id === selected));
+  title.textContent = (vis.length === 1 ? '1 Ort' : vis.length + ' Orte') + ' im Kartenausschnitt';
   box.innerHTML = vis.length ? vis.map(c => card(c)).join('')
-    : '<p class="vis-empty">Hier gibt es noch keine Cafés. Zoome heraus oder verschiebe die Karte.</p>';
+    : '<p class="vis-empty">Hier gibt es nichts in dieser Kategorie. Zoome heraus oder wähle „Alle“.</p>';
 }
 map.on('moveend', updateVisible);
 // Café auf der Karte hervorheben, ohne den Ausschnitt unnötig zu ändern

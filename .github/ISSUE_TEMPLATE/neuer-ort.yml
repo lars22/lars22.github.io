@@ -15,6 +15,7 @@ body:
       label: Kategorie
       options:
         - Café
+        - Bar
         - Essen & Trinken
         - Sehenswürdigkeit
       default: 0

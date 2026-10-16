@@ -35,6 +35,8 @@ const cafes = readdirSync(dir)
       lat: Number(data.lat),
       lng: Number(data.lng),
       text: body,
+      // Kategorie: cafe, bar, essen oder sehen (ohne Angabe: cafe)
+      kategorie: ['cafe', 'bar', 'essen', 'sehen'].includes(String(data.kategorie ?? '').toLowerCase()) ? String(data.kategorie).toLowerCase() : 'cafe',
       // Favorit: "favorit: true" (oder ja) in der Datei
       favorite: ['true', 'ja', 'yes'].includes(String(data.favorit ?? '').toLowerCase())
     };

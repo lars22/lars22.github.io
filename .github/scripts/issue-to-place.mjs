@@ -27,7 +27,7 @@ const bild = get('Foto');
 
 if (!name) fail('Der Name fehlt.');
 if (!adresse) fail('Die Adresse fehlt.');
-const kategorie = { 'Café': 'cafe', 'Essen & Trinken': 'essen', 'Sehenswürdigkeit': 'sehen' }[kategorieLabel] || 'cafe';
+const kategorie = { 'Café': 'cafe', 'Bar': 'bar', 'Essen & Trinken': 'essen', 'Essen': 'essen', 'Sehenswürdigkeit': 'sehen' }[kategorieLabel] || 'cafe';
 
 // Dateiname aus dem Namen, z. B. „Black Delight“ → black-delight.md
 const base = name.toLowerCase()
