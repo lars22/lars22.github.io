@@ -60,6 +60,16 @@
     "favorite": false
   },
   {
+    "id": "public-coffee-roasters",
+    "name": "Public Coffee Roasters",
+    "area": "Hamburg",
+    "address": "Wexstraße 28, 20355 Hamburg",
+    "lat": 53.5514309,
+    "lng": 9.9826435,
+    "text": "[Text folgt]",
+    "favorite": false
+  },
+  {
     "id": "test-linden",
     "name": "Test-Café Linden",
     "area": "Hannover",
