@@ -232,8 +232,18 @@ function drawFilter() {
   const present = Object.keys(CATS).filter(k => ['cafe', 'bar', 'essen'].includes(k) || cafes.some(c => catOf(c) === k));
   const btn = (k, label, color, n) => '<button class="cat" data-cat="' + k + '" aria-pressed="' + (activeCat === k) + '" style="--c:' + color + '">' +
     (k === 'alle' ? '' : '<span class="dot" aria-hidden="true"></span>') + label + ' <span class="n">' + n + '</span></button>';
-  document.getElementById('cats').innerHTML = btn('alle', 'Alle', 'var(--ink)', cafes.length) +
-    present.map(k => btn(k, CATS[k].label, CATS[k].color, cafes.filter(c => catOf(c) === k).length)).join('');
+  document.getElementById('cats').innerHTML = btn('alle', 'Alle', 'var(--ink)', 0) +
+    present.map(k => btn(k, CATS[k].label, CATS[k].color, 0)).join('');
+  updateCounts();
+}
+// Anzahl je Kategorie im aktuellen Kartenausschnitt
+function updateCounts() {
+  const b = map.getBounds();
+  const inView = cafes.filter(c => b.contains([c.lat, c.lng]));
+  document.querySelectorAll('#cats .cat').forEach(btn => {
+    const k = btn.dataset.cat;
+    btn.querySelector('.n').textContent = k === 'alle' ? inView.length : inView.filter(c => catOf(c) === k).length;
+  });
 }
 document.getElementById('cats').addEventListener('click', e => {
   const b = e.target.closest('[data-cat]'); if (!b) return;
@@ -357,6 +367,7 @@ function card(c) {
 }
 // Kacheln unter der Karte: alle Cafés, die gerade im Kartenausschnitt liegen
 function updateVisible() {
+  updateCounts();
   const box = document.getElementById('visible'), title = document.getElementById('visTitle');
   if (!cafes.length) {
     title.textContent = 'Cafés im Kartenausschnitt';
