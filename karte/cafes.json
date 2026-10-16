@@ -110,36 +110,6 @@
     "favorite": false
   },
   {
-    "id": "test-linden",
-    "name": "Test-Café Linden",
-    "area": "Hannover",
-    "address": "Testadresse, Linden",
-    "lat": 52.3668,
-    "lng": 9.7175,
-    "text": "Testeintrag in Linden. Kann gelöscht werden.",
-    "favorite": false
-  },
-  {
-    "id": "test-list",
-    "name": "Test-Café List",
-    "area": "Hannover",
-    "address": "Testadresse, List",
-    "lat": 52.3836,
-    "lng": 9.748,
-    "text": "Testeintrag in der List. Kann gelöscht werden.",
-    "favorite": false
-  },
-  {
-    "id": "test-nordstadt",
-    "name": "Test-Café Nordstadt",
-    "area": "Hannover",
-    "address": "Testadresse, Nordstadt",
-    "lat": 52.3842,
-    "lng": 9.7268,
-    "text": "Testeintrag ganz nah bei 24grad, um das Gruppieren zu testen. Kann gelöscht werden.",
-    "favorite": false
-  },
-  {
     "id": "ujote-espresso",
     "name": "ujote espresso",
     "area": "Hamburg",
