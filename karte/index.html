@@ -125,9 +125,10 @@ h2 { font-size: 30px; }
 .grid .tile { background: var(--surface); border-radius: 28px; padding: 24px 26px; display: flex; flex-direction: column; gap: 14px; cursor: pointer; }
 .tile-top { display: flex; gap: 14px; align-items: flex-start; }
 .grid .tile-main { flex: 1; min-width: 0; text-align: left; border: none; background: none; padding: 0; cursor: pointer; display: flex; flex-direction: column; gap: 10px; font-family: var(--font-body); color: var(--ink); }
-.thumb-btn { flex: none; width: 76px; height: 76px; padding: 0; border: none; border-radius: 18px; overflow: hidden; cursor: zoom-in; background: var(--bg); }
-.thumb-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.thumb-btn:focus-visible, .tile-main:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+
+.tile-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.photo-btn { border: none; cursor: zoom-in; }
+.tile-main:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
 .grid .desc { margin: 0; }
 .gmaps { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px; border-radius: 999px; background: var(--bg); color: var(--ink); font: 500 14px var(--font-body); text-decoration: none; }
 .gmaps:hover { background: #ECECEC; color: var(--ink); }
@@ -390,12 +391,14 @@ function card(c) {
     '<span class="name">' + esc(c.name) + '</span>' +
     (c.address ? '<span class="addr">' + esc(c.address) + '</span>' : '') +
     '</button>' +
-    (c.image ? '<button class="thumb-btn" data-photo="' + esc(c.id) + '" aria-label="Foto von ' + esc(c.name) + ' vergrößern"><img src="' + esc(c.image) + '" alt="" loading="lazy"></button>' : '') +
     '</div>' +
     (c.text ? '<p class="desc">' + esc(c.text) + '</p>' : '') +
-    '<a class="gmaps" href="' + esc(maps) + '" target="_blank" rel="noopener">' +
+    '<div class="tile-actions"><a class="gmaps" href="' + esc(maps) + '" target="_blank" rel="noopener">' +
     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>' +
-    'In Google Maps öffnen</a></div>';
+    'Google Maps</a>' +
+    (c.image ? '<button class="gmaps photo-btn" data-photo="' + esc(c.id) + '" aria-label="Foto von ' + esc(c.name) + ' ansehen">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>Foto</button>' : '') +
+    '</div></div>';
 }
 // Großansicht eines Fotos mit Bildnachweis
 function openPhoto(c) {
