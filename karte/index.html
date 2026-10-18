@@ -58,8 +58,8 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 #map .leaflet-top.leaflet-right { top: 64px; }
 #map .leaflet-top.leaflet-right .leaflet-control-zoom { margin: 10px 12px 0 0; }
 .map-expand { position: absolute; top: 76px; right: 12px; z-index: 600; width: 44px; height: 44px; display: none; }
-.st-list .map-expand { display: flex; }
-.st-list #map .leaflet-control-zoom { display: none; }
+.shrunk .map-expand { display: flex; }
+.shrunk #map .leaflet-control-zoom { display: none; }
 .st-sel .map-bottom { opacity: 0; pointer-events: none; }
 /* Gewählter Ort: Kachel unten fest, die Karte bekommt den Rest */
 #sheet { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); margin: 0 auto; max-width: 560px; z-index: 1500; max-height: calc(100vh - 220px); overflow-y: auto; border-radius: 28px; box-shadow: 0 2px 6px rgba(0,0,0,.08), 0 16px 40px rgba(0,0,0,.18); transition: transform .25s cubic-bezier(.2,.8,.2,1); touch-action: pan-y; }
@@ -187,15 +187,18 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
 /* Handy: Kopfzeile klappt beim Scrollen ein, Karte wechselt zwischen drei festen Größen */
 @media (max-width: 899px) {
   .wrap { padding-top: 0; gap: 0; }
-  header { padding: 12px 0 8px; max-height: 120px; overflow: hidden; transition: max-height .3s cubic-bezier(.2,.8,.2,1), padding .3s, opacity .2s; }
-  .compact header { max-height: 0; padding: 0; opacity: 0; pointer-events: none; }
+  header { padding: 12px 0 8px; }
   #view-map { gap: 0 !important; }
   #mapwrap { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 8px 0; margin: 0 -4px; }
-  .compact #mapwrap { padding-top: max(8px, env(safe-area-inset-top, 0px)); }
-  #mapbox { transition: height .3s cubic-bezier(.2,.8,.2,1); }
+  /* Ort gewählt: Karte rückt ganz nach oben und deckt die Kopfzeile ab */
+  header { transition: opacity .2s; }
+  .st-sel header { opacity: 0; pointer-events: none; }
+  /* Die Karte ist immer bildschirmhoch und wird nur abgedeckt; so lädt sie beim Scrollen nicht neu */
+  #mapbox { border-radius: 28px; box-shadow: var(--lift); }
+  #map { bottom: auto; border-radius: 0; box-shadow: none; }
+  .anim #mapbox, .anim #mapwrap { transition: height .3s cubic-bezier(.2,.8,.2,1), margin .3s cubic-bezier(.2,.8,.2,1), transform .3s cubic-bezier(.2,.8,.2,1); }
+  .anim #map { transition: clip-path .3s cubic-bezier(.2,.8,.2,1); }
   .listsec { padding-top: 8px; }
-  /* Lange Liste: genug Platz zum Scrollen. Kurze Liste: Karte wird so groß, dass alle Kacheln ganz passen */
-  html:not(.short) .listsec { min-height: 100vh; }
   .short .wrap { padding-bottom: 12px; }
   /* Ort gewählt: Liste dahinter ausblenden, damit sie nicht unter der Kachel durchscheint */
   .st-sel .listsec { visibility: hidden; }
@@ -210,7 +213,7 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
   .listsec .grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) { .logo img { height: 48px; } .logo span { font-size: 24px; } .card { padding: 22px; } }
-@media (prefers-reduced-motion: reduce) { .pin, header, #mapbox, #sheet { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .pin, #mapbox, #mapwrap, #map, #sheet { transition: none !important; } }
 </style>
 </head>
 <body>
@@ -315,8 +318,8 @@ function show(v) {
   });
   setMenu(false);
   if (v !== 'map' && typeof closePlace === 'function') closePlace(false, true);
-  if (typeof setState === 'function') setState('over');
   window.scrollTo(0, 0);
+  if (window.statesReady) setState('over');
   if (v === 'map' && window.map && map.invalidateSize) setTimeout(() => map.invalidateSize(), 0);
 }
 document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
@@ -346,7 +349,7 @@ function drawFilter() {
 }
 // Anzahl je Kategorie im aktuellen Kartenausschnitt
 function updateCounts() {
-  const b = map.getBounds();
+  const b = window.statesReady ? viewBounds() : map.getBounds();
   const inView = cafes.filter(c => b.contains([c.lat, c.lng]));
   document.querySelectorAll('#cats .cat').forEach(btn => {
     const k = btn.dataset.cat;
@@ -528,7 +531,7 @@ function updateVisible() {
     box.innerHTML = '<p class="vis-empty">' + (loadError ? 'Die Liste der Orte konnte nicht geladen werden. Lade die Seite bitte neu.' : 'Noch keine Orte eingetragen.') + '</p>';
     return;
   }
-  const b = map.getBounds();
+  const b = window.statesReady ? viewBounds() : map.getBounds();
   const vis = cafes.filter(c => shown(c) && b.contains([c.lat, c.lng])).sort((x, y) => (y.id === selected) - (x.id === selected));
   title.textContent = (vis.length === 1 ? '1 Ort' : vis.length + ' Orte') + ' im Kartenausschnitt';
   box.innerHTML = vis.length ? vis.map(c => card(c)).join('')
@@ -536,77 +539,103 @@ function updateVisible() {
   if (window.statesReady) fitList();
 }
 map.on('moveend', updateVisible);
-// ---------- Zustände auf dem Handy ----------
-// over = Übersicht (Kopfzeile, große Karte), list = Liste (Kopfzeile eingeklappt, kleine Karte),
-// sel = Ort gewählt (Kachel unten fest, Karte bekommt den restlichen Platz)
+// ---------- Karte und Liste auf dem Handy ----------
+// Beim Scrollen läuft erst die Kopfzeile weg, dann schrumpft die Karte genau so schnell wie der Finger
+// (keine Sprünge). Die Karte selbst behält ihre Größe und wird nur abgedeckt, damit sie dabei nicht neu lädt.
+// sel = Ort gewählt: Kachel unten fest, Karte bekommt den restlichen Platz.
 const mobileMQ = window.matchMedia('(max-width: 899px)');
-const header = document.querySelector('header'), mapbox = document.getElementById('mapbox');
+const root = document.documentElement;
+const header = document.querySelector('header'), mapwrap = document.getElementById('mapwrap'), mapbox = document.getElementById('mapbox'), mapEl = document.getElementById('map');
 const sheet = document.getElementById('sheet'), sheetBody = document.getElementById('sheetBody');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-let st = 'over', prevSt = 'over', baseH = window.innerHeight, baseW = window.innerWidth, hdrH = 0, overH = null, resizing = 0;
-// Kurze Liste (z. B. nur eine Kachel): Karte so groß machen, dass alles ohne Scrollen passt
+let st = 'over', baseH = window.innerHeight, baseW = window.innerWidth, hdrH = 0, overH = 0, fitH = null, resizing = 0;
+let saved = null; // Kartenausschnitt und Scrollposition vor dem Öffnen eines Orts
+const mobile = () => mobileMQ.matches && view === 'map';
+const defaultOverH = () => Math.max(320, baseH - hdrH - 16 - 140); // unten schaut die erste Kachel heraus
+const smallH = () => Math.round(baseH * 0.4);
+const selH = () => Math.max(240, baseH - sheet.offsetHeight - 12 - 16 - 12);
+// Ausschnitt für Liste und Zähler: der sichtbare Teil der Karte in der Übersicht (unabhängig vom Scrollen)
+function viewBounds() {
+  if (!mobileMQ.matches) return map.getBounds();
+  const w = mapEl.offsetWidth, h = Math.min(mapEl.offsetHeight, defaultOverH());
+  return L.latLngBounds(map.containerPointToLatLng([0, 0]), map.containerPointToLatLng([w, h]));
+}
+// Ort in die Mitte des sichtbaren Kartenteils setzen (der Rest der Karte ist abgedeckt)
+function centerOn(latlng, zoom, visH, animate) {
+  if (!mobileMQ.matches) { map.setView(latlng, zoom, { animate }); return; }
+  const off = (mapEl.offsetHeight - visH) / 2;
+  const p = map.project(latlng, zoom).add([0, off]);
+  map.setView(map.unproject(p, zoom), zoom, { animate });
+}
+function layout() {
+  if (!mobile()) {
+    root.classList.remove('compact', 'shrunk', 'st-sel', 'locked', 'short');
+    mapbox.style.height = mapwrap.style.marginBottom = mapwrap.style.transform = mapEl.style.height = mapEl.style.clipPath = '';
+    return;
+  }
+  hdrH = header.offsetHeight || hdrH;
+  overH = fitH || defaultOverH();
+  if (mapEl.style.height !== baseH + 'px') { mapEl.style.height = baseH + 'px'; map.invalidateSize({ pan: false }); }
+  let h, p = 0;
+  if (st === 'sel') h = selH();
+  else {
+    p = Math.min(Math.max(window.scrollY - hdrH, 0), Math.max(overH - smallH(), 0));
+    h = overH - p;
+  }
+  mapbox.style.height = h + 'px';
+  mapEl.style.clipPath = 'inset(0 0 ' + Math.max(baseH - h, 0) + 'px 0 round 28px)';
+  mapwrap.style.marginBottom = (overH - h) + 'px';
+  mapwrap.style.transform = st === 'sel' && window.scrollY < hdrH ? 'translateY(' + (window.scrollY - hdrH) + 'px)' : ''; // Platz im Fluss bleibt gleich → Liste läuft 1:1 mit dem Finger
+  root.classList.toggle('compact', st === 'sel' || window.scrollY > hdrH - 12);
+  root.classList.toggle('shrunk', st !== 'sel' && p > 24);
+  root.classList.toggle('st-sel', st === 'sel');
+  root.classList.toggle('locked', st === 'sel');
+}
+// Wechsel zwischen Liste und gewähltem Ort weich animieren (beim Scrollen selbst ohne Animation)
+let animT = 0;
+function setState(s) {
+  if (s !== st && window.statesReady) { root.classList.add('anim'); clearTimeout(animT); animT = setTimeout(() => root.classList.remove('anim'), 350); }
+  st = s; layout();
+}
+// Kurze Liste (z. B. nur eine Kachel): Karte so groß, dass alles ohne Scrollen passt
 function fitList() {
-  if (!mobileMQ.matches || view !== 'map' || st === 'sel' || Date.now() < resizing) return;
-  const root = document.documentElement;
+  if (!mobile() || st === 'sel' || Date.now() < resizing) return;
   const boxH = document.getElementById('visible').offsetHeight;
-  const avail = baseH - hdrH - 16 - 8 - 12; // Platz für Karte + Liste
+  const avail = baseH - hdrH - 16 - 8 - 12;
   const short = boxH + 320 <= avail;
   const newH = short ? Math.floor(avail - boxH) - 2 : null;
-  if (short === root.classList.contains('short') && newH === overH) return;
+  if (short === root.classList.contains('short') && newH === fitH) return;
   root.classList.toggle('short', short);
-  overH = newH;
-  if (short && st === 'list') window.scrollTo(0, 0);
-  setState(short ? 'over' : st);
+  fitH = newH; resizing = Date.now() + 400;
+  layout();
 }
-function mapHeight(s) {
-  if (s === 'list') return Math.round(baseH * 0.4);
-  if (s === 'sel') return Math.max(240, baseH - sheet.offsetHeight - 12 - 16 - 12);
-  if (overH) return overH;
-  return Math.max(320, baseH - hdrH - 16 - 140); // unten schaut die erste Kachel heraus
-}
-function setState(s) {
-  const root = document.documentElement;
-  if (!mobileMQ.matches || view !== 'map') {
-    root.classList.remove('compact', 'st-list', 'st-sel', 'locked');
-    mapbox.style.height = ''; st = 'over'; return;
-  }
-  if (!root.classList.contains('compact')) hdrH = header.offsetHeight || hdrH;
-  st = s;
-  root.classList.toggle('compact', s !== 'over');
-  root.classList.toggle('st-list', s === 'list');
-  root.classList.toggle('st-sel', s === 'sel');
-  root.classList.toggle('locked', s === 'sel');
-  const h = mapHeight(s) + 'px';
-  // Größenwechsel löst ein Kartenereignis aus; kurz danach die Liste nicht neu einpassen (sonst Ping-Pong)
-  if (mapbox.style.height !== h) { resizing = Date.now() + 700; mapbox.style.height = h; }
-}
+let ticking = false;
 window.addEventListener('scroll', () => {
-  if (st === 'sel' || view !== 'map' || !mobileMQ.matches || document.documentElement.classList.contains('short')) return;
-  if (st === 'over' && window.scrollY > 8) setState('list');
-  else if (st === 'list' && window.scrollY <= 0) setState('over');
+  if (ticking || st === 'sel') return;
+  ticking = true; requestAnimationFrame(() => { ticking = false; layout(); });
 }, { passive: true });
 window.addEventListener('resize', () => {
   // Nur bei Drehen/Breitenwechsel neu rechnen, nicht wenn die Adressleiste am Handy ein-/ausfährt
-  if (window.innerWidth !== baseW) { baseW = window.innerWidth; baseH = window.innerHeight; overH = null; document.documentElement.classList.remove('short'); setState(st); fitList(); }
+  if (window.innerWidth !== baseW || !mobileMQ.matches) { baseW = window.innerWidth; baseH = window.innerHeight; fitH = null; layout(); fitList(); }
 });
-document.getElementById('expandBtn').addEventListener('click', () => { window.scrollTo(0, 0); setState('over'); });
-// Leaflet an die neue Größe anpassen, während die Karte wächst oder schrumpft
+document.getElementById('expandBtn').addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }));
+// Großer Bildschirm: Leaflet bei Größenänderung anpassen
 let rz = 0;
-new ResizeObserver(() => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => map.invalidateSize({ pan: false, debounceMoveend: true })); }).observe(document.getElementById('map'));
+new ResizeObserver(() => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => map.invalidateSize({ pan: false, debounceMoveend: true })); }).observe(mapEl);
 
 // Ort öffnen: auf dem Handy als Kachel unten, am großen Bildschirm in der Liste links
 function openPlace(c, fromHistory) {
   if (!c) return;
   select(c.id);
-  const zoomTo = () => map.setView([c.lat, c.lng], Math.max(16, map.getZoom()), { animate: !reduceMotion });
-  if (!mobileMQ.matches) { zoomTo(); window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); return; }
-  if (st !== 'sel') prevSt = st;
+  const zoom = Math.max(16, map.getZoom());
+  if (!mobileMQ.matches) { map.setView([c.lat, c.lng], zoom, { animate: !reduceMotion }); window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); return; }
+  if (st !== 'sel') saved = { center: map.getCenter(), zoom: map.getZoom(), y: window.scrollY };
   sheetBody.innerHTML = card(c);
   sheet.hidden = false; sheet.style.transform = '';
   const d = sheetBody.querySelector('.desc');
   if (d && d.scrollHeight > d.clientHeight + 2) {
     d.insertAdjacentHTML('afterend', '<button class="more">mehr</button>');
-    sheetBody.querySelector('.more').addEventListener('click', e => { d.classList.add('open'); e.target.remove(); setState('sel'); });
+    sheetBody.querySelector('.more').addEventListener('click', e => { d.classList.add('open'); e.target.remove(); layout(); centerOn([c.lat, c.lng], map.getZoom(), selH(), !reduceMotion); });
   }
   sheet.scrollTop = 0;
   setState('sel');
@@ -614,13 +643,18 @@ function openPlace(c, fromHistory) {
     if (history.state && history.state.sel) history.replaceState({ sel: c.id }, '', '#' + c.id);
     else history.pushState({ sel: c.id }, '', '#' + c.id);
   }
-  setTimeout(zoomTo, reduceMotion ? 0 : 320);
+  centerOn([c.lat, c.lng], zoom, selH(), !reduceMotion);
 }
 function closePlace(fromHistory, silent) {
   if (sheet.hidden) return;
   sheet.hidden = true; sheetBody.innerHTML = '';
   select(null);
-  if (!silent) setState(prevSt);
+  if (!silent) {
+    setState('over');
+    // Zurück zu Ausschnitt, Zoom und Scrollposition von vorher
+    if (saved) { window.scrollTo(0, saved.y); layout(); map.setView(saved.center, saved.zoom, { animate: !reduceMotion }); }
+  } else st = 'over';
+  saved = null;
   if (!fromHistory && history.state && history.state.sel) history.back();
 }
 sheet.querySelector('.sheet-close').addEventListener('click', () => closePlace());
@@ -654,6 +688,7 @@ fetch('cafes.json', { cache: 'no-cache' })
   })
   .catch(() => { loadError = true; drawCafes(); });
 setState('over');
+if (mobileMQ.matches) centerOn(START.center, START.zoom, overH, false);
 window.statesReady = true;
 
 document.getElementById('list').addEventListener('click', e => {
