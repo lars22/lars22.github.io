@@ -192,9 +192,9 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
   .listsec { padding-top: 8px; }
   /* Ort gewählt: Karte rückt ganz ins Bild, Kopfzeile und Liste treten zurück */
   .st-sel header { opacity: 0; pointer-events: none; }
-  .st-sel .listsec { visibility: hidden; }
-  .anim #mapwrap, .anim .map-top { transition: transform .3s cubic-bezier(.2,.8,.2,1); }
-  html.locked { overflow: hidden; }
+  .st-sel .listsec { visibility: hidden; margin-top: var(--flow-h); }
+  .st-sel #mapwrap { position: fixed; top: 0; left: 12px; right: 12px; margin: 0; z-index: 30; }
+  .st-sel .map-top { position: fixed; top: 20px; left: 24px; right: 24px; margin: 0; z-index: 40; }
 }
 /* Großer Bildschirm: Liste links, Karte rechts, beides immer sichtbar */
 @media (min-width: 900px) {
@@ -543,34 +543,41 @@ let saved = null; // Kartenausschnitt vor dem Öffnen eines Orts
 const mobile = () => mobileMQ.matches && view === 'map';
 function layout() {
   if (!mobile()) {
-    root.classList.remove('compact', 'st-sel', 'locked');
-    mapbox.style.height = mapwrap.style.transform = mapwrap.style.marginBottom = maptop.style.transform = '';
-    root.style.removeProperty('--map-stick');
+    root.classList.remove('compact', 'st-sel');
+    mapbox.style.height = mapwrap.style.marginBottom = '';
+    root.style.removeProperty('--map-stick'); root.style.removeProperty('--flow-h');
     return;
   }
   hdrH = header.offsetHeight || hdrH;
   overH = Math.max(320, baseH - hdrH - 16 - 140); // unten schaut die erste Kachel heraus
   const small = Math.round(baseH * 0.4);
-  // Ort gewählt: Karte endet immer genau 12px über der Kachel (Kacheln sind unterschiedlich hoch)
+  root.style.setProperty('--map-stick', -(overH - small) + 'px');
+  root.style.setProperty('--flow-h', (overH + 16) + 'px'); // Platzhalter, solange die Karte fest oben steht
+  // Ort gewählt: Karte fest am oberen Bildschirmrand (unabhängig von der Scrollposition)
+  // und endet immer genau 12px über der Kachel (Kacheln sind unterschiedlich hoch)
+  root.classList.toggle('st-sel', st === 'sel');
   const h = st === 'sel' ? Math.max(200, Math.round(sheet.getBoundingClientRect().top) - GAP - 8) : overH;
   if (mapbox.style.height !== h + 'px') { mapbox.style.height = h + 'px'; map.invalidateSize({ pan: false }); }
-  mapwrap.style.marginBottom = (overH - h) + 'px'; // Platz im Seitenfluss bleibt gleich → Scrollposition bleibt
-  root.style.setProperty('--map-stick', -(overH - small) + 'px');
-  root.classList.toggle('st-sel', st === 'sel');
-  root.classList.toggle('locked', st === 'sel');
-  mapwrap.style.transform = maptop.style.transform = '';
-  if (st === 'sel') {
-    // Karte (und Suche) von ihrer aktuellen Position ganz nach oben schieben
-    const t = mapwrap.getBoundingClientRect().top, q = maptop.getBoundingClientRect().top;
-    if (t) mapwrap.style.transform = 'translateY(' + (-t) + 'px)';
-    if (q !== 20) maptop.style.transform = 'translateY(' + (20 - q) + 'px)';
-  }
 }
-let animT = 0;
+// Wechsel weich animieren: Karte und Suche gleiten von der alten an die neue Stelle
 function setState(s) {
-  if (s !== st && window.statesReady) { root.classList.add('anim'); clearTimeout(animT); animT = setTimeout(() => root.classList.remove('anim'), 350); }
+  const animate = s !== st && window.statesReady && !reduceMotion && mobile();
+  const a1 = animate ? mapwrap.getBoundingClientRect().top : 0, q1 = animate ? maptop.getBoundingClientRect().top : 0;
   st = s; layout();
+  if (!animate) return;
+  const da = a1 - mapwrap.getBoundingClientRect().top, dq = q1 - maptop.getBoundingClientRect().top;
+  [[mapwrap, da], [maptop, dq]].forEach(([el, d]) => {
+    if (!d) return;
+    el.style.transition = 'none'; el.style.transform = 'translateY(' + d + 'px)';
+    el.getBoundingClientRect();
+    requestAnimationFrame(() => {
+      el.style.transition = 'transform .3s cubic-bezier(.2,.8,.2,1)'; el.style.transform = '';
+      setTimeout(() => { el.style.transition = ''; }, 350);
+    });
+  });
 }
+// Solange ein Ort gewählt ist, bleibt die Seite dahinter stehen
+window.addEventListener('scroll', () => { if (st === 'sel' && saved && window.scrollY !== saved.y) window.scrollTo(0, saved.y); }, { passive: true });
 // Kleines Menü in der Suche, sobald die Kopfzeile aus dem Bild ist
 new IntersectionObserver(([e]) => root.classList.toggle('compact', !e.isIntersecting && mobile() || st === 'sel')).observe(header);
 window.addEventListener('resize', () => {
@@ -590,7 +597,7 @@ function openPlace(c, fromHistory) {
   select(c.id);
   const zoom = Math.max(16, map.getZoom());
   if (!mobileMQ.matches) { map.setView([c.lat, c.lng], zoom, { animate: !reduceMotion }); window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); return; }
-  if (st !== 'sel') saved = { center: map.getCenter(), zoom: map.getZoom() };
+  if (st !== 'sel') saved = { center: map.getCenter(), zoom: map.getZoom(), y: window.scrollY };
   sheetBody.innerHTML = card(c);
   sheet.hidden = false; sheet.style.transition = ''; sheet.style.transform = '';
   const d = sheetBody.querySelector('.desc');
