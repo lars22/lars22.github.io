@@ -537,20 +537,24 @@ const root = document.documentElement;
 const header = document.querySelector('header'), mapwrap = document.getElementById('mapwrap'), mapbox = document.getElementById('mapbox'), maptop = document.getElementById('maptop');
 const sheet = document.getElementById('sheet'), sheetBody = document.getElementById('sheetBody');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const GAP = 12; // Abstand Karte ↔ Kachel und Kachel ↔ Bildschirmrand
 let st = 'over', baseH = window.innerHeight, baseW = window.innerWidth, hdrH = 0, overH = 0;
 let saved = null; // Kartenausschnitt vor dem Öffnen eines Orts
 const mobile = () => mobileMQ.matches && view === 'map';
 function layout() {
   if (!mobile()) {
     root.classList.remove('compact', 'st-sel', 'locked');
-    mapbox.style.height = mapwrap.style.transform = maptop.style.transform = '';
+    mapbox.style.height = mapwrap.style.transform = mapwrap.style.marginBottom = maptop.style.transform = '';
     root.style.removeProperty('--map-stick');
     return;
   }
   hdrH = header.offsetHeight || hdrH;
   overH = Math.max(320, baseH - hdrH - 16 - 140); // unten schaut die erste Kachel heraus
   const small = Math.round(baseH * 0.4);
-  mapbox.style.height = overH + 'px';
+  // Ort gewählt: Karte endet immer genau 12px über der Kachel (Kacheln sind unterschiedlich hoch)
+  const h = st === 'sel' ? Math.max(200, Math.round(sheet.getBoundingClientRect().top) - GAP - 8) : overH;
+  if (mapbox.style.height !== h + 'px') { mapbox.style.height = h + 'px'; map.invalidateSize({ pan: false }); }
+  mapwrap.style.marginBottom = (overH - h) + 'px'; // Platz im Seitenfluss bleibt gleich → Scrollposition bleibt
   root.style.setProperty('--map-stick', -(overH - small) + 'px');
   root.classList.toggle('st-sel', st === 'sel');
   root.classList.toggle('locked', st === 'sel');
@@ -577,10 +581,7 @@ let rz = 0;
 new ResizeObserver(() => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => map.invalidateSize({ pan: false, debounceMoveend: true })); }).observe(document.getElementById('map'));
 // Ort in die Mitte des Kartenteils über der Kachel setzen
 function centerAbove(latlng, zoom) {
-  const visH = baseH - 12 - sheet.offsetHeight - 16;      // von Kartenoberkante bis knapp über die Kachel
-  const off = (overH - visH) / 2;
-  const p = map.project(latlng, zoom).add([0, off]);
-  map.setView(map.unproject(p, zoom), zoom, { animate: !reduceMotion });
+  map.setView(latlng, zoom, { animate: !reduceMotion });
 }
 
 // Ort öffnen: auf dem Handy als Kachel unten, am großen Bildschirm in der Liste links
@@ -595,7 +596,7 @@ function openPlace(c, fromHistory) {
   const d = sheetBody.querySelector('.desc');
   if (d && d.scrollHeight > d.clientHeight + 2) {
     d.insertAdjacentHTML('afterend', '<button class="more">mehr</button>');
-    sheetBody.querySelector('.more').addEventListener('click', e => { d.classList.add('open'); e.target.remove(); sheetScrolls(); centerAbove([c.lat, c.lng], map.getZoom()); });
+    sheetBody.querySelector('.more').addEventListener('click', e => { d.classList.add('open'); e.target.remove(); sheetScrolls(); layout(); centerAbove([c.lat, c.lng], map.getZoom()); });
   }
   sheet.scrollTop = 0; sheetScrolls();
   setState('sel'); root.classList.add('compact');
