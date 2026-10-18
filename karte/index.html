@@ -33,13 +33,13 @@
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); }
+html, body { margin: 0; overflow-anchor: none; background: var(--bg); color: var(--ink); font-family: var(--font-body); }
 .wrap { max-width: 1120px; margin: 0 auto; padding: 16px 16px 56px; display: flex; flex-direction: column; gap: 20px; }
 
 header { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; padding: 8px 0; position: relative; z-index: 1000; }
 .menu-wrap { position: relative; }
 .round { width: 48px; height: 48px; border: none; border-radius: 999px; background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--lift); }
-nav { position: absolute; top: 58px; left: 0; width: 260px; background: var(--surface); border-radius: 20px; padding: 8px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.12); }
+nav { position: fixed; top: 74px; left: 16px; z-index: 3000; width: 260px; background: var(--surface); border-radius: 20px; padding: 8px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.12); }
 nav button { min-height: 48px; padding: 0 14px; border: none; border-radius: 14px; background: var(--surface); text-align: left; font: 500 16px var(--font-body); color: var(--ink); cursor: pointer; }
 nav button[aria-current="page"], nav button:hover { background: var(--bg); }
 .logo { justify-self: center; display: flex; align-items: center; gap: 10px; background: none; border: none; cursor: pointer; color: var(--ink); padding: 4px 8px; }
@@ -47,7 +47,28 @@ nav button[aria-current="page"], nav button:hover { background: var(--bg); }
 .logo span { font: 700 28px var(--font-body); letter-spacing: -0.01em; }
 button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 
-#map { height: clamp(360px, 60vh, 620px); border-radius: 28px; overflow: hidden; background: #ECEDEA; z-index: 0; box-shadow: var(--lift); }
+/* Karte mit Suche (oben) und Filtern (unten) direkt in der Karte */
+#mapbox { position: relative; height: clamp(360px, 62vh, 640px); }
+#map { position: absolute; inset: 0; border-radius: 28px; overflow: hidden; background: #ECEDEA; z-index: 0; box-shadow: var(--lift); }
+.map-top { position: absolute; top: 12px; left: 12px; right: 12px; z-index: 600; }
+.map-bottom { position: absolute; left: 0; right: 0; bottom: 22px; z-index: 600; padding: 0 12px; transition: opacity .2s; }
+.map-bottom .cats { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding: 4px 2px 8px; }
+.map-bottom .cats::-webkit-scrollbar { display: none; }
+.over-map { box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.10); }
+#map .leaflet-top.leaflet-right { top: 64px; }
+#map .leaflet-top.leaflet-right .leaflet-control-zoom { margin: 10px 12px 0 0; }
+.map-expand { position: absolute; top: 76px; right: 12px; z-index: 600; width: 44px; height: 44px; display: none; }
+.st-list .map-expand { display: flex; }
+.st-list #map .leaflet-control-zoom { display: none; }
+.st-sel .map-bottom { opacity: 0; pointer-events: none; }
+/* Gewählter Ort: Kachel unten fest, die Karte bekommt den Rest */
+#sheet { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); margin: 0 auto; max-width: 560px; z-index: 1500; max-height: calc(100vh - 220px); overflow-y: auto; border-radius: 28px; box-shadow: 0 2px 6px rgba(0,0,0,.08), 0 16px 40px rgba(0,0,0,.18); transition: transform .25s cubic-bezier(.2,.8,.2,1); touch-action: pan-y; }
+#sheet .tile, #sheet .tile.on { box-shadow: none; cursor: default; }
+#sheet .tile-main { padding-right: 44px; cursor: default; }
+#sheet .sheet-close { position: absolute; top: 14px; right: 14px; z-index: 1; width: 40px; height: 40px; border: none; border-radius: 50%; background: var(--bg); color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+#sheet .desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+#sheet .desc.open { display: block; }
+.more { align-self: flex-start; margin-top: -8px; padding: 0; border: none; background: none; font: 600 14px var(--font-body); color: var(--link); cursor: pointer; }
 .leaflet-container { font-family: var(--font-body); }
 /* Kartensteuerung: runde Buttons wie der Menü-Button (#map erhöht die Priorität gegenüber Leaflet) */
 #map .leaflet-bar { border: none; box-shadow: none; background: transparent; display: flex; flex-direction: column; gap: 10px; }
@@ -151,31 +172,49 @@ label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-w
 input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; font: 16px var(--font-body); background: #FBFBFB; color: var(--ink); }
 .primary { align-self: flex-start; height: 48px; padding: 0 22px; border: none; border-radius: 999px; background: var(--ink); color: #fff; font: 600 15px var(--font-body); cursor: pointer; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.search { position: relative; z-index: 900; }
-.search-ico { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); pointer-events: none; }
-.search input { width: 100%; height: 52px; border: none; border-radius: 999px; padding: 0 20px 0 48px; background: var(--surface); box-shadow: var(--lift); }
-.search input:focus { outline: 3px solid var(--pink); outline-offset: 0; }
+.search { position: relative; display: flex; align-items: center; gap: 4px; height: 52px; padding: 0 6px; border-radius: 999px; background: var(--surface); }
+.search:focus-within { outline: 3px solid var(--pink); }
+.search-ico { flex: none; margin-left: 12px; pointer-events: none; }
+.search input { flex: 1; min-width: 0; height: 100%; border: none; border-radius: 0; padding: 0 10px 0 4px; background: none; outline: none; }
+.mini-menu { display: none; flex: none; width: 40px; height: 40px; box-shadow: none; background: var(--bg); }
+.compact .mini-menu { display: flex; }
+.compact .search-ico { margin-left: 6px; }
 #results { position: absolute; top: 60px; left: 0; right: 0; margin: 0; padding: 8px; list-style: none; background: var(--surface); border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.12); max-height: 320px; overflow-y: auto; }
 #results button { width: 100%; min-height: 48px; padding: 8px 14px; border: none; border-radius: 14px; background: var(--surface); text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 2px; font: 500 16px var(--font-body); color: var(--ink); }
 #results button:hover, #results button:focus-visible { background: var(--bg); }
 #results small { font: 13px var(--font-mono); color: var(--muted); }
 #results .empty { padding: 12px 14px; color: var(--muted); }
+/* Handy: Kopfzeile klappt beim Scrollen ein, Karte wechselt zwischen drei festen Größen */
+@media (max-width: 899px) {
+  .wrap { padding-top: 0; gap: 0; }
+  header { padding: 12px 0 8px; max-height: 120px; overflow: hidden; transition: max-height .3s cubic-bezier(.2,.8,.2,1), padding .3s, opacity .2s; }
+  .compact header { max-height: 0; padding: 0; opacity: 0; pointer-events: none; }
+  #view-map { gap: 0 !important; }
+  #mapwrap { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 8px 0; margin: 0 -4px; }
+  .compact #mapwrap { padding-top: max(8px, env(safe-area-inset-top, 0px)); }
+  #mapbox { transition: height .3s cubic-bezier(.2,.8,.2,1); }
+  .listsec { min-height: 100vh; padding-top: 8px; }
+  html.locked { overflow: hidden; }
+}
+/* Großer Bildschirm: Liste links, Karte rechts, beides immer sichtbar */
+@media (min-width: 900px) {
+  #view-map:not([hidden]) { display: grid; grid-template-columns: minmax(320px, 400px) minmax(0, 1fr); gap: 16px; align-items: start; }
+  #mapwrap { order: 2; position: sticky; top: 16px; }
+  #mapbox { height: calc(100vh - 140px); min-height: 420px; }
+  .listsec { order: 1; }
+  .listsec .grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 480px) { .logo img { height: 48px; } .logo span { font-size: 24px; } .card { padding: 22px; } }
-@media (prefers-reduced-motion: reduce) { .pin { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .pin, header, #mapbox, #sheet { transition: none; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="menu-wrap">
-      <button class="round" id="menuBtn" aria-label="Menü" aria-expanded="false" aria-controls="menu">
+      <button class="round" id="menuBtn" data-menu aria-label="Menü" aria-expanded="false" aria-controls="menu">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2B2C30" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h10"/></svg>
       </button>
-      <nav id="menu" aria-label="Hauptmenü" hidden>
-        <button data-view="map">Karte</button>
-        <button data-view="list">Alle Orte</button>
-        <button data-view="about">Über uns</button>
-      </nav>
     </div>
     <button class="logo" data-view="map" aria-label="Bearista – zur Karte">
       <img src="data:image/png;base64,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" alt="">
@@ -183,18 +222,35 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
     </button>
     <div></div>
   </header>
+  <nav id="menu" aria-label="Hauptmenü" hidden>
+    <button data-view="map">Karte</button>
+    <button data-view="list">Alle Orte</button>
+    <button data-view="about">Über uns</button>
+  </nav>
 
   <main>
     <section id="view-map" class="stack" style="gap:16px">
-      <div class="search" role="search">
-        <svg class="search-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A4B4F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <label for="q" class="sr-only">Ort oder Adresse suchen</label>
-        <input id="q" type="search" placeholder="Ort oder Adresse suchen" autocomplete="off" aria-controls="results" aria-expanded="false">
-        <ul id="results" role="listbox" hidden></ul>
+      <div id="mapwrap">
+        <div id="mapbox">
+          <div id="map" role="region" aria-label="Karte mit Orten"></div>
+          <div class="map-top">
+            <div class="search over-map" role="search">
+              <button class="round mini-menu" data-menu aria-label="Menü" aria-expanded="false" aria-controls="menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2B2C30" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h10"/></svg>
+              </button>
+              <svg class="search-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A4B4F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <label for="q" class="sr-only">Café, Ort oder Adresse suchen</label>
+              <input id="q" type="search" placeholder="Café, Ort oder Adresse" autocomplete="off" enterkeyhint="search" aria-controls="results" aria-expanded="false">
+              <ul id="results" role="listbox" hidden></ul>
+            </div>
+          </div>
+          <button class="round map-expand over-map" id="expandBtn" aria-label="Karte vergrößern">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </button>
+          <div class="map-bottom"><div class="cats" id="cats" role="group" aria-label="Nach Kategorie filtern"></div></div>
+        </div>
       </div>
-      <div id="map" role="region" aria-label="Karte mit Orten"></div>
-      <div class="cats" id="cats" role="group" aria-label="Nach Kategorie filtern"></div>
-      <section class="stack" aria-labelledby="visTitle">
+      <section class="stack listsec" aria-labelledby="visTitle">
         <h2 id="visTitle" class="sr-only">Orte im Kartenausschnitt</h2>
         <div class="grid" id="visible" aria-live="polite"></div>
       </section>
@@ -217,6 +273,10 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
       <p>[Kurzer Text über die Seite] Bearista sammelt Cafés, die wir selbst besucht haben und gerne weiterempfehlen.</p>
     </section>
   </main>
+  <div id="sheet" role="dialog" aria-label="Gewählter Ort" hidden>
+    <button class="sheet-close" aria-label="Schließen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div id="sheetBody" class="grid"></div>
+  </div>
   <div id="lightbox" role="dialog" aria-modal="true" aria-label="Foto" hidden>
     <button class="lb-close" aria-label="Schließen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <figure><img src="" alt=""><figcaption><span class="lb-name"></span><a class="lb-credit" target="_blank" rel="noopener"></a></figcaption></figure>
@@ -233,14 +293,26 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
 let cafes = [], loadError = false;
 
 const menu = document.getElementById('menu'), menuBtn = document.getElementById('menuBtn');
-menuBtn.addEventListener('click', () => { menu.hidden = !menu.hidden; menuBtn.setAttribute('aria-expanded', String(!menu.hidden)); });
-function show(view) {
-  ['map', 'list', 'about'].forEach(v => document.getElementById('view-' + v).hidden = v !== view);
+// Menü: großer Knopf in der Kopfzeile oder kleiner Knopf in der Suche (wenn die Kopfzeile eingeklappt ist)
+function setMenu(open, btn) {
+  menu.hidden = !open;
+  document.querySelectorAll('[data-menu]').forEach(b => b.setAttribute('aria-expanded', String(open)));
+  if (open && btn) { const r = btn.getBoundingClientRect(); menu.style.top = (r.bottom + 10) + 'px'; menu.style.left = Math.max(12, r.left) + 'px'; }
+}
+document.querySelectorAll('[data-menu]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); setMenu(menu.hidden, b); }));
+document.addEventListener('click', e => { if (!menu.hidden && !e.target.closest('#menu')) setMenu(false); });
+let view = 'map';
+function show(v) {
+  view = v;
+  ['map', 'list', 'about'].forEach(x => document.getElementById('view-' + x).hidden = x !== v);
   menu.querySelectorAll('button').forEach(b => {
-    if (b.dataset.view === view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    if (b.dataset.view === v) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
   });
-  menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false');
-  if (view === 'map' && window.map && map.invalidateSize) setTimeout(() => map.invalidateSize(), 0);
+  setMenu(false);
+  if (v !== 'map' && typeof closePlace === 'function') closePlace(false, true);
+  if (typeof setState === 'function') setState('over');
+  window.scrollTo(0, 0);
+  if (v === 'map' && window.map && map.invalidateSize) setTimeout(() => map.invalidateSize(), 0);
 }
 document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
 
@@ -293,7 +365,7 @@ var map = L.map('map', { zoomControl: false, scrollWheelZoom: false, minZoom: 3,
 map.attributionControl.setPrefix(false);
 const ico = d => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="' + d + '"/></svg>';
 L.control.zoom({
-  position: 'bottomright',
+  position: 'topright',
   zoomInText: ico('M12 6v12M6 12h12'), zoomInTitle: 'Hineinzoomen',
   zoomOutText: ico('M6 12h12'), zoomOutTitle: 'Herauszoomen'
 }).addTo(map);
@@ -371,7 +443,7 @@ function select(id) {
 function drawCafes() {
   cafes.forEach(c => {
     markers[c.id] = L.marker([c.lat, c.lng], { icon: icon(c, false), title: c.name, keyboard: true })
-      .on('click', () => select(c.id));
+      .on('click', () => openPlace(c));
     if (shown(c)) cluster.addLayer(markers[c.id]);
   });
   drawFilter();
@@ -458,29 +530,115 @@ function updateVisible() {
     : '<p class="vis-empty">Hier gibt es nichts in dieser Kategorie. Zoome heraus oder wähle „Alle“.</p>';
 }
 map.on('moveend', updateVisible);
-// Café auf der Karte hervorheben, ohne den Ausschnitt unnötig zu ändern
-function focusCafe(c) {
-  select(c.id);
-  map.setView([c.lat, c.lng], Math.max(16, map.getZoom()));
-  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.getElementById('map').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+// ---------- Zustände auf dem Handy ----------
+// over = Übersicht (Kopfzeile, große Karte), list = Liste (Kopfzeile eingeklappt, kleine Karte),
+// sel = Ort gewählt (Kachel unten fest, Karte bekommt den restlichen Platz)
+const mobileMQ = window.matchMedia('(max-width: 899px)');
+const header = document.querySelector('header'), mapbox = document.getElementById('mapbox');
+const sheet = document.getElementById('sheet'), sheetBody = document.getElementById('sheetBody');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let st = 'over', prevSt = 'over', baseH = window.innerHeight, baseW = window.innerWidth, hdrH = 0;
+function mapHeight(s) {
+  if (s === 'list') return Math.round(baseH * 0.4);
+  if (s === 'sel') return Math.max(240, baseH - sheet.offsetHeight - 12 - 16 - 12);
+  return Math.max(320, baseH - hdrH - 16 - 140); // unten schaut die erste Kachel heraus
 }
+function setState(s) {
+  const root = document.documentElement;
+  if (!mobileMQ.matches || view !== 'map') {
+    root.classList.remove('compact', 'st-list', 'st-sel', 'locked');
+    mapbox.style.height = ''; st = 'over'; return;
+  }
+  if (!root.classList.contains('compact')) hdrH = header.offsetHeight || hdrH;
+  st = s;
+  root.classList.toggle('compact', s !== 'over');
+  root.classList.toggle('st-list', s === 'list');
+  root.classList.toggle('st-sel', s === 'sel');
+  root.classList.toggle('locked', s === 'sel');
+  mapbox.style.height = mapHeight(s) + 'px';
+}
+window.addEventListener('scroll', () => {
+  if (st === 'sel' || view !== 'map' || !mobileMQ.matches) return;
+  if (st === 'over' && window.scrollY > 8) setState('list');
+  else if (st === 'list' && window.scrollY <= 0) setState('over');
+}, { passive: true });
+window.addEventListener('resize', () => {
+  // Nur bei Drehen/Breitenwechsel neu rechnen, nicht wenn die Adressleiste am Handy ein-/ausfährt
+  if (window.innerWidth !== baseW) { baseW = window.innerWidth; baseH = window.innerHeight; setState(st); }
+});
+document.getElementById('expandBtn').addEventListener('click', () => { window.scrollTo(0, 0); setState('over'); });
+// Leaflet an die neue Größe anpassen, während die Karte wächst oder schrumpft
+let rz = 0;
+new ResizeObserver(() => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => map.invalidateSize({ pan: false, debounceMoveend: true })); }).observe(document.getElementById('map'));
+
+// Ort öffnen: auf dem Handy als Kachel unten, am großen Bildschirm in der Liste links
+function openPlace(c, fromHistory) {
+  if (!c) return;
+  select(c.id);
+  const zoomTo = () => map.setView([c.lat, c.lng], Math.max(16, map.getZoom()), { animate: !reduceMotion });
+  if (!mobileMQ.matches) { zoomTo(); window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); return; }
+  if (st !== 'sel') prevSt = st;
+  sheetBody.innerHTML = card(c);
+  sheet.hidden = false; sheet.style.transform = '';
+  const d = sheetBody.querySelector('.desc');
+  if (d && d.scrollHeight > d.clientHeight + 2) {
+    d.insertAdjacentHTML('afterend', '<button class="more">mehr</button>');
+    sheetBody.querySelector('.more').addEventListener('click', e => { d.classList.add('open'); e.target.remove(); setState('sel'); });
+  }
+  sheet.scrollTop = 0;
+  setState('sel');
+  if (!fromHistory) {
+    if (history.state && history.state.sel) history.replaceState({ sel: c.id }, '', '#' + c.id);
+    else history.pushState({ sel: c.id }, '', '#' + c.id);
+  }
+  setTimeout(zoomTo, reduceMotion ? 0 : 320);
+}
+function closePlace(fromHistory, silent) {
+  if (sheet.hidden) return;
+  sheet.hidden = true; sheetBody.innerHTML = '';
+  select(null);
+  if (!silent) setState(prevSt);
+  if (!fromHistory && history.state && history.state.sel) history.back();
+}
+sheet.querySelector('.sheet-close').addEventListener('click', () => closePlace());
+window.addEventListener('popstate', () => {
+  const id = history.state && history.state.sel;
+  if (id) { show('map'); openPlace(cafes.find(x => x.id === id), true); } else closePlace(true);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('lightbox').hidden) closePlace(); });
+// Nach unten wischen schließt die Kachel
+let swY = null;
+sheet.addEventListener('touchstart', e => { swY = sheet.scrollTop <= 0 ? e.touches[0].clientY : null; }, { passive: true });
+sheet.addEventListener('touchmove', e => { if (swY === null) return; const dy = e.touches[0].clientY - swY; if (dy > 0) { sheet.style.transition = 'none'; sheet.style.transform = 'translateY(' + dy + 'px)'; } }, { passive: true });
+sheet.addEventListener('touchend', e => {
+  if (swY === null) return; const dy = e.changedTouches[0].clientY - swY; swY = null;
+  sheet.style.transition = ''; sheet.style.transform = '';
+  if (dy > 70) closePlace();
+});
+
 document.getElementById('visible').addEventListener('click', e => {
   if (e.target.closest('a')) return;
   const b = e.target.closest('[data-cafe]'); if (!b) return;
-  focusCafe(cafes.find(x => x.id === b.dataset.cafe));
+  openPlace(cafes.find(x => x.id === b.dataset.cafe));
 });
 fetch('cafes.json', { cache: 'no-cache' })
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(data => { cafes = data.filter(c => isFinite(c.lat) && isFinite(c.lng)); drawCafes(); })
+  .then(data => {
+    cafes = data.filter(c => isFinite(c.lat) && isFinite(c.lng)); drawCafes();
+    // Direktlink auf einen Ort, z. B. …/karte/#elbgold
+    const c = cafes.find(x => x.id === decodeURIComponent(location.hash.slice(1)));
+    if (c) { history.replaceState(null, '', location.pathname); openPlace(c); }
+  })
   .catch(() => { loadError = true; drawCafes(); });
+setState('over');
 
 document.getElementById('list').addEventListener('click', e => {
   if (e.target.closest('a')) return;
   const b = e.target.closest('[data-cafe]'); if (!b) return;
-  show('map'); focusCafe(cafes.find(x => x.id === b.dataset.cafe));
+  show('map'); openPlace(cafes.find(x => x.id === b.dataset.cafe));
 });
-// Suche: zuerst passende Cafés, danach Orte über OpenStreetMap (Nominatim)
+// Suche: eigene Orte sofort beim Tippen. Adressen über OpenStreetMap (Nominatim) erst auf
+// ausdrücklichen Wunsch (Enter oder Tipp auf „… auf der Karte suchen“), so wie es Nominatim verlangt.
 const q = document.getElementById('q'), results = document.getElementById('results');
 let placeMarker = null, timer = null, lastQuery = '';
 function openResults(html) { results.innerHTML = html; results.hidden = false; q.setAttribute('aria-expanded', 'true'); }
@@ -489,31 +647,34 @@ function norm(s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-
 function render(term, places) {
   const t = norm(term);
   const hits = cafes.filter(c => norm(c.name + ' ' + c.area + ' ' + c.address).includes(t));
-  let html = hits.map(c => '<li><button data-hit-cafe="' + esc(c.id) + '">' + esc(c.name) + '<small>Café · ' + esc(c.area) + '</small></button></li>').join('');
+  let html = hits.map(c => '<li><button data-hit-cafe="' + esc(c.id) + '">' + esc(c.name) + '<small>' + CATS[catOf(c)].one + ' · ' + esc(c.area) + '</small></button></li>').join('');
   if (places === 'loading') html += '<li class="empty">Orte werden gesucht …</li>';
+  else if (places === 'offer') html += '<li><button data-hit-search>„' + esc(term) + '“ auf der Karte suchen<small>Adresse, Stadtteil oder Stadt</small></button></li>';
   else if (places) html += places.map((p, i) => '<li><button data-hit-place="' + i + '">' + esc(p.name || p.display_name.split(',')[0]) +
     '<small>Ort · ' + esc(p.display_name.split(',').slice(1, 3).join(',').trim()) + '</small></button></li>').join('');
   if (!html) html = '<li class="empty">Nichts gefunden.</li>';
   openResults(html);
 }
 let placeHits = [];
+async function searchPlaces(term) {
+  lastQuery = term; render(term, 'loading');
+  try {
+    const r = await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=4&accept-language=de&q=' + encodeURIComponent(term));
+    const data = await r.json();
+    if (lastQuery !== term) return;
+    placeHits = data; render(term, data);
+  } catch (err) { if (lastQuery === term) { placeHits = []; render(term, []); } }
+}
 q.addEventListener('input', () => {
-  const term = q.value.trim(); clearTimeout(timer);
+  const term = q.value.trim(); lastQuery = '';
   if (term.length < 2) { closeResults(); return; }
-  render(term, 'loading');
-  timer = setTimeout(async () => {
-    lastQuery = term;
-    try {
-      const r = await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=4&accept-language=de&q=' + encodeURIComponent(term));
-      const data = await r.json();
-      if (lastQuery !== term) return;
-      placeHits = data; render(term, data);
-    } catch (err) { if (lastQuery === term) { placeHits = []; render(term, []); } }
-  }, 600);
+  render(term, 'offer');
 });
 results.addEventListener('click', e => {
+  e.stopPropagation();
+  if (e.target.closest('[data-hit-search]')) { searchPlaces(q.value.trim()); return; }
   const cb = e.target.closest('[data-hit-cafe]'), pb = e.target.closest('[data-hit-place]');
-  if (cb) { const c = cafes.find(x => x.id === cb.dataset.hitCafe); map.setView([c.lat, c.lng], 16); select(c.id); }
+  if (cb) { q.blur(); openPlace(cafes.find(x => x.id === cb.dataset.hitCafe)); }
   if (pb) {
     const p = placeHits[+pb.dataset.hitPlace];
     map.setView([+p.lat, +p.lon], 15);
@@ -525,7 +686,11 @@ results.addEventListener('click', e => {
 });
 q.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeResults();
-  if (e.key === 'Enter') { const first = results.querySelector('button'); if (first) { e.preventDefault(); first.click(); } }
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const first = results.querySelector('[data-hit-cafe], [data-hit-place]');
+    if (first) first.click(); else if (q.value.trim().length >= 2) searchPlaces(q.value.trim());
+  }
 });
 document.addEventListener('click', e => { if (!e.target.closest('.search')) closeResults(); });
 
