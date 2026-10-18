@@ -193,7 +193,12 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
   #mapwrap { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 8px 0; margin: 0 -4px; }
   .compact #mapwrap { padding-top: max(8px, env(safe-area-inset-top, 0px)); }
   #mapbox { transition: height .3s cubic-bezier(.2,.8,.2,1); }
-  .listsec { min-height: 100vh; padding-top: 8px; }
+  .listsec { padding-top: 8px; }
+  /* Lange Liste: genug Platz zum Scrollen. Kurze Liste: Karte wird so groß, dass alle Kacheln ganz passen */
+  html:not(.short) .listsec { min-height: 100vh; }
+  .short .wrap { padding-bottom: 12px; }
+  /* Ort gewählt: Liste dahinter ausblenden, damit sie nicht unter der Kachel durchscheint */
+  .st-sel .listsec { visibility: hidden; }
   html.locked { overflow: hidden; }
 }
 /* Großer Bildschirm: Liste links, Karte rechts, beides immer sichtbar */
@@ -528,6 +533,7 @@ function updateVisible() {
   title.textContent = (vis.length === 1 ? '1 Ort' : vis.length + ' Orte') + ' im Kartenausschnitt';
   box.innerHTML = vis.length ? vis.map(c => card(c)).join('')
     : '<p class="vis-empty">Hier gibt es nichts in dieser Kategorie. Zoome heraus oder wähle „Alle“.</p>';
+  if (window.statesReady) fitList();
 }
 map.on('moveend', updateVisible);
 // ---------- Zustände auf dem Handy ----------
@@ -537,10 +543,25 @@ const mobileMQ = window.matchMedia('(max-width: 899px)');
 const header = document.querySelector('header'), mapbox = document.getElementById('mapbox');
 const sheet = document.getElementById('sheet'), sheetBody = document.getElementById('sheetBody');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-let st = 'over', prevSt = 'over', baseH = window.innerHeight, baseW = window.innerWidth, hdrH = 0;
+let st = 'over', prevSt = 'over', baseH = window.innerHeight, baseW = window.innerWidth, hdrH = 0, overH = null, resizing = 0;
+// Kurze Liste (z. B. nur eine Kachel): Karte so groß machen, dass alles ohne Scrollen passt
+function fitList() {
+  if (!mobileMQ.matches || view !== 'map' || st === 'sel' || Date.now() < resizing) return;
+  const root = document.documentElement;
+  const boxH = document.getElementById('visible').offsetHeight;
+  const avail = baseH - hdrH - 16 - 8 - 12; // Platz für Karte + Liste
+  const short = boxH + 320 <= avail;
+  const newH = short ? Math.floor(avail - boxH) - 2 : null;
+  if (short === root.classList.contains('short') && newH === overH) return;
+  root.classList.toggle('short', short);
+  overH = newH;
+  if (short && st === 'list') window.scrollTo(0, 0);
+  setState(short ? 'over' : st);
+}
 function mapHeight(s) {
   if (s === 'list') return Math.round(baseH * 0.4);
   if (s === 'sel') return Math.max(240, baseH - sheet.offsetHeight - 12 - 16 - 12);
+  if (overH) return overH;
   return Math.max(320, baseH - hdrH - 16 - 140); // unten schaut die erste Kachel heraus
 }
 function setState(s) {
@@ -555,16 +576,18 @@ function setState(s) {
   root.classList.toggle('st-list', s === 'list');
   root.classList.toggle('st-sel', s === 'sel');
   root.classList.toggle('locked', s === 'sel');
-  mapbox.style.height = mapHeight(s) + 'px';
+  const h = mapHeight(s) + 'px';
+  // Größenwechsel löst ein Kartenereignis aus; kurz danach die Liste nicht neu einpassen (sonst Ping-Pong)
+  if (mapbox.style.height !== h) { resizing = Date.now() + 700; mapbox.style.height = h; }
 }
 window.addEventListener('scroll', () => {
-  if (st === 'sel' || view !== 'map' || !mobileMQ.matches) return;
+  if (st === 'sel' || view !== 'map' || !mobileMQ.matches || document.documentElement.classList.contains('short')) return;
   if (st === 'over' && window.scrollY > 8) setState('list');
   else if (st === 'list' && window.scrollY <= 0) setState('over');
 }, { passive: true });
 window.addEventListener('resize', () => {
   // Nur bei Drehen/Breitenwechsel neu rechnen, nicht wenn die Adressleiste am Handy ein-/ausfährt
-  if (window.innerWidth !== baseW) { baseW = window.innerWidth; baseH = window.innerHeight; setState(st); }
+  if (window.innerWidth !== baseW) { baseW = window.innerWidth; baseH = window.innerHeight; overH = null; document.documentElement.classList.remove('short'); setState(st); fitList(); }
 });
 document.getElementById('expandBtn').addEventListener('click', () => { window.scrollTo(0, 0); setState('over'); });
 // Leaflet an die neue Größe anpassen, während die Karte wächst oder schrumpft
@@ -631,6 +654,7 @@ fetch('cafes.json', { cache: 'no-cache' })
   })
   .catch(() => { loadError = true; drawCafes(); });
 setState('over');
+window.statesReady = true;
 
 document.getElementById('list').addEventListener('click', e => {
   if (e.target.closest('a')) return;
