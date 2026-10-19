@@ -515,6 +515,7 @@ document.getElementById('listCats').addEventListener('click', e => {
 });
 document.getElementById('listCity').addEventListener('change', e => { listCity = e.target.value; drawList(); });
 function updateVisible() {
+  if (window.statesReady && st === 'sel') return; // Liste ist ausgeblendet; wird beim Schließen aktualisiert
   updateCounts();
   const box = document.getElementById('visible'), title = document.getElementById('visTitle');
   if (!cafes.length) {
@@ -577,8 +578,6 @@ function setState(s) {
     });
   });
 }
-// Solange ein Ort gewählt ist, bleibt die Seite dahinter stehen
-window.addEventListener('scroll', () => { if (st === 'sel' && saved && window.scrollY !== saved.y) window.scrollTo(0, saved.y); }, { passive: true });
 // Kleines Menü in der Suche, sobald die Kopfzeile aus dem Bild ist
 new IntersectionObserver(([e]) => root.classList.toggle('compact', !e.isIntersecting && mobile() || st === 'sel')).observe(header);
 window.addEventListener('resize', () => {
@@ -622,7 +621,11 @@ function closePlace(fromHistory, silent) {
     setState('over');
     root.classList.toggle('compact', header.getBoundingClientRect().bottom <= 0);
     // Zurück zu Ausschnitt und Zoom von vorher (die Scrollposition bleibt ohnehin erhalten)
-    if (saved) map.setView(saved.center, saved.zoom, { animate: !reduceMotion });
+    if (saved) {
+      if (Math.abs(window.scrollY - saved.y) > 2) window.scrollTo(0, saved.y);
+      map.setView(saved.center, saved.zoom, { animate: !reduceMotion });
+    }
+    updateVisible();
   } else st = 'over';
   saved = null;
   if (!fromHistory && history.state && history.state.sel) history.back();
