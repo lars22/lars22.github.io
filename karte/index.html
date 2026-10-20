@@ -56,11 +56,11 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .map-top .cat { flex: 1 1 0; min-width: 0; justify-content: center; height: 34px; padding: 0 6px; gap: 5px; font-size: 12px; white-space: nowrap; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.10); }
 .map-top .cat .dot { width: 8px; height: 8px; flex: none; }
 /* Karte vergrößern: unten rechts, unter Plus/Minus */
-.map-expand { position: absolute; right: 12px; bottom: 22px; z-index: 600; width: 44px; height: 44px; color: var(--ink); }
+.map-expand { position: absolute; right: 12px; bottom: 18px; z-index: 600; width: 40px; height: 40px; color: var(--ink); }
 .map-expand .ico-close, .st-full .map-expand .ico-open { display: none; }
 .st-full .map-expand .ico-close { display: block; }
 .over-map { box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.10); }
-#map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 12px 76px 0; }
+#map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 12px 64px 0; } /* 18 + 40 Vergrößern + 6 Abstand */
 .st-sel .map-top .cats, .st-sel .map-expand { opacity: 0; pointer-events: none; }
 /* Gewählter Ort: Kachel unten fest, die Karte bekommt den Rest */
 #sheet { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); margin: 0 auto; max-width: 560px; z-index: 1500; max-height: calc(100vh - 220px); overflow-y: auto; border-radius: 28px; box-shadow: 0 2px 6px rgba(0,0,0,.08), 0 16px 40px rgba(0,0,0,.18); transition: transform .25s cubic-bezier(.2,.8,.2,1); touch-action: none; }
@@ -73,9 +73,9 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 .more { align-self: flex-start; margin-top: -8px; padding: 0; border: none; background: none; font: 600 14px var(--font-body); color: var(--link); cursor: pointer; }
 .leaflet-container { font-family: var(--font-body); }
 /* Kartensteuerung: runde Buttons wie der Menü-Button (#map erhöht die Priorität gegenüber Leaflet) */
-#map .leaflet-bar { border: none; box-shadow: none; background: transparent; display: flex; flex-direction: column; gap: 10px; }
+#map .leaflet-bar { border: none; box-shadow: none; background: transparent; display: flex; flex-direction: column; gap: 6px; }
 #map .leaflet-bar a {
-  width: 44px; height: 44px; line-height: 44px; padding: 0; border: none; border-radius: 50%;
+  width: 40px; height: 40px; line-height: 40px; padding: 0; border: none; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   background: var(--surface); color: var(--ink); box-shadow: var(--lift);
 }
@@ -211,7 +211,7 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
   .listsec { grid-column: 1; grid-row: 1; }
   .listsec .grid { grid-template-columns: 1fr; }
   .map-expand { display: none; }
-  #map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 12px 22px 0; }
+  #map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 12px 18px 0; }
 }
 @media (max-width: 480px) { .logo img { height: 48px; } .logo span { font-size: 24px; } .card { padding: 22px; } }
 @media (prefers-reduced-motion: reduce) { .pin, #mapwrap, .map-top, #sheet, header { transition: none !important; } }
@@ -560,7 +560,7 @@ function layout() {
   }
   hdrH = header.offsetHeight || hdrH;
   overH = Math.max(320, baseH - hdrH - 16 - 140); // unten schaut die erste Kachel heraus
-  const small = Math.round(baseH * 0.4);
+  const small = Math.max(Math.round(baseH * 0.4), 300); // Platz für Suche/Filter oben und Knöpfe unten, ohne Überschneidung
   root.style.setProperty('--map-stick', -(overH - small) + 'px');
   root.style.setProperty('--flow-h', (overH + 16) + 'px'); // Platzhalter, solange die Karte fest oben steht
   // Ort gewählt: Karte fest am oberen Bildschirmrand (unabhängig von der Scrollposition)
