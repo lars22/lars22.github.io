@@ -51,12 +51,17 @@ button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
 #mapbox { position: relative; height: clamp(360px, 62vh, 640px); }
 #map { position: absolute; inset: 0; border-radius: 28px; overflow: hidden; background: #ECEDEA; z-index: 0; box-shadow: var(--lift); }
 .map-top { position: relative; z-index: 20; }
-.map-bottom { position: absolute; left: 0; right: 0; bottom: 22px; z-index: 600; padding: 0 12px; transition: opacity .2s; }
-.map-bottom .cats { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding: 4px 2px 8px; }
-.map-bottom .cats::-webkit-scrollbar { display: none; }
+/* Filter direkt unter der Suche, gleich breit wie die Suchleiste, kompakt */
+.map-top .cats { flex-wrap: nowrap; gap: 6px; margin-top: 8px; transition: opacity .2s; }
+.map-top .cat { flex: 1 1 0; min-width: 0; justify-content: center; height: 34px; padding: 0 6px; gap: 5px; font-size: 12px; white-space: nowrap; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.10); }
+.map-top .cat .dot { width: 8px; height: 8px; flex: none; }
+/* Karte vergrößern: unten rechts, unter Plus/Minus */
+.map-expand { position: absolute; right: 12px; bottom: 22px; z-index: 600; width: 44px; height: 44px; color: var(--ink); }
+.map-expand .ico-close, .st-full .map-expand .ico-open { display: none; }
+.st-full .map-expand .ico-close { display: block; }
 .over-map { box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.10); }
 #map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 12px 76px 0; }
-.st-sel .map-bottom { opacity: 0; pointer-events: none; }
+.st-sel .map-top .cats, .st-sel .map-expand { opacity: 0; pointer-events: none; }
 /* Gewählter Ort: Kachel unten fest, die Karte bekommt den Rest */
 #sheet { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); margin: 0 auto; max-width: 560px; z-index: 1500; max-height: calc(100vh - 220px); overflow-y: auto; border-radius: 28px; box-shadow: 0 2px 6px rgba(0,0,0,.08), 0 16px 40px rgba(0,0,0,.18); transition: transform .25s cubic-bezier(.2,.8,.2,1); touch-action: none; }
 #sheet.scrolls { touch-action: pan-y; }
@@ -187,15 +192,15 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
   #view-map { gap: 0 !important; }
   /* Scrollen macht der Browser allein (flüssig, ohne Skript): Die Suche bleibt oben kleben,
      die Karte gleitet nach oben, bis nur noch ein Streifen sichtbar ist, und bleibt dann stehen. */
-  .map-top { position: sticky; top: 20px; margin: 20px 8px -72px; }
+  .map-top { position: sticky; top: 20px; margin: 20px 8px -114px; } /* 20 Abstand + 52 Suche + 8 + 34 Filter */
   #mapwrap { position: sticky; top: var(--map-stick, 0px); z-index: 5; background: var(--bg); padding: 8px 0; margin: 0 -4px; }
   .listsec { padding-top: 8px; }
   /* Ort gewählt: Karte rückt ganz ins Bild, Kopfzeile und Liste treten zurück */
-  .st-sel header { opacity: 0; pointer-events: none; }
-  .st-sel .listsec { visibility: hidden; margin-top: var(--flow-h); }
-  html.st-sel, html.st-sel body { overscroll-behavior: none; }
-  .st-sel #mapwrap { position: fixed; top: 0; left: 12px; right: 12px; margin: 0; z-index: 30; }
-  .st-sel .map-top { position: fixed; top: 20px; left: 24px; right: 24px; margin: 0; z-index: 40; }
+  :is(.st-sel, .st-full) header { opacity: 0; pointer-events: none; }
+  :is(.st-sel, .st-full) .listsec { visibility: hidden; margin-top: var(--flow-h); }
+  :is(html.st-sel, html.st-full), :is(.st-sel, .st-full) body { overscroll-behavior: none; }
+  :is(.st-sel, .st-full) #mapwrap { position: fixed; top: 0; left: 12px; right: 12px; margin: 0; z-index: 30; }
+  :is(.st-sel, .st-full) .map-top { position: fixed; top: 20px; left: 24px; right: 24px; margin: 0; z-index: 40; }
 }
 /* Großer Bildschirm: Liste links, Karte rechts, beides immer sichtbar */
 @media (min-width: 900px) {
@@ -205,6 +210,8 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
   #mapbox { height: calc(100vh - 140px); min-height: 420px; }
   .listsec { grid-column: 1; grid-row: 1; }
   .listsec .grid { grid-template-columns: 1fr; }
+  .map-expand { display: none; }
+  #map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 12px 22px 0; }
 }
 @media (max-width: 480px) { .logo img { height: 48px; } .logo span { font-size: 24px; } .card { padding: 22px; } }
 @media (prefers-reduced-motion: reduce) { .pin, #mapwrap, .map-top, #sheet, header { transition: none !important; } }
@@ -242,11 +249,12 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
           <input id="q" type="search" placeholder="Café, Ort oder Adresse" autocomplete="off" enterkeyhint="search" aria-controls="results" aria-expanded="false">
           <ul id="results" role="listbox" hidden></ul>
         </div>
+        <div class="cats" id="cats" role="group" aria-label="Nach Kategorie filtern"></div>
       </div>
       <div id="mapwrap">
         <div id="mapbox">
           <div id="map" role="region" aria-label="Karte mit Orten"></div>
-          <div class="map-bottom"><div class="cats" id="cats" role="group" aria-label="Nach Kategorie filtern"></div></div>
+          <button class="round map-expand over-map" id="fullBtn" aria-label="Karte vergrößern" aria-pressed="false"><svg class="ico-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><svg class="ico-close" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg></button>
         </div>
       </div>
       <section class="stack listsec" aria-labelledby="visTitle">
@@ -545,7 +553,7 @@ let saved = null; // Kartenausschnitt vor dem Öffnen eines Orts
 const mobile = () => mobileMQ.matches && view === 'map';
 function layout() {
   if (!mobile()) {
-    root.classList.remove('compact', 'st-sel');
+    root.classList.remove('compact', 'st-sel', 'st-full');
     mapbox.style.height = mapwrap.style.marginBottom = '';
     root.style.removeProperty('--map-stick'); root.style.removeProperty('--flow-h');
     return;
@@ -558,7 +566,8 @@ function layout() {
   // Ort gewählt: Karte fest am oberen Bildschirmrand (unabhängig von der Scrollposition)
   // und endet immer genau 12px über der Kachel (Kacheln sind unterschiedlich hoch)
   root.classList.toggle('st-sel', st === 'sel');
-  const h = st === 'sel' ? Math.max(200, Math.round(sheet.getBoundingClientRect().top) - GAP - 8) : overH;
+  root.classList.toggle('st-full', st === 'full');
+  const h = st === 'sel' ? Math.max(200, Math.round(sheet.getBoundingClientRect().top) - GAP - 8) : st === 'full' ? baseH - 16 : overH;
   if (mapbox.style.height !== h + 'px') { mapbox.style.height = h + 'px'; map.invalidateSize({ pan: false }); }
 }
 // Wechsel weich animieren: Karte und Suche gleiten von der alten an die neue Stelle
@@ -579,7 +588,7 @@ function setState(s) {
   });
 }
 // Kleines Menü in der Suche, sobald die Kopfzeile aus dem Bild ist
-new IntersectionObserver(([e]) => root.classList.toggle('compact', !e.isIntersecting && mobile() || st === 'sel')).observe(header);
+new IntersectionObserver(([e]) => root.classList.toggle('compact', !e.isIntersecting && mobile() || st === 'sel' || st === 'full')).observe(header);
 window.addEventListener('resize', () => {
   // Nur bei Drehen/Breitenwechsel neu rechnen, nicht wenn die Adressleiste am Handy ein-/ausfährt
   if (window.innerWidth !== baseW || !mobileMQ.matches) { baseW = window.innerWidth; baseH = window.innerHeight; layout(); }
@@ -597,7 +606,7 @@ function openPlace(c, fromHistory) {
   select(c.id);
   const zoom = Math.max(16, map.getZoom());
   if (!mobileMQ.matches) { map.setView([c.lat, c.lng], zoom, { animate: !reduceMotion }); window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); return; }
-  if (st !== 'sel') saved = { center: map.getCenter(), zoom: map.getZoom(), y: window.scrollY };
+  if (st !== 'sel') saved = { center: map.getCenter(), zoom: map.getZoom(), y: window.scrollY, prev: st };
   sheetBody.innerHTML = card(c);
   sheet.hidden = false; sheet.style.transition = ''; sheet.style.transform = '';
   const d = sheetBody.querySelector('.desc');
@@ -618,8 +627,9 @@ function closePlace(fromHistory, silent) {
   sheet.hidden = true; sheetBody.innerHTML = '';
   select(null);
   if (!silent) {
-    setState('over');
-    root.classList.toggle('compact', header.getBoundingClientRect().bottom <= 0);
+    const back = saved && saved.prev === 'full' ? 'full' : 'over';
+    setState(back);
+    root.classList.toggle('compact', back === 'full' || header.getBoundingClientRect().bottom <= 0);
     // Zurück zu Ausschnitt und Zoom von vorher (die Scrollposition bleibt ohnehin erhalten)
     if (saved) {
       if (Math.abs(window.scrollY - saved.y) > 2) window.scrollTo(0, saved.y);
@@ -633,10 +643,37 @@ function closePlace(fromHistory, silent) {
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 sheet.querySelector('.sheet-close').addEventListener('click', () => closePlace());
 window.addEventListener('popstate', () => {
-  const id = history.state && history.state.sel;
-  if (id) { show('map'); openPlace(cafes.find(x => x.id === id), true); } else closePlace(true);
+  const hs = history.state || {};
+  if (hs.sel) { if (view !== 'map') show('map'); openPlace(cafes.find(x => x.id === hs.sel), true); return; }
+  if (!sheet.hidden) closePlace(true);
+  if (hs.full) setFull(true, true); else setFull(false, true);
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('lightbox').hidden) closePlace(); });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape' || !document.getElementById('lightbox').hidden) return;
+  if (!sheet.hidden) closePlace(); else if (st === 'full') setFull(false);
+});
+// Karte vergrößern: ganzer Bildschirm; zurück mit dem Knopf oder der Zurück-Taste
+const fullBtn = document.getElementById('fullBtn');
+let fullY = 0;
+function setFull(on, fromHistory) {
+  if (!mobile() || on === (st === 'full') || st === 'sel') return;
+  const c = map.getCenter(), z = map.getZoom();
+  if (on) {
+    fullY = window.scrollY;
+    setState('full'); root.classList.add('compact');
+    if (!fromHistory) history.pushState({ full: 1 }, '', location.pathname);
+  } else {
+    setState('over');
+    root.classList.toggle('compact', header.getBoundingClientRect().bottom <= 0);
+    if (Math.abs(window.scrollY - fullY) > 2) window.scrollTo(0, fullY);
+    if (!fromHistory && history.state && history.state.full) history.back();
+  }
+  map.setView(c, z, { animate: false });
+  fullBtn.setAttribute('aria-pressed', String(on));
+  fullBtn.setAttribute('aria-label', on ? 'Karte verkleinern' : 'Karte vergrößern');
+  updateVisible();
+}
+fullBtn.addEventListener('click', () => setFull(st !== 'full'));
 // Nach oben oder unten wegwischen schließt die Kachel (wie ✕)
 // Überall auf der Kachel startbar (auch auf „Google Maps“/„Foto“ – ein Tipp bleibt ein Tipp),
 // auch schnelles kurzes Wischen zählt, und die Kachel kann nie halb verschoben stehen bleiben.
