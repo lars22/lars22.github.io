@@ -6,4 +6,4 @@ lat: 52.3858333
 lng: 9.7244444
 favorit: true
 ---
-Kaffeerösterei 24grad.
+Kaffeerösterei und hippes Café. Sehr guter Kaffee und selbst gemachter Kuchen.

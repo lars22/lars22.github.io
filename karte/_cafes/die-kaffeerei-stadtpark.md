@@ -6,4 +6,4 @@ address: "Alter Güterbahnhof 1B, 22303 Hamburg"
 lat: 53.5915122
 lng: 10.0346192
 ---
-[Text folgt]
+Kaffeerösterei mit vielen Möglichkeiten zum Brunchen.

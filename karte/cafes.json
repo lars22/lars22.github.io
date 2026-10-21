@@ -6,7 +6,7 @@
     "address": "Engelbosteler Damm 52, 30167 Hannover",
     "lat": 52.3858333,
     "lng": 9.7244444,
-    "text": "Kaffeerösterei 24grad.",
+    "text": "Kaffeerösterei und hippes Café. Sehr guter Kaffee und selbst gemachter Kuchen.",
     "kategorie": "cafe",
     "favorite": true
   },
@@ -17,7 +17,7 @@
     "address": "Forsmannstraße 27, 22303 Hamburg",
     "lat": 53.5846935,
     "lng": 10.013285,
-    "text": "[Text folgt]",
+    "text": "Sehr guter Kaffee und eine entspannte Atmosphäre zum Verweilen.",
     "kategorie": "cafe",
     "favorite": false
   },
@@ -28,7 +28,7 @@
     "address": "Friedensallee 32, 22765 Altona",
     "lat": 53.5551647,
     "lng": 9.9268324,
-    "text": "Hippes Café in Altona",
+    "text": "Hippes Café in Altona.",
     "kategorie": "cafe",
     "favorite": false
   },
@@ -50,18 +50,7 @@
     "address": "Eppendorfer Weg 193, Hamburg",
     "lat": 53.5807019,
     "lng": 9.9685609,
-    "text": "[Text folgt]",
-    "kategorie": "cafe",
-    "favorite": false
-  },
-  {
-    "id": "deathpresso",
-    "name": "Deathpresso",
-    "area": "Hamburg",
-    "address": "Beim Grünen Jäger 24, 20359 Hamburg",
-    "lat": 53.5588824,
-    "lng": 9.9635239,
-    "text": "[Text folgt]",
+    "text": "Schickes Café mit gutem Essen – ideal zum Brunchen.",
     "kategorie": "cafe",
     "favorite": false
   },
@@ -72,7 +61,7 @@
     "address": "Alter Güterbahnhof 1B, 22303 Hamburg",
     "lat": 53.5915122,
     "lng": 10.0346192,
-    "text": "[Text folgt]",
+    "text": "Kaffeerösterei mit vielen Möglichkeiten zum Brunchen.",
     "kategorie": "cafe",
     "favorite": false
   },
@@ -83,19 +72,8 @@
     "address": "Lagerstraße 34c, 20357 Hamburg",
     "lat": 53.5631541,
     "lng": 9.9669229,
-    "text": "[Text folgt]",
+    "text": "Viele Filialen in Hamburg. Guter, selbst gerösteter Kaffee und leckere Franzbrötchen.",
     "kategorie": "cafe",
-    "favorite": false
-  },
-  {
-    "id": "kiosque",
-    "name": "kiosque.",
-    "area": "Hamburg",
-    "address": "Beim Grünen Jäger 14, 20359 Hamburg",
-    "lat": 53.5578868,
-    "lng": 9.963021,
-    "text": "[Text folgt]",
-    "kategorie": "essen",
     "favorite": false
   },
   {
@@ -116,7 +94,7 @@
     "address": "Wexstraße 28, 20355 Hamburg",
     "lat": 53.5514309,
     "lng": 9.9826435,
-    "text": "[Text folgt]",
+    "text": "Guter Kaffee, aber Lage und Sitzplätze könnten besser sein.",
     "kategorie": "cafe",
     "favorite": false
   },
@@ -127,19 +105,8 @@
     "address": "Ottenser Hauptstraße 52, 22765 Hamburg",
     "lat": 53.551803,
     "lng": 9.927173,
-    "text": "[Text folgt]",
+    "text": "Sehr coole Bar in Altona. Unbedingt die Disco-Schorle probieren!",
     "kategorie": "bar",
-    "favorite": false
-  },
-  {
-    "id": "ujote-espresso",
-    "name": "ujote espresso",
-    "area": "Hamburg",
-    "address": "Bismarckstraße 88, 20253 Hamburg",
-    "lat": 53.5768673,
-    "lng": 9.9696955,
-    "text": "[Text folgt] Laut Google Maps derzeit vorübergehend geschlossen.",
-    "kategorie": "cafe",
     "favorite": false
   },
   {
@@ -149,7 +116,7 @@
     "address": "Weidenallee 61, 20357 Hamburg",
     "lat": 53.5682858,
     "lng": 9.9639077,
-    "text": "[Text folgt]",
+    "text": "Gutes Essen und eine entspannte Atmosphäre.",
     "kategorie": "essen",
     "favorite": false
   },
@@ -160,7 +127,7 @@
     "address": "Speersort 1, 20095 Hamburg",
     "lat": 53.5495858,
     "lng": 9.9986311,
-    "text": "[Text folgt] Laut Google Maps derzeit vorübergehend geschlossen.",
+    "text": "Leckeres Café, allerdings nur mit Plätzen drinnen.",
     "kategorie": "cafe",
     "favorite": false,
     "image": "bilder/zeit-cafe-torrefaktum.jpg",

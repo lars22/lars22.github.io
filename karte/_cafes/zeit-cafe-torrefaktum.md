@@ -9,4 +9,4 @@ bild: "https://commons.wikimedia.org/wiki/Special:FilePath/Hh-pressehaus.jpg?wid
 bild_credit: "Foto: Staro1 · CC BY-SA 3.0"
 bild_link: "https://commons.wikimedia.org/wiki/File:Hh-pressehaus.jpg"
 ---
-[Text folgt] Laut Google Maps derzeit vorübergehend geschlossen.
+Leckeres Café, allerdings nur mit Plätzen drinnen.

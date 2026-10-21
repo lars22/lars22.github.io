@@ -6,4 +6,4 @@ address: "Wexstraße 28, 20355 Hamburg"
 lat: 53.5514309
 lng: 9.9826435
 ---
-[Text folgt]
+Guter Kaffee, aber Lage und Sitzplätze könnten besser sein.
