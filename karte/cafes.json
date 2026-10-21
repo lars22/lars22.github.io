@@ -129,9 +129,6 @@
     "lng": 9.9986311,
     "text": "Leckeres Café, allerdings nur mit Plätzen drinnen.",
     "kategorie": "cafe",
-    "favorite": false,
-    "image": "bilder/zeit-cafe-torrefaktum.jpg",
-    "credit": "Foto: Staro1 · CC BY-SA 3.0",
-    "creditLink": "https://commons.wikimedia.org/wiki/File:Hh-pressehaus.jpg"
+    "favorite": false
   }
 ]

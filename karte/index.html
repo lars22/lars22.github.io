@@ -3,12 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Bearista Café-Karte</title>
+<title>Bearista</title>
+<meta name="description" content="Ein kleiner Guide für Cafés, Restaurants und Bars, die ich besucht habe und weiterempfehlen würde.">
+<!-- Vorschau beim Teilen (WhatsApp, iMessage, Telegram …) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Bearista">
+<meta property="og:title" content="Bearista">
+<meta property="og:description" content="Ein kleiner Guide für Cafés, Restaurants und Bars, die ich besucht habe und weiterempfehlen würde.">
+<meta property="og:url" content="https://lars22.github.io/karte/">
+<meta property="og:image" content="https://lars22.github.io/karte/teilen.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bearista – Bär mit Kaffeebecher">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#F5F5F5">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500&family=Google+Sans:opsz,wght@17..18,400..700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="preload" href="/fonts/google-sans-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>
 /* Layout: Kopfzeile (Menü links, Logo mittig) → Karte → Infokarte, eine Spalte, max. 1120px */
 :root {
@@ -172,6 +188,7 @@ a.lb-credit:hover { color: #fff; }
 label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500; }
 input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; font: 16px var(--font-body); background: #FBFBFB; color: var(--ink); }
 .primary { align-self: flex-start; height: 48px; padding: 0 22px; border: none; border-radius: 999px; background: var(--ink); color: #fff; font: 600 15px var(--font-body); cursor: pointer; }
+.bear-smiley { white-space: nowrap; font-family: -apple-system, system-ui, "Segoe UI", sans-serif; color: var(--ink); margin-left: 2px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .search { position: relative; display: flex; align-items: center; gap: 4px; height: 52px; padding: 0 6px; border-radius: 999px; background: var(--surface); }
 .search:focus-within { outline: 3px solid var(--pink); }
@@ -234,7 +251,7 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
   <nav id="menu" aria-label="Hauptmenü" hidden>
     <button data-view="map">Karte</button>
     <button data-view="list">Alle Orte</button>
-    <button data-view="about">Über uns</button>
+    <button data-view="about">Bearista</button>
   </nav>
 
   <main>
@@ -276,8 +293,8 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
 
 
     <section id="view-about" class="card stack" style="max-width:720px" hidden>
-      <h1>Über uns</h1>
-      <p>[Kurzer Text über die Seite] Bearista sammelt Cafés, die wir selbst besucht haben und gerne weiterempfehlen.</p>
+      <h1>Bearista</h1>
+      <p>Ein kleiner Guide für Cafés, Restaurants und Bars, die ich besucht habe und weiterempfehlen würde. Gerne teilen <span class="bear-smiley" aria-label="Bär">ʕ•ᴥ•ʔ</span></p>
     </section>
   </main>
   <div id="sheet" role="dialog" aria-label="Gewählter Ort" hidden>
