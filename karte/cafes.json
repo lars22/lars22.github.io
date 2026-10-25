@@ -1,0 +1,134 @@
+[
+  {
+    "id": "24grad",
+    "name": "24grad",
+    "area": "Hannover",
+    "address": "Engelbosteler Damm 52, 30167 Hannover",
+    "lat": 52.3858333,
+    "lng": 9.7244444,
+    "text": "Kaffeerösterei und hippes Café. Sehr guter Kaffee und selbst gemachter Kuchen.",
+    "kategorie": "cafe",
+    "favorite": true
+  },
+  {
+    "id": "bean-there",
+    "name": "Bean There",
+    "area": "Hamburg",
+    "address": "Forsmannstraße 27, 22303 Hamburg",
+    "lat": 53.5846935,
+    "lng": 10.013285,
+    "text": "Sehr guter Kaffee und eine entspannte Atmosphäre zum Verweilen.",
+    "kategorie": "cafe",
+    "favorite": false
+  },
+  {
+    "id": "black_delight",
+    "name": "Black Delight",
+    "area": "Hamburg",
+    "address": "Friedensallee 32, 22765 Altona",
+    "lat": 53.5551647,
+    "lng": 9.9268324,
+    "text": "Hippes Café in Altona.",
+    "kategorie": "cafe",
+    "favorite": false
+  },
+  {
+    "id": "breworld-coffee-kyoto",
+    "name": "Breworld Coffee Kyoto",
+    "area": "Kyoto",
+    "address": "440-3 Santeicho, Kamigyo Ward, Kyoto, 602-0915, Japan",
+    "lat": 35.025042,
+    "lng": 135.755921,
+    "text": "Gemütliches und kleines Café. Super nette Inhaber!",
+    "kategorie": "cafe",
+    "favorite": false
+  },
+  {
+    "id": "cafe-roots",
+    "name": "Café Roots",
+    "area": "Hamburg",
+    "address": "Eppendorfer Weg 193, Hamburg",
+    "lat": 53.5807019,
+    "lng": 9.9685609,
+    "text": "Schickes Café mit gutem Essen – ideal zum Brunchen.",
+    "kategorie": "cafe",
+    "favorite": false
+  },
+  {
+    "id": "die-kaffeerei-stadtpark",
+    "name": "Die Kaffeerei Stadtpark",
+    "area": "Hamburg",
+    "address": "Alter Güterbahnhof 1B, 22303 Hamburg",
+    "lat": 53.5915122,
+    "lng": 10.0346192,
+    "text": "Kaffeerösterei mit vielen Möglichkeiten zum Brunchen.",
+    "kategorie": "cafe",
+    "favorite": false
+  },
+  {
+    "id": "elbgold",
+    "name": "elbgold",
+    "area": "Hamburg",
+    "address": "Lagerstraße 34c, 20357 Hamburg",
+    "lat": 53.5631541,
+    "lng": 9.9669229,
+    "text": "Viele Filialen in Hamburg. Guter, selbst gerösteter Kaffee und leckere Franzbrötchen.",
+    "kategorie": "cafe",
+    "favorite": false
+  },
+  {
+    "id": "milch",
+    "name": "Milch",
+    "area": "Hamburg",
+    "address": "Ditmar-Koel-Straße 22, 20459 Hamburg",
+    "lat": 53.5459929,
+    "lng": 9.9746958,
+    "text": "Schönes Café, aber unbedingt die Öffnungszeiten beachten.",
+    "kategorie": "cafe",
+    "favorite": false
+  },
+  {
+    "id": "public-coffee-roasters",
+    "name": "Public Coffee Roasters",
+    "area": "Hamburg",
+    "address": "Wexstraße 28, 20355 Hamburg",
+    "lat": 53.5514309,
+    "lng": 9.9826435,
+    "text": "Guter Kaffee, aber Lage und Sitzplätze könnten besser sein.",
+    "kategorie": "cafe",
+    "favorite": false
+  },
+  {
+    "id": "reh-bar",
+    "name": "Reh Bar",
+    "area": "Hamburg",
+    "address": "Ottenser Hauptstraße 52, 22765 Hamburg",
+    "lat": 53.551803,
+    "lng": 9.927173,
+    "text": "Sehr coole Bar in Altona. Unbedingt die Disco-Schorle probieren!",
+    "kategorie": "bar",
+    "favorite": false
+  },
+  {
+    "id": "weidenkantine",
+    "name": "Weidenkantine",
+    "area": "Hamburg",
+    "address": "Weidenallee 61, 20357 Hamburg",
+    "lat": 53.5682858,
+    "lng": 9.9639077,
+    "text": "Gutes Essen und eine entspannte Atmosphäre.",
+    "kategorie": "essen",
+    "favorite": false
+  },
+  {
+    "id": "zeit-cafe-torrefaktum",
+    "name": "ZEIT Café – Torrefaktum",
+    "area": "Hamburg",
+    "address": "Speersort 1, 20095 Hamburg",
+    "lat": 53.5495858,
+    "lng": 9.9986311,
+    "text": "Leckeres Café, allerdings nur mit Plätzen drinnen.",
+    "kategorie": "cafe",
+    "favorite": false
+  }
+]

@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="de">
+<head>
+<base href="/karte/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bearista Café-Karte</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500&family=Google+Sans:opsz,wght@17..18,400..700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* Layout: Kopfzeile (Menü links, Logo mittig) → Karte → Infokarte, eine Spalte, max. 1120px */
+:root {
+  --bg: #F5F5F5;
+  --surface: #FFFFFF;
+  --ink: #2B2C30;
+  --muted: #4A4B4F;
+  --line: #DCDCDC;
+  --pink: #FFB8D2;
+  --yellow: #FFF1A8;
+  --fav: #FFE38A;
+  --cat-cafe: #EBD9C6;
+  --cat-bar: #DCD4F6;
+  --cat-essen: #CDEBD6;
+  --cat-sehen: #CDE6F8;
+  --link: #8A3D5C;
+  --lift: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
+  --font-display: 'Source Serif 4', Georgia, serif;
+  --font-body: 'Google Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Google Sans Code', ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 16px 16px 56px; display: flex; flex-direction: column; gap: 20px; }
+
+header { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; padding: 8px 0; position: relative; z-index: 1000; }
+.menu-wrap { position: relative; }
+.round { width: 48px; height: 48px; border: none; border-radius: 999px; background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--lift); }
+nav { position: absolute; top: 58px; left: 0; width: 260px; background: var(--surface); border-radius: 20px; padding: 8px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.12); }
+nav button { min-height: 48px; padding: 0 14px; border: none; border-radius: 14px; background: var(--surface); text-align: left; font: 500 16px var(--font-body); color: var(--ink); cursor: pointer; }
+nav button[aria-current="page"], nav button:hover { background: var(--bg); }
+.logo { justify-self: center; display: flex; align-items: center; gap: 10px; background: none; border: none; cursor: pointer; color: var(--ink); padding: 4px 8px; }
+.logo img { height: 60px; width: auto; display: block; }
+.logo span { font: 700 28px var(--font-body); letter-spacing: -0.01em; }
+button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+
+#map { height: clamp(360px, 60vh, 620px); border-radius: 28px; overflow: hidden; background: #ECEDEA; z-index: 0; box-shadow: var(--lift); }
+.leaflet-container { font-family: var(--font-body); }
+/* Kartensteuerung: runde Buttons wie der Menü-Button (#map erhöht die Priorität gegenüber Leaflet) */
+#map .leaflet-bar { border: none; box-shadow: none; background: transparent; display: flex; flex-direction: column; gap: 10px; }
+#map .leaflet-bar a {
+  width: 44px; height: 44px; line-height: 44px; padding: 0; border: none; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface); color: var(--ink); box-shadow: var(--lift);
+}
+#map .leaflet-bar a:hover { background: var(--bg); }
+#map .leaflet-bar a.leaflet-disabled { color: #B5B5B5; background: var(--surface); }
+#map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 16px 16px 0; }
+#map .leaflet-control-attribution { border-radius: 8px 0 0 0; font-size: 10px; padding: 1px 6px; background: rgba(255,255,255,.7); color: var(--muted); }
+#map .leaflet-control-attribution a { color: var(--muted); text-decoration: none; }
+.osm-muted { filter: grayscale(0.85) brightness(1.06) contrast(0.92); }
+/* Pins: runder Kreis mit Tasse; Name erst ab Zoomstufe 14 (Klasse .show-names) oder beim gewählten Café */
+.pin { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 40px; height: 40px; padding: 0 12px; border-radius: 999px; background: var(--ink); color: #fff; font: 600 14px var(--font-body); white-space: nowrap; box-shadow: 0 6px 18px rgba(0,0,0,.2); transform: translate(-50%, -50%); transition: transform 140ms ease; box-sizing: border-box; }
+.pin-name { display: none; }
+.pin { width: 40px; padding: 0; border: 2px solid #fff; }
+.show-names .pin, .pin.on { width: auto; padding: 0 14px 0 10px; border: none; }
+.show-names .pin-name, .pin.on .pin-name { display: inline; }
+.pin svg { stroke: var(--cat, var(--pink)); flex: none; }
+.pin.fav { border-color: var(--fav); }
+.pin .fav-star { margin-left: 6px; vertical-align: -3px; stroke: var(--fav); }
+.pin.on .fav-star { stroke: var(--ink); }
+.pin.on { background: var(--pink); color: var(--ink); }
+/* Mit Namen: Sprechblase wie bei Google Maps, die Spitze sitzt genau auf dem Café */
+.pin { position: relative; }
+.show-names .pin, .pin.on {
+  transform: translate(-50%, calc(-100% - 10px)); transform-origin: 50% calc(100% + 10px);
+  box-shadow: none; filter: drop-shadow(0 4px 8px rgba(0,0,0,.22));
+}
+.show-names .pin::after, .pin.on::after {
+  content: ''; position: absolute; left: 50%; bottom: -8px; width: 16px; height: 16px; margin-left: -8px;
+  background: inherit; transform: rotate(45deg); border-radius: 0 0 3px 0;
+}
+.pin.on { transform: translate(-50%, calc(-100% - 10px)) scale(1.08); }
+.pin.on svg { stroke: var(--ink); }
+/* Gruppen: Kreis mit Anzahl der Cafés */
+.cluster-icon { background: none; border: none; display: flex; align-items: center; justify-content: center; }
+.cluster { width: 48px; height: 48px; border-radius: 50%; background: var(--pink); color: var(--ink); border: 2px solid #fff; display: flex; align-items: center; justify-content: center; font: 700 16px var(--font-body); box-shadow: 0 6px 18px rgba(0,0,0,.2); font-variant-numeric: tabular-nums; }
+.cluster.big { width: 58px; height: 58px; font-size: 17px; }
+.leaflet-div-icon.pin-icon { background: none; border: none; }
+
+.card { background: var(--surface); border-radius: 28px; padding: 28px 32px; min-height: 132px; }
+.card p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--muted); max-width: 680px; }
+.tag { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font: 13px var(--font-mono); padding: 4px 10px; border-radius: 999px; background: var(--pink); color: var(--ink); }
+.tag.fav { background: var(--fav); }
+.tag.kind { background: var(--c); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.cats { display: flex; flex-wrap: wrap; gap: 6px; }
+.cat { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 11px; border: none; border-radius: 999px; background: var(--surface); color: var(--ink); font: 13px var(--font-mono); cursor: pointer; box-shadow: var(--lift); }
+.cat .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.cat .n { color: var(--muted); }
+.cat[aria-pressed="true"] { background: var(--c); }
+.cat[aria-pressed="true"] .n { color: var(--ink); }
+.cat:is([data-cat="alle"], [data-lcat="alle"], [data-lcity="alle"])[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.cat:is([data-cat="alle"], [data-lcat="alle"], [data-lcity="alle"])[aria-pressed="true"] .n { color: #fff; }
+.filters { display: flex; flex-direction: column; gap: 10px; }
+.filter-row { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.flabel { font: 13px var(--font-mono); color: var(--muted); }
+.select-wrap { position: relative; display: inline-flex; align-items: center; }
+.select-wrap svg { position: absolute; right: 14px; pointer-events: none; color: var(--ink); }
+.city-select { appearance: none; -webkit-appearance: none; height: 40px; padding: 0 38px 0 14px; border: none; border-radius: 999px; background: var(--surface); color: var(--ink); font: 13px var(--font-mono); cursor: pointer; box-shadow: var(--lift); }
+.city-select.on { background: var(--pink); }
+.city-select:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+.cat:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+.stack { display: flex; flex-direction: column; gap: 10px; }
+h1, h2 { margin: 0; font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
+h1 { font-size: 36px; }
+h2 { font-size: 30px; }
+.addr { font: 14px var(--font-mono); color: var(--muted); }
+.photo { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 20px; margin-bottom: 20px; background: var(--bg); }
+.thumb { display: block; width: 100%; max-width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; margin-bottom: 6px; background: var(--bg); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.grid .tile { background: var(--surface); border-radius: 28px; padding: 24px 26px; display: flex; flex-direction: column; gap: 14px; cursor: pointer; }
+.tile-top { display: flex; gap: 14px; align-items: flex-start; }
+.grid .tile-main { flex: 1; min-width: 0; text-align: left; border: none; background: none; padding: 0; cursor: pointer; display: flex; flex-direction: column; gap: 10px; font-family: var(--font-body); color: var(--ink); }
+
+.tile-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.photo-btn { border: none; cursor: zoom-in; }
+.tile-main:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+.grid .desc { margin: 0; }
+.gmaps { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px; border-radius: 999px; background: var(--bg); color: var(--ink); font: 500 14px var(--font-body); text-decoration: none; }
+.gmaps:hover { background: #ECECEC; color: var(--ink); }
+.gmaps:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+.grid .name { font: 600 26px/1.2 var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
+.grid .desc { font-size: 16px; line-height: 1.6; color: var(--muted); }
+#lightbox { position: fixed; inset: 0; z-index: 2000; background: rgba(24,24,27,.95); display: flex; align-items: center; justify-content: center; padding: 20px; }
+#lightbox figure { margin: 0; max-width: min(960px, 100%); display: flex; flex-direction: column; gap: 12px; }
+#lightbox img { max-width: 100%; max-height: 78vh; border-radius: 20px; display: block; object-fit: contain; }
+#lightbox figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; color: #fff; }
+.lb-name { font: 600 20px var(--font-display); }
+.lb-credit { font: 12px var(--font-mono); color: #E6E6E6; }
+a.lb-credit:hover { color: #fff; }
+.lb-close { position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border: none; border-radius: 50%; background: #fff; color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.grid .go { font-size: 14px; font-weight: 600; color: var(--link); }
+.grid .tile.on { box-shadow: inset 0 0 0 2px var(--ink); }
+.vis-title { font: 600 22px var(--font-display); margin: 8px 0 0; }
+.vis-empty { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; }
+label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500; }
+input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; font: 16px var(--font-body); background: #FBFBFB; color: var(--ink); }
+.primary { align-self: flex-start; height: 48px; padding: 0 22px; border: none; border-radius: 999px; background: var(--ink); color: #fff; font: 600 15px var(--font-body); cursor: pointer; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.search { position: relative; z-index: 900; }
+.search-ico { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.search input { width: 100%; height: 52px; border: none; border-radius: 999px; padding: 0 20px 0 48px; background: var(--surface); box-shadow: var(--lift); }
+.search input:focus { outline: 3px solid var(--pink); outline-offset: 0; }
+#results { position: absolute; top: 60px; left: 0; right: 0; margin: 0; padding: 8px; list-style: none; background: var(--surface); border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 16px 40px rgba(0,0,0,.12); max-height: 320px; overflow-y: auto; }
+#results button { width: 100%; min-height: 48px; padding: 8px 14px; border: none; border-radius: 14px; background: var(--surface); text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 2px; font: 500 16px var(--font-body); color: var(--ink); }
+#results button:hover, #results button:focus-visible { background: var(--bg); }
+#results small { font: 13px var(--font-mono); color: var(--muted); }
+#results .empty { padding: 12px 14px; color: var(--muted); }
+@media (max-width: 480px) { .logo img { height: 48px; } .logo span { font-size: 24px; } .card { padding: 22px; } }
+@media (prefers-reduced-motion: reduce) { .pin { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="menu-wrap">
+      <button class="round" id="menuBtn" aria-label="Menü" aria-expanded="false" aria-controls="menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2B2C30" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h10"/></svg>
+      </button>
+      <nav id="menu" aria-label="Hauptmenü" hidden>
+        <button data-view="map">Karte</button>
+        <button data-view="list">Alle Orte</button>
+        <button data-view="about">Über uns</button>
+      </nav>
+    </div>
+    <button class="logo" data-view="map" aria-label="Bearista – zur Karte">
+      <img src="data:image/png;base64,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" alt="">
+      <span>Bearista</span>
+    </button>
+    <div></div>
+  </header>
+
+  <main>
+    <section id="view-map" class="stack" style="gap:16px">
+      <div class="search" role="search">
+        <svg class="search-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A4B4F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label for="q" class="sr-only">Ort oder Adresse suchen</label>
+        <input id="q" type="search" placeholder="Ort oder Adresse suchen" autocomplete="off" aria-controls="results" aria-expanded="false">
+        <ul id="results" role="listbox" hidden></ul>
+      </div>
+      <div id="map" role="region" aria-label="Karte mit Orten"></div>
+      <div class="cats" id="cats" role="group" aria-label="Nach Kategorie filtern"></div>
+      <section class="stack" aria-labelledby="visTitle">
+        <h2 id="visTitle" class="sr-only">Orte im Kartenausschnitt</h2>
+        <div class="grid" id="visible" aria-live="polite"></div>
+      </section>
+    </section>
+
+    <section id="view-list" class="stack" hidden>
+      <h1>Alle Orte</h1>
+      <div class="filters">
+        <div class="filter-row"><label class="flabel" for="listCity">Ort</label>
+          <div class="select-wrap"><select id="listCity" class="city-select"></select>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div></div>
+        <div class="filter-row"><span class="flabel" id="lblTyp">Typ</span><div class="cats" id="listCats" role="group" aria-labelledby="lblTyp"></div></div>
+      </div>
+      <div class="grid" id="list"></div>
+    </section>
+
+
+    <section id="view-about" class="card stack" style="max-width:720px" hidden>
+      <h1>Über uns</h1>
+      <p>[Kurzer Text über die Seite] Bearista sammelt Cafés, die wir selbst besucht haben und gerne weiterempfehlen.</p>
+    </section>
+  </main>
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Foto" hidden>
+    <button class="lb-close" aria-label="Schließen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <figure><img src="" alt=""><figcaption><span class="lb-name"></span><a class="lb-credit" target="_blank" rel="noopener"></a></figcaption></figure>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@maplibre/maplibre-gl-leaflet@0.0.22/leaflet-maplibre-gl.js"></script>
+<script>
+// Die Cafés kommen aus cafes.json. Die GitHub Action erzeugt diese Datei
+// automatisch aus den Dateien im Ordner karte/_cafes (eine .md-Datei pro Café).
+let cafes = [], loadError = false;
+
+const menu = document.getElementById('menu'), menuBtn = document.getElementById('menuBtn');
+menuBtn.addEventListener('click', () => { menu.hidden = !menu.hidden; menuBtn.setAttribute('aria-expanded', String(!menu.hidden)); });
+function show(view) {
+  ['map', 'list', 'about'].forEach(v => document.getElementById('view-' + v).hidden = v !== view);
+  menu.querySelectorAll('button').forEach(b => {
+    if (b.dataset.view === view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+  });
+  menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false');
+  if (view === 'map' && window.map && map.invalidateSize) setTimeout(() => map.invalidateSize(), 0);
+}
+document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
+
+const CATS = {
+  cafe:  { label: 'Café', one: 'Café', color: 'var(--cat-cafe)', pin: '#E2C6A6',
+           icon: '<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/>' },
+  bar:   { label: 'Bar', one: 'Bar', color: 'var(--cat-bar)', pin: '#C9BDF2',
+           icon: '<path d="M6 4h12l-6 8z"/><path d="M12 12v7"/><path d="M8.5 19h7"/>' },
+  essen: { label: 'Essen', one: 'Essen', color: 'var(--cat-essen)', pin: '#A9DDB9',
+           icon: '<path d="M7 3v8"/><path d="M5 3v4a2 2 0 0 0 4 0V3"/><path d="M7 11v10"/><path d="M17 21V3c-2 1.5-3 4-3 7h3"/>' },
+  sehen: { label: 'Sehenswertes', one: 'Sehenswert', color: 'var(--cat-sehen)', pin: '#AED6F4',
+           icon: '<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>' }
+};
+const catOf = c => CATS[c.kategorie] ? c.kategorie : 'cafe';
+const catIcon = k => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + CATS[k].icon + '</svg>';
+let activeCat = 'alle';
+const shown = c => activeCat === 'alle' || catOf(c) === activeCat;
+function drawFilter() {
+  // Café, Bar und Essen immer zeigen, weitere Kategorien nur, wenn es Einträge gibt
+  const present = Object.keys(CATS).filter(k => ['cafe', 'bar', 'essen'].includes(k) || cafes.some(c => catOf(c) === k));
+  const btn = (k, label, color, n) => '<button class="cat" data-cat="' + k + '" aria-pressed="' + (activeCat === k) + '" style="--c:' + color + '">' +
+    (k === 'alle' ? '' : '<span class="dot" aria-hidden="true"></span>') + label + ' <span class="n">' + n + '</span></button>';
+  document.getElementById('cats').innerHTML = btn('alle', 'Alle', 'var(--ink)', 0) +
+    present.map(k => btn(k, CATS[k].label, CATS[k].color, 0)).join('');
+  updateCounts();
+}
+// Anzahl je Kategorie im aktuellen Kartenausschnitt
+function updateCounts() {
+  const b = map.getBounds();
+  const inView = cafes.filter(c => b.contains([c.lat, c.lng]));
+  document.querySelectorAll('#cats .cat').forEach(btn => {
+    const k = btn.dataset.cat;
+    btn.querySelector('.n').textContent = k === 'alle' ? inView.length : inView.filter(c => catOf(c) === k).length;
+  });
+}
+document.getElementById('cats').addEventListener('click', e => {
+  const b = e.target.closest('[data-cat]'); if (!b) return;
+  activeCat = b.dataset.cat;
+  cluster.clearLayers();
+  cafes.filter(shown).forEach(c => cluster.addLayer(markers[c.id]));
+  drawFilter(); updateVisible();
+});
+const cup = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/></svg>';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// Start: Hamburg
+const START = { center: [53.5600, 9.9700], zoom: 12 };
+var map = L.map('map', { zoomControl: false, scrollWheelZoom: false, minZoom: 3, maxZoom: 19 }).setView(START.center, START.zoom);
+// Leaflet-Hinweis ausblenden (Lizenz erlaubt das); die Kartendaten-Nennung muss bleiben
+map.attributionControl.setPrefix(false);
+const ico = d => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="' + d + '"/></svg>';
+L.control.zoom({
+  position: 'bottomright',
+  zoomInText: ico('M12 6v12M6 12h12'), zoomInTitle: 'Hineinzoomen',
+  zoomOutText: ico('M6 12h12'), zoomOutTitle: 'Herauszoomen'
+}).addTo(map);
+// Moderne Vektorkarte von OpenFreeMap (kostenlos, ohne Schlüssel), reduziert und
+// in den Blog-Farben eingefärbt. Falls das nicht klappt: einfache OpenStreetMap-Karte.
+const MAP_COLORS = {
+  land: '#F3F3F1', water: '#CFEFFA', green: '#E2EFDA', building: '#EAEAE8',
+  road: '#FFFFFF', casing: '#E3E3E1', bigRoad: '#FFF1A8', label: '#6B6C70'
+};
+// Diese Ebenen werden ausgeblendet, damit die Karte ruhiger wirkt
+const HIDE_LAYERS = /^(highway_path|highway-name-path|highway-shield|road_shield|railway|airport|aeroway|label_other|boundary|tunnel_|road_area_pier|road_pier)/;
+function styleMap(style) {
+  style.layers = style.layers.filter(l => !HIDE_LAYERS.test(l.id));
+  for (const l of style.layers) {
+    const p = l.paint = l.paint || {}, id = l.id, C = MAP_COLORS;
+    if (id === 'background') p['background-color'] = C.land;
+    else if (id === 'water') p['fill-color'] = C.water;
+    else if (id === 'waterway') p['line-color'] = C.water;
+    else if (/park|wood/.test(id)) { p['fill-color'] = C.green; p['fill-opacity'] = 0.9; }
+    else if (id === 'landuse_residential') p['fill-opacity'] = 0;
+    else if (id === 'building') { p['fill-color'] = C.building; p['fill-outline-color'] = C.building; }
+    else if (/casing/.test(id)) p['line-color'] = C.casing;
+    else if (/motorway_(inner|subtle)|motorway_bridge_inner/.test(id)) p['line-color'] = C.bigRoad;
+    else if (/^highway_(minor|major_inner|major_subtle)$/.test(id)) p['line-color'] = C.road;
+    if (l.type === 'symbol') { p['text-color'] = C.label; p['text-halo-color'] = '#FFFFFF'; p['text-halo-width'] = 1.5; }
+  }
+  return style;
+}
+function osmFallback() {
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19, className: 'osm-muted',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+}
+fetch('https://tiles.openfreemap.org/styles/positron')
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(style => {
+    if (!window.maplibregl || !L.maplibreGL) throw new Error('MapLibre fehlt');
+    L.maplibreGL({
+      style: styleMap(style),
+      attribution: '<a href="https://openfreemap.org" target="_blank">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+    }).addTo(map);
+  })
+  .catch(osmFallback);
+
+const markers = {};
+// Ab dieser Zoomstufe: Namen an den Pins zeigen und nicht mehr gruppieren
+const NAME_ZOOM = 14;
+// Gruppierung; falls die Erweiterung nicht lädt, werden die Pins einfach einzeln gezeigt
+const cluster = !L.markerClusterGroup ? L.layerGroup().addTo(map) : L.markerClusterGroup({
+  maxClusterRadius: 56,
+  disableClusteringAtZoom: NAME_ZOOM,
+  showCoverageOnHover: false,
+  spiderfyOnMaxZoom: false,
+  iconCreateFunction: g => {
+    const n = g.getChildCount();
+    return L.divIcon({
+      className: 'cluster-icon', iconSize: [58, 58],
+      html: '<div class="cluster' + (n >= 10 ? ' big' : '') + '" aria-label="' + n + ' Orte">' + n + '</div>'
+    });
+  }
+}).addTo(map);
+function updateNames() { map.getContainer().classList.toggle('show-names', map.getZoom() >= NAME_ZOOM); }
+map.on('zoomend', updateNames);
+updateNames();
+let selected = null;
+function icon(c, on) {
+  return L.divIcon({ className: 'pin-icon', iconSize: null, html: '<div class="pin' + (c.favorite ? ' fav' : '') + (on ? ' on' : '') + '" style="--cat:' + CATS[catOf(c)].pin + '">' + catIcon(catOf(c)) + '<span class="pin-name">' + esc(c.name) + (c.favorite ? '<svg class="fav-star" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Favorit"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></svg>' : '') + '</span></div>' });
+}
+function select(id) {
+  selected = id;
+  cafes.forEach(c => markers[c.id].setIcon(icon(c, c.id === id)));
+  if (typeof updateVisible === 'function') updateVisible();
+}
+function drawCafes() {
+  cafes.forEach(c => {
+    markers[c.id] = L.marker([c.lat, c.lng], { icon: icon(c, false), title: c.name, keyboard: true })
+      .on('click', () => select(c.id));
+    if (shown(c)) cluster.addLayer(markers[c.id]);
+  });
+  drawFilter();
+
+  drawList();
+  updateVisible();
+}
+function card(c) {
+  // Kachel: Marken, Name und Adresse, rechts ein kleines Foto (Tipp = groß), darunter Text und Google-Maps-Link
+  const maps = c.google || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([c.name, c.address].filter(Boolean).join(', ')));
+  return '<div class="tile' + (c.id === selected ? ' on' : '') + '" data-cafe="' + esc(c.id) + '">' +
+    '<div class="tile-top">' +
+    '<button class="tile-main" data-cafe="' + esc(c.id) + '"' + (c.id === selected ? ' aria-current="true"' : '') + '>' +
+    '<span class="tags">' + (c.area ? '<span class="tag">' + esc(c.area) + '</span>' : '') +
+    '<span class="tag kind" style="--c:' + CATS[catOf(c)].color + '">' + CATS[catOf(c)].one + '</span>' +
+    (c.favorite ? '<span class="tag fav"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>Favorit</span>' : '') + '</span>' +
+    '<span class="name">' + esc(c.name) + '</span>' +
+    (c.address ? '<span class="addr">' + esc(c.address) + '</span>' : '') +
+    '</button>' +
+    '</div>' +
+    (c.text ? '<p class="desc">' + esc(c.text) + '</p>' : '') +
+    '<div class="tile-actions"><a class="gmaps" href="' + esc(maps) + '" target="_blank" rel="noopener">' +
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>' +
+    'Google Maps</a>' +
+    (c.image ? '<button class="gmaps photo-btn" data-photo="' + esc(c.id) + '" aria-label="Foto von ' + esc(c.name) + ' ansehen">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>Foto</button>' : '') +
+    '</div></div>';
+}
+// Großansicht eines Fotos mit Bildnachweis
+function openPhoto(c) {
+  const lb = document.getElementById('lightbox');
+  lb.querySelector('img').src = c.image; lb.querySelector('img').alt = 'Foto von ' + c.name;
+  lb.querySelector('.lb-name').textContent = c.name;
+  const cr = lb.querySelector('.lb-credit');
+  cr.textContent = c.credit || ''; cr.hidden = !c.credit;
+  if (c.creditLink) cr.setAttribute('href', c.creditLink); else cr.removeAttribute('href');
+  lb.hidden = false; lb.querySelector('.lb-close').focus();
+}
+function closePhoto() { document.getElementById('lightbox').hidden = true; }
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-photo]');
+  if (t) { e.stopPropagation(); openPhoto(cafes.find(x => x.id === t.dataset.photo)); return; }
+  if (e.target.closest('.lb-close') || e.target.id === 'lightbox') closePhoto();
+}, true);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePhoto(); });
+// Kacheln unter der Karte: alle Cafés, die gerade im Kartenausschnitt liegen
+// „Alle Orte“: Filter nach Typ und Ort
+let listCat = 'alle', listCity = 'alle';
+function drawList() {
+  const byCat = c => listCat === 'alle' || catOf(c) === listCat;
+  const byCity = c => listCity === 'alle' || c.area === listCity;
+  const cities = [...new Set(cafes.map(c => c.area).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'de'));
+  const cats = Object.keys(CATS).filter(k => ['cafe', 'bar', 'essen'].includes(k) || cafes.some(c => catOf(c) === k));
+  const chip = (attr, k, label, color, n, on) => '<button class="cat" ' + attr + '="' + esc(k) + '" aria-pressed="' + on + '" style="--c:' + color + '">' +
+    (k === 'alle' ? '' : '<span class="dot" aria-hidden="true"></span>') + esc(label) + ' <span class="n">' + n + '</span></button>';
+  const inCity = cafes.filter(byCity), inCat = cafes.filter(byCat);
+  document.getElementById('listCats').innerHTML = chip('data-lcat', 'alle', 'Alle', 'var(--ink)', inCity.length, listCat === 'alle') +
+    cats.map(k => chip('data-lcat', k, CATS[k].label, CATS[k].color, inCity.filter(c => catOf(c) === k).length, listCat === k)).join('');
+  const sel = document.getElementById('listCity');
+  sel.innerHTML = '<option value="alle">Alle Orte (' + inCat.length + ')</option>' +
+    cities.map(k => '<option value="' + esc(k) + '">' + esc(k) + ' (' + inCat.filter(c => c.area === k).length + ')</option>').join('');
+  sel.value = listCity;
+  sel.classList.toggle('on', listCity !== 'alle');
+  const list = cafes.filter(c => byCat(c) && byCity(c)).sort((a, b) => a.name.localeCompare(b.name, 'de'));
+  document.getElementById('list').innerHTML = list.length ? list.map(c => card(c)).join('')
+    : '<p class="vis-empty">' + (cafes.length ? 'Keine Orte mit dieser Auswahl.' : 'Noch keine Orte eingetragen.') + '</p>';
+}
+document.getElementById('listCats').addEventListener('click', e => {
+  const b = e.target.closest('[data-lcat]'); if (!b) return; listCat = b.dataset.lcat; drawList();
+});
+document.getElementById('listCity').addEventListener('change', e => { listCity = e.target.value; drawList(); });
+function updateVisible() {
+  updateCounts();
+  const box = document.getElementById('visible'), title = document.getElementById('visTitle');
+  if (!cafes.length) {
+    title.textContent = 'Cafés im Kartenausschnitt';
+    box.innerHTML = '<p class="vis-empty">' + (loadError ? 'Die Liste der Orte konnte nicht geladen werden. Lade die Seite bitte neu.' : 'Noch keine Orte eingetragen.') + '</p>';
+    return;
+  }
+  const b = map.getBounds();
+  const vis = cafes.filter(c => shown(c) && b.contains([c.lat, c.lng])).sort((x, y) => (y.id === selected) - (x.id === selected));
+  title.textContent = (vis.length === 1 ? '1 Ort' : vis.length + ' Orte') + ' im Kartenausschnitt';
+  box.innerHTML = vis.length ? vis.map(c => card(c)).join('')
+    : '<p class="vis-empty">Hier gibt es nichts in dieser Kategorie. Zoome heraus oder wähle „Alle“.</p>';
+}
+map.on('moveend', updateVisible);
+// Café auf der Karte hervorheben, ohne den Ausschnitt unnötig zu ändern
+function focusCafe(c) {
+  select(c.id);
+  map.setView([c.lat, c.lng], Math.max(16, map.getZoom()));
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('map').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+document.getElementById('visible').addEventListener('click', e => {
+  if (e.target.closest('a')) return;
+  const b = e.target.closest('[data-cafe]'); if (!b) return;
+  focusCafe(cafes.find(x => x.id === b.dataset.cafe));
+});
+fetch('cafes.json', { cache: 'no-cache' })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(data => { cafes = data.filter(c => isFinite(c.lat) && isFinite(c.lng)); drawCafes(); })
+  .catch(() => { loadError = true; drawCafes(); });
+
+document.getElementById('list').addEventListener('click', e => {
+  if (e.target.closest('a')) return;
+  const b = e.target.closest('[data-cafe]'); if (!b) return;
+  show('map'); focusCafe(cafes.find(x => x.id === b.dataset.cafe));
+});
+// Suche: zuerst passende Cafés, danach Orte über OpenStreetMap (Nominatim)
+const q = document.getElementById('q'), results = document.getElementById('results');
+let placeMarker = null, timer = null, lastQuery = '';
+function openResults(html) { results.innerHTML = html; results.hidden = false; q.setAttribute('aria-expanded', 'true'); }
+function closeResults() { results.hidden = true; q.setAttribute('aria-expanded', 'false'); }
+function norm(s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+function render(term, places) {
+  const t = norm(term);
+  const hits = cafes.filter(c => norm(c.name + ' ' + c.area + ' ' + c.address).includes(t));
+  let html = hits.map(c => '<li><button data-hit-cafe="' + esc(c.id) + '">' + esc(c.name) + '<small>Café · ' + esc(c.area) + '</small></button></li>').join('');
+  if (places === 'loading') html += '<li class="empty">Orte werden gesucht …</li>';
+  else if (places) html += places.map((p, i) => '<li><button data-hit-place="' + i + '">' + esc(p.name || p.display_name.split(',')[0]) +
+    '<small>Ort · ' + esc(p.display_name.split(',').slice(1, 3).join(',').trim()) + '</small></button></li>').join('');
+  if (!html) html = '<li class="empty">Nichts gefunden.</li>';
+  openResults(html);
+}
+let placeHits = [];
+q.addEventListener('input', () => {
+  const term = q.value.trim(); clearTimeout(timer);
+  if (term.length < 2) { closeResults(); return; }
+  render(term, 'loading');
+  timer = setTimeout(async () => {
+    lastQuery = term;
+    try {
+      const r = await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=4&accept-language=de&q=' + encodeURIComponent(term));
+      const data = await r.json();
+      if (lastQuery !== term) return;
+      placeHits = data; render(term, data);
+    } catch (err) { if (lastQuery === term) { placeHits = []; render(term, []); } }
+  }, 600);
+});
+results.addEventListener('click', e => {
+  const cb = e.target.closest('[data-hit-cafe]'), pb = e.target.closest('[data-hit-place]');
+  if (cb) { const c = cafes.find(x => x.id === cb.dataset.hitCafe); map.setView([c.lat, c.lng], 16); select(c.id); }
+  if (pb) {
+    const p = placeHits[+pb.dataset.hitPlace];
+    map.setView([+p.lat, +p.lon], 15);
+    if (placeMarker) placeMarker.remove();
+    placeMarker = L.circleMarker([+p.lat, +p.lon], { radius: 9, color: '#2B2C30', weight: 3, fillColor: '#A7E8FF', fillOpacity: 1 }).addTo(map);
+  }
+  q.value = (cb || pb) ? (cb ? cafes.find(x => x.id === cb.dataset.hitCafe).name : q.value) : q.value;
+  closeResults();
+});
+q.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeResults();
+  if (e.key === 'Enter') { const first = results.querySelector('button'); if (first) { e.preventDefault(); first.click(); } }
+});
+document.addEventListener('click', e => { if (!e.target.closest('.search')) closeResults(); });
+
+</script>
+</body>
+</html>

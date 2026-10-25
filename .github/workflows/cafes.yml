@@ -1,0 +1,56 @@
+name: Café-Karte aktualisieren
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'karte/_cafes/**'
+      - 'karte/bilder/**'
+      - '.github/scripts/build-cafes.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cafes
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Große Fotos verkleinern (max. 1600 px)
+        run: |
+          shopt -s nullglob nocaseglob
+          files=(karte/bilder/*.jpg karte/bilder/*.jpeg karte/bilder/*.png karte/bilder/*.webp)
+          [ ${#files[@]} -eq 0 ] && { echo "Keine Bilder."; exit 0; }
+          command -v mogrify >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick; }
+          for f in "${files[@]}"; do
+            read -r w h < <(identify -format '%w %h' "$f[0]")
+            if [ "$w" -gt 1600 ] || [ "$h" -gt 1600 ]; then
+              echo "Verkleinere $f ($w×$h)"
+              mogrify -auto-orient -resize '1600x1600>' -strip -quality 82 "$f"
+            fi
+          done
+
+      - name: cafes.json aus den Café-Dateien erzeugen
+        run: node .github/scripts/build-cafes.mjs
+
+      - name: Änderungen speichern
+        run: |
+          git add karte/cafes.json karte/bilder 2>/dev/null || git add karte/cafes.json
+          if git diff --cached --quiet; then
+            echo "Keine Änderungen."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Café-Karte aktualisiert"
+          git push

@@ -1,0 +1,85 @@
+name: Neuer Ort aus Formular
+
+on:
+  issues:
+    # Auch beim Bearbeiten, damit ein korrigiertes Formular nochmal verarbeitet wird
+    types: [opened, edited, reopened]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: cafes
+  cancel-in-progress: false
+
+jobs:
+  anlegen:
+    # Nur Formulare vom Repo-Besitzer verarbeiten, damit Fremde nichts eintragen können
+    # Erkennt ein Orts-Formular am Inhalt (Felder „Name“ und „Adresse“), egal wie der Titel lautet
+    if: >-
+      github.event.issue.state == 'open' &&
+      github.event.issue.user.login == github.repository_owner &&
+      contains(github.event.issue.body, '### Name') &&
+      contains(github.event.issue.body, '### Adresse')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ISSUE: ${{ github.event.issue.number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Datei aus dem Formular anlegen
+        id: ort
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          mkdir -p karte/bilder
+          node .github/scripts/issue-to-place.mjs
+
+      - name: Foto verkleinern (max. 1600 px)
+        run: |
+          shopt -s nullglob nocaseglob
+          files=(karte/bilder/*.jpg karte/bilder/*.jpeg karte/bilder/*.png karte/bilder/*.webp)
+          [ ${#files[@]} -eq 0 ] && exit 0
+          command -v mogrify >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick; }
+          for f in "${files[@]}"; do
+            read -r w h < <(identify -format '%w %h' "$f[0]")
+            if [ "$w" -gt 1600 ] || [ "$h" -gt 1600 ]; then mogrify -auto-orient -resize '1600x1600>' -strip -quality 82 "$f"; fi
+          done
+
+      - name: Karte aktualisieren
+        run: node .github/scripts/build-cafes.mjs
+
+      - name: Speichern
+        env:
+          NAME: ${{ steps.ort.outputs.name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add karte
+          git commit -m "Neuer Ort: ${NAME} (#${ISSUE})"
+          git push
+
+      - name: Formular schließen
+        env:
+          WARNING: ${{ steps.ort.outputs.warning }}
+          FILE: ${{ steps.ort.outputs.file }}
+        run: |
+          msg="Eingetragen. In 1–2 Minuten ist der Ort auf https://lars22.github.io/karte/ zu sehen. Datei: \`$FILE\`"
+          [ -n "$WARNING" ] && msg="$msg
+
+          Hinweis: $WARNING"
+          gh issue close "$ISSUE" -R "$GITHUB_REPOSITORY" --comment "$msg"
+
+      - name: Fehler melden
+        if: failure()
+        env:
+          ERROR: ${{ steps.ort.outputs.error }}
+        run: |
+          msg="${ERROR:-Beim Eintragen ist ein Fehler aufgetreten. Details stehen im Reiter Actions.}"
+          gh issue comment "$ISSUE" -R "$GITHUB_REPOSITORY" --body "Nicht eingetragen: $msg"
