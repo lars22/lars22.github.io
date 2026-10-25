@@ -164,7 +164,7 @@ h2 { font-size: 30px; }
 .tile-top { display: flex; gap: 14px; align-items: flex-start; }
 .grid .tile-main { flex: 1; min-width: 0; text-align: left; border: none; background: none; padding: 0; cursor: pointer; display: flex; flex-direction: column; gap: 10px; font-family: var(--font-body); color: var(--ink); }
 
-.tile-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.tile-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
 .photo-btn { border: none; cursor: zoom-in; }
 .tile-main:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
 .grid .desc { margin: 0; }
@@ -189,6 +189,9 @@ label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-w
 input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; font: 16px var(--font-body); background: #FBFBFB; color: var(--ink); }
 .primary { align-self: flex-start; height: 48px; padding: 0 22px; border: none; border-radius: 999px; background: var(--ink); color: #fff; font: 600 15px var(--font-body); cursor: pointer; }
 .bear-smiley { white-space: nowrap; font-family: -apple-system, system-ui, "Segoe UI", sans-serif; color: var(--ink); margin-left: 2px; }
+.about { max-width: 560px; width: 100%; margin: 32px auto 0; text-align: center; align-items: center; padding: 36px 32px 40px; }
+.about p { margin: 0 auto; }
+.about-bear { width: 72px; height: 72px; border-radius: 20px; display: block; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .search { position: relative; display: flex; align-items: center; gap: 4px; height: 52px; padding: 0 6px; border-radius: 999px; background: var(--surface); }
 .search:focus-within { outline: 3px solid var(--pink); }
@@ -221,11 +224,16 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
 }
 /* Großer Bildschirm: Liste links, Karte rechts, beides immer sichtbar */
 @media (min-width: 900px) {
-  #view-map:not([hidden]) { display: grid; grid-template-columns: minmax(320px, 400px) minmax(0, 1fr); gap: 16px; align-items: start; }
-  #mapwrap { grid-column: 2; grid-row: 1; position: sticky; top: 16px; }
-  .map-top { grid-column: 2; grid-row: 1; position: sticky; top: 28px; margin: 12px 12px 0; align-self: start; }
-  #mapbox { height: calc(100vh - 140px); min-height: 420px; }
-  .listsec { grid-column: 1; grid-row: 1; }
+  /* Kopfzeile (Menü + Logo) bleibt beim Scrollen stehen */
+  header { position: sticky; top: 0; padding: 12px 0; background: var(--bg); }
+  header::before { content: ''; position: absolute; inset: 0 -50vw; background: var(--bg); z-index: -1; }
+  .wrap { padding-top: 4px; }
+  /* Karte links, Orte rechts */
+  #view-map:not([hidden]) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 420px); gap: 16px; align-items: start; }
+  #mapwrap { grid-column: 1; grid-row: 1; position: sticky; top: 104px; }
+  .map-top { grid-column: 1; grid-row: 1; position: sticky; top: 116px; margin: 12px 12px 0; align-self: start; }
+  #mapbox { height: calc(100vh - 124px); min-height: 420px; }
+  .listsec { grid-column: 2; grid-row: 1; }
   .listsec .grid { grid-template-columns: 1fr; }
   .map-expand { display: none; }
   #map .leaflet-bottom.leaflet-right .leaflet-control-zoom { margin: 0 12px 18px 0; }
@@ -292,7 +300,8 @@ input, textarea { border: 1px solid var(--line); border-radius: 14px; padding: 1
     </section>
 
 
-    <section id="view-about" class="card stack" style="max-width:720px" hidden>
+    <section id="view-about" class="card stack about" hidden>
+      <img class="about-bear" src="icon.png" alt="" width="72" height="72">
       <h1>Bearista</h1>
       <p>Ein kleiner Guide für Cafés, Restaurants und Bars, die ich besucht habe und weiterempfehlen würde. Gerne teilen <span class="bear-smiley" aria-label="Bär">ʕ•ᴥ•ʔ</span></p>
     </section>
