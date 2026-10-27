@@ -79,6 +79,19 @@ if (errors.length) {
 for (const { cafe, file, queries } of geocode) {
   let hit = null;
   for (const q of queries) {
+    // Japanische Adressen: Adresssuche des japanischen Vermessungsamts (GSI), genau bis zur Hausnummer
+    if (/[\u3040-\u30ff\u4e00-\u9fff]/.test(q)) {
+      try {
+        const r = await fetch('https://msearch.gsi.go.jp/address-search/AddressSearch?q=' + encodeURIComponent(q));
+        const data = r.ok ? await r.json() : [];
+        if (data.length) {
+          const [lon, lat] = data[0].geometry.coordinates;
+          hit = { lat, lon, display_name: data[0].properties.title + ' (GSI)' };
+          console.log(`${cafe.id}: gefunden über „${q}“ → ${hit.display_name}`);
+          break;
+        }
+      } catch (e) { console.log(`${cafe.id}: GSI-Suche „${q}“ fehlgeschlagen (${e.message})`); }
+    }
     try {
       const r = await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=' + encodeURIComponent(q),
         { headers: { 'User-Agent': 'lars22.github.io Cafe-Karte (GitHub Action)', 'Accept-Language': 'de' } });
