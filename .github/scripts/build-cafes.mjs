@@ -7,6 +7,7 @@ const dir = 'karte/_cafes';
 const out = 'karte/cafes.json';
 const errors = [];
 const downloads = [];
+const geocode = []; // Orte ohne Koordinaten: werden über die Adresse gesucht
 
 function parseValue(raw) {
   const v = raw.trim();
@@ -59,11 +60,40 @@ const cafes = readdirSync(dir)
     // Optional: eigener Google-Maps-Link ("google: https://maps.app.goo.gl/...")
     if (/^https:\/\//.test(String(data.google ?? ''))) cafe.google = String(data.google);
     if (!cafe.name) errors.push(`${f}: name fehlt`);
-    if (!Number.isFinite(cafe.lat) || !Number.isFinite(cafe.lng)) errors.push(`${f}: lat/lng fehlen oder sind keine Zahlen`);
+    if (!Number.isFinite(cafe.lat) || !Number.isFinite(cafe.lng)) {
+      // Ohne Koordinaten: über „geo:“ (Suchbegriff) bzw. die Adresse suchen und in die Datei schreiben
+      const queries = [data.geo, cafe.address, [cafe.name, cafe.area].filter(Boolean).join(', ')].map(q => String(q ?? '').trim()).filter(Boolean);
+      if (queries.length) geocode.push({ cafe, file: join(dir, f), queries });
+      else errors.push(`${f}: lat/lng fehlen und es gibt keine Adresse zum Suchen`);
+    }
     return cafe;
   })
   .filter(Boolean);
 
+if (errors.length) {
+  console.error('Fehler in den Café-Dateien:\n- ' + errors.join('\n- '));
+  process.exit(1);
+}
+
+// Koordinaten suchen (OpenStreetMap/Nominatim, höchstens 1 Anfrage pro Sekunde)
+for (const { cafe, file, queries } of geocode) {
+  let hit = null;
+  for (const q of queries) {
+    try {
+      const r = await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=' + encodeURIComponent(q),
+        { headers: { 'User-Agent': 'lars22.github.io Cafe-Karte (GitHub Action)', 'Accept-Language': 'de' } });
+      const data = r.ok ? await r.json() : [];
+      if (data.length) { hit = data[0]; console.log(`${cafe.id}: gefunden über „${q}“ → ${hit.display_name}`); }
+    } catch (e) { console.log(`${cafe.id}: Suche „${q}“ fehlgeschlagen (${e.message})`); }
+    await new Promise(res => setTimeout(res, 1100));
+    if (hit) break;
+  }
+  if (!hit) { errors.push(`${cafe.id}: Koordinaten nicht gefunden – bitte lat/lng eintragen (in Google Maps lange auf den Ort drücken)`); continue; }
+  cafe.lat = Number(Number(hit.lat).toFixed(7)); cafe.lng = Number(Number(hit.lon).toFixed(7));
+  // In die Datei schreiben, damit nicht jedes Mal neu gesucht wird
+  const text = readFileSync(file, 'utf8').replace(/\r\n/g, '\n').replace(/^(lat|lng):.*\n/gm, '');
+  writeFileSync(file, text.replace(/^(---\n[\s\S]*?)\n---\n/, `$1\nlat: ${cafe.lat}\nlng: ${cafe.lng}\n---\n`));
+}
 if (errors.length) {
   console.error('Fehler in den Café-Dateien:\n- ' + errors.join('\n- '));
   process.exit(1);

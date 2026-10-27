@@ -45,7 +45,7 @@ jobs:
 
       - name: Änderungen speichern
         run: |
-          git add karte/cafes.json karte/bilder 2>/dev/null || git add karte/cafes.json
+          git add karte/cafes.json karte/_cafes karte/bilder 2>/dev/null || git add karte/cafes.json karte/_cafes
           if git diff --cached --quiet; then
             echo "Keine Änderungen."
             exit 0

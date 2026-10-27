@@ -21,6 +21,9 @@ So fügst du ein neues Café hinzu:
    Große Fotos werden automatisch auf max. 1600 px verkleinert.
    Fremde Fotos nur mit freier Lizenz (z. B. Wikimedia Commons): bei "bild:" den Link eintragen,
    dazu bild_credit: "Foto: Name · Lizenz" und bild_link: Link zur Quelle. Das Bild wird automatisch übernommen.
+   Koordinaten (lat/lng) sind optional: Fehlen sie, werden sie automatisch über die Adresse gesucht
+   und in die Datei eingetragen. Klappt das nicht (z. B. bei japanischen Adressen), hilft eine Zeile
+   geo: "東京都中央区銀座6-12-13" mit der Adresse in Landessprache.
    Kategorie: "cafe", "bar", "essen" oder "sehen".
    Favorit: "favorit: true" hebt den Ort auf der Karte hervor.
    Google Maps: Der Link wird automatisch aus Name und Adresse gebaut. Optional bei "google:"
