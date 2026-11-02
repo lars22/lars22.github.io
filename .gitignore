@@ -1,0 +1,10 @@
+# Hugo
+/public/
+/resources/
+.hugo_build.lock
+
+# macOS
+.DS_Store
+
+# Unbenutzt: die Domain wird in den GitHub-Einstellungen (Pages) gesetzt
+CNAME.txt

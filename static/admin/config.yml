@@ -1,0 +1,42 @@
+# Editor für neue Artikel (Sveltia CMS). Aufruf: https://lars22.github.io/admin/
+# Anmeldung mit einem GitHub-Token (Fine-grained, nur dieses Repo, Contents: Read and write).
+backend:
+  name: github
+  repo: lars22/lars22.github.io
+  branch: main
+
+site_url: https://lars22.github.io
+
+# Fotos werden schon im Browser auf max. 1600 px verkleinert und als WebP gespeichert.
+media_libraries:
+  default:
+    config:
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 1600
+          height: 1600
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: posts
+    label: Artikel
+    label_singular: Artikel
+    folder: content/posts
+    create: true
+    # Jeder Artikel bekommt einen eigenen Ordner mit seinen Fotos (Hugo „Page Bundle“)
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    summary: '{{title}} ({{date}})'
+    fields:
+      - { name: title, label: Titel, widget: string }
+      - { name: date, label: Datum, widget: datetime, type: date, default: '{{now}}' }
+      - { name: location, label: Ort, widget: string, required: false, hint: 'z. B. Osaka, Japan (erscheint mit 📍 unter dem Text)' }
+      - { name: draft, label: 'Entwurf (noch nicht veröffentlichen)', widget: boolean, default: false }
+      - { name: body, label: Text, widget: markdown }

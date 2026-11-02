@@ -1,0 +1,116 @@
+{{ define "main" }}
+
+<style>
+  .post-container {
+    max-width: 580px; /* Adjusted for approximately 80 characters */
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .post-header {
+    margin-bottom: 16px;
+  }
+  
+  .post-title {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: left;
+    color: #4a4b4f;
+  }
+  
+  .post-date {
+    font-family: "Google Sans Code", monospace;
+    font-size: 14px;
+    color: #9d9d9d;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  
+  .post-description {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 17px;
+  }
+  
+  .post-content {
+    line-height: 1.6;
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 18px;
+  }
+
+  .post-content h2 {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 30px 0 20px 0;
+    text-align: left;
+    color: #4a4b4f;
+  }
+
+  @media (max-width: 768px) {
+    .post-content {
+      font-size: 19px;
+    }
+  }
+  
+  .post-content p {
+    margin-bottom: 20px;
+  }
+  
+  .post-content img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 0.4rem auto 2rem;
+    border-radius: 0px;
+  }
+  
+  /* Style for image captions (typically placed in an <em> tag after an image) */
+  .post-content img + em {
+    display: block;
+    text-align: center;
+    font-size: 0.9em;
+    color: #777;
+    margin-top: -0.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .post-content em {
+    color: #666;
+  }
+  
+  .back-link {
+    font-family: "Google Sans Code", monospace;
+    font-size: 14px;
+    display: inline-block;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    color: #E98BAE;
+    text-decoration: none;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  
+  .back-link:hover {
+    color: #6BBFE8;
+  }
+</style>
+
+<div class="post-container">
+  <div class="post-header">
+    <h1 class="post-title">{{ .Title }}</h1>
+    <div class="post-date">{{ .Date.Format "January 2, 2006" }}</div>
+  </div>
+  
+  <div class="post-content">
+    {{ .Content }}
+    {{ with .Params.location }}<p>📍 {{ . }}</p>{{ end }}
+  </div>
+  
+  <a href="{{ "/" | relURL }}" class="back-link">← Back to home</a>
+</div>
+{{ end }}
