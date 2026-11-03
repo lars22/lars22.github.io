@@ -7,6 +7,10 @@ backend:
 
 site_url: https://lars22.github.io
 
+# Pflichtangabe: allgemeiner Ordner für Fotos. Artikel speichern ihre Fotos aber im eigenen Ordner (siehe unten).
+media_folder: static/images/uploads
+public_folder: /images/uploads
+
 # Fotos werden schon im Browser auf max. 1600 px verkleinert und als WebP gespeichert.
 media_libraries:
   default:
