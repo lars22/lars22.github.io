@@ -6,6 +6,4 @@ draft = false
 
 ![image](/posts/osaka/osaka.jpg)
 
-![image](/posts/osaka/osaka_2.jpg)
-
 📍 Osaka, Japan
