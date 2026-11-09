@@ -24,10 +24,6 @@
     width: 100%;
   }
 
-  .pagination a {
-    text-decoration: none;
-  }
-  
   @media (max-width: 992px) {
     .page-container {
       flex-direction: column;
@@ -48,7 +44,7 @@
 
     <div class="section">
       <div class="name-stack">
-        <a href="wwww.lars.wf">
+        <a href="{{ "/" | relURL }}" aria-label="Startseite">
         <span class="layer blue">Lars</span>
         <span class="layer yellow">Lars</span>
         <span class="layer pink">Lars</span>

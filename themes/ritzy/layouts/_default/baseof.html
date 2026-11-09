@@ -31,6 +31,12 @@
         padding: 60px 20px;
       }
 
+      .name-stack a,
+      .name-stack a:hover {
+        text-decoration: none;
+        background-color: transparent;
+      }
+
       .name-stack {
         position: relative;
         width: 420px;
@@ -123,15 +129,25 @@
         line-height: 1.7;
       }
 
+      /* Links im Text: Textfarbe bleibt gut lesbar, die Marke steckt im rosa Unterstrich.
+         Beim Darüberfahren erscheint ein zarter rosa Marker. */
       a {
-        color: #E98BAE;
+        color: inherit;
         text-decoration: underline;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 2px;
+        text-decoration-color: #E98BAE;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+        transition: background-color 0.15s ease;
       }
 
       a:hover {
-        color: #6BBFE8;
+        background-color: rgba(255, 184, 210, 0.45);
+      }
+
+      a:focus-visible {
+        outline: 2px solid #E98BAE;
+        outline-offset: 2px;
+        border-radius: 2px;
       }
 
       .section {
@@ -162,6 +178,8 @@
       }
 
       .work-link:hover {
+        color: #6BBFE8;
+        background-color: transparent;
         opacity: 0.8;
       }
 
