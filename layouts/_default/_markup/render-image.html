@@ -5,13 +5,15 @@
     bei Bedarf auf max. 1600 px verkleinert.
 */ -}}
 {{- $dest := .Destination -}}
+{{- $alt := .PlainText -}}
+{{- if or (eq $alt "") (eq $alt "image") -}}{{- $alt = .Page.Title -}}{{- end -}}
 {{- $img := "" -}}
 {{- if and $dest (not (hasPrefix $dest "/")) (not (hasPrefix $dest "http")) -}}
   {{- $img = .Page.Resources.GetMatch $dest -}}
 {{- end -}}
 {{- if $img -}}
   {{- if gt $img.Width 1600 -}}{{- $img = $img.Resize "1600x q85" -}}{{- end -}}
-  <img src="{{ $img.RelPermalink }}" alt="{{ .PlainText }}" width="{{ $img.Width }}" height="{{ $img.Height }}"{{ with .Title }} title="{{ . }}"{{ end }}>
+  <img src="{{ $img.RelPermalink }}" alt="{{ $alt }}" width="{{ $img.Width }}" height="{{ $img.Height }}"{{ with .Title }} title="{{ . }}"{{ end }}>
 {{- else -}}
-  <img src="{{ $dest | safeURL }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }}>
+  <img src="{{ $dest | safeURL }}" alt="{{ $alt }}"{{ with .Title }} title="{{ . }}"{{ end }}>
 {{- end -}}

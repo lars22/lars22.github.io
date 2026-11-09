@@ -4,7 +4,7 @@ date = 2023-09-16T07:00:00+01:00
 draft = false
 +++
 
-![image](/posts/belgien/fahrrad.JPEG)
+![Radfahrer auf einer nebligen Straße über eine Brücke mit Fahnen in der Wallonie](/posts/belgien/fahrrad.JPEG)
 
 📍 Wallonie, Belgium
 
