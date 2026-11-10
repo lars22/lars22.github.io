@@ -2,6 +2,7 @@
 title = 'Eine kurze Anleitung zum Wandern auf die Seceda-Alm'
 date = 2026-09-23T07:00:00+01:00
 draft = false
+language = 'de'
 +++
 
 ![The Seceda in the Dolomites with green alpine pasture, a rugged rock edge and clouds in the sky](/posts/seceda/IMG_2090.jpeg)

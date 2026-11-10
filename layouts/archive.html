@@ -143,7 +143,7 @@
                   {{ .Date.Format "02 Jan" }}
                 </time>
 
-                <a href="{{ .RelPermalink }}">
+                <a href="{{ .RelPermalink }}"{{ with .Params.language }} lang="{{ . }}"{{ end }}>
                   {{ .Title }}
                 </a>
 

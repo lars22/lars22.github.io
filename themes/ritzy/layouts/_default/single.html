@@ -94,11 +94,11 @@
 
 <div class="post-container">
   <div class="post-header">
-    <h1 class="post-title">{{ .Title }}</h1>
+    <h1 class="post-title"{{ with .Params.language }} lang="{{ . }}"{{ end }}>{{ .Title }}</h1>
     <div class="post-date">{{ .Date.Format "January 2, 2006" }}</div>
   </div>
   
-  <div class="post-content">
+  <div class="post-content"{{ with .Params.language }} lang="{{ . }}"{{ end }}>
     {{ .Content }}
     {{ with .Params.location }}<p>📍 {{ . }}</p>{{ end }}
   </div>

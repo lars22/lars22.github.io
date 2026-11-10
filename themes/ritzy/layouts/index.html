@@ -66,14 +66,14 @@
       <div class="work-item">
 
         <a href="{{ .RelPermalink }}" class="work-link">
-          <span class="work-title">{{ .Title }}</span>
+          <span class="work-title"{{ with .Params.language }} lang="{{ . }}"{{ end }}>{{ .Title }}</span>
 
           <div class="description">
             {{ .Description }}
           </div>
         </a>
 
-        <div class="post-content">
+        <div class="post-content"{{ with .Params.language }} lang="{{ . }}"{{ end }}>
           {{ .Content }}
           {{ with .Params.location }}<p>📍 {{ . }}</p>{{ end }}
         </div>
