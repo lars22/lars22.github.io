@@ -255,30 +255,6 @@
         word-wrap: break-word;
       }
 
-      /* Force MathJax block equations to be scrollable and not overflow container */
-      .post-content mjx-container[display="true"] {
-        display: block;
-        text-align: center;
-        margin: 1em 0;
-        overflow-x: auto !important;
-        overflow-y: visible !important;
-        max-width: 100% !important;
-        width: 100% !important;
-        box-sizing: border-box;
-        padding-top: 1em;
-        padding-bottom: 1em;
-        min-height: unset;
-      }
-      /* Prevent inner math from breaking out of container */
-      .post-content mjx-container[display="true"] mjx-math {
-        min-width: 0 !important;
-        max-width: 100% !important;
-        overflow-x: auto !important;
-        overflow-y: visible !important;
-        white-space: pre;
-        box-sizing: border-box;
-        min-height: unset;
-      }
       /* Remove vertical scroll from .post-content as well */
       .post-content {
         overflow-x: auto;
@@ -324,6 +300,5 @@
     <div class="container">
       {{ block "main" . }}{{ end }}
     </div>
-    {{ partial "math.html" . }}
   </body>
 </html>
