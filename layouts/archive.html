@@ -15,11 +15,6 @@
     border-bottom: 1px solid #ececec;
   }
 
-  .archive-year-header span {
-    font-family: 'Google Sans', sans-serif;
-    color: var(--muted);
-    font-size: 13px;
-  }
 
   .archive-year h2 {
     margin: 0;
@@ -44,7 +39,6 @@
   }
 
   .archive time {
-    color: var(--muted);
     text-align: right;
     white-space: nowrap;
   }
@@ -86,7 +80,7 @@
 
           <div class="archive-year-header">
             <h2 id="{{ .Key }}">{{ .Key }}</h2>
-            <span>{{ len .Pages }} posts</span>
+            <span class="meta">{{ len .Pages }} {{ cond (eq (len .Pages) 1) "post" "posts" }}</span>
           </div>
 
           <ul>
@@ -95,7 +89,7 @@
 
               <li>
 
-                <time datetime="{{ .Date.Format "2006-01-02" }}">
+                <time class="meta date" datetime="{{ .Date.Format "2006-01-02" }}">
                   {{ .Date.Format "02 Jan" }}
                 </time>
 

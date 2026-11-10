@@ -11,13 +11,7 @@
 </style>
 
 <div class="section">
-  <div class="name-stack">
-    <a href="{{ "/" | relURL }}" aria-label="Startseite">
-      <span class="layer blue">Lars</span>
-      <span class="layer yellow">Lars</span>
-      <span class="layer pink">Lars</span>
-    </a>
-  </div>
+  {{ partial "site-logo.html" (dict "small" false) }}
 
   {{ with .Site.GetPage "_about" }}
     {{ .Summary }}
@@ -47,19 +41,16 @@
   <div class="pagination">
     <div>
       {{ if $paginator.HasPrev }}
-        <a href="{{ $paginator.Prev.URL }}">← Back</a>
+        <a href="{{ $paginator.Prev.URL }}" class="nav-link">← Back</a>
       {{ end }}
     </div>
 
     <div>
       {{ if $paginator.HasNext }}
-        <a href="{{ $paginator.Next.URL }}">Next →</a>
+        <a href="{{ $paginator.Next.URL }}" class="nav-link">Next →</a>
       {{ end }}
     </div>
   </div>
 </div>
 
-<div class="site-footer">
-  created in Hamburg, Germany ❤
-</div>
 {{ end }}

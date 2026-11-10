@@ -154,15 +154,51 @@
         margin-bottom: 40px;
       }
 
+      /* Nebeninfos in Schreibmaschinenschrift: Zwischentitel, Daten, Anzahl, Zurück-/Weiter-Links */
+      .section-label,
+      .meta,
+      .nav-link {
+        font-family: "Google Sans Code", monospace;
+        font-size: 14px;
+        font-weight: 380;
+      }
+
       .section-label {
-        font-family: 'Google Sans', sans-serif;
         font-size: 13px;
-        font-weight: 600;
+        font-weight: 500;
         text-transform: uppercase;
-        letter-spacing: 0.09em;
+        letter-spacing: 0.04em;
         margin-bottom: 15px;
         text-align: left;
         color: var(--muted);
+      }
+
+      /* Daten und Anzahl: grau; Daten zusätzlich kursiv */
+      .meta {
+        color: var(--muted);
+      }
+
+      .meta.date {
+        font-style: italic;
+      }
+
+      /* kleines Logo oben auf Artikel-, Archiv- und Fehlerseite */
+      .name-stack.small {
+        width: 110px;
+        height: 42px;
+        margin: 0 0 32px -2px;
+      }
+
+      .name-stack.small .layer {
+        font-size: 32px;
+      }
+
+      .name-stack.small .yellow {
+        transform: translate(3px, 3px);
+      }
+
+      .name-stack.small .pink {
+        transform: translate(6px, 6px);
       }
 
       /* Ein Eintrag auf der Startseite: Titel, Foto, Ort */
@@ -231,7 +267,9 @@
   </head>
   <body>
     <div class="container">
+      {{ if not .IsHome }}{{ partial "site-logo.html" (dict "small" true) }}{{ end }}
       {{ block "main" . }}{{ end }}
+      <div class="site-footer">created in Hamburg, Germany ❤</div>
     </div>
   </body>
 </html>
