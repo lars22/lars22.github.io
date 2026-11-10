@@ -4,11 +4,11 @@ date = 2023-09-16T07:00:00+01:00
 draft = false
 +++
 
-![Radfahrer auf einer nebligen Straße über eine Brücke mit Fahnen in der Wallonie](/posts/belgien/fahrrad.JPEG)
+![Cyclist riding along a foggy road over a bridge lined with flags in Wallonia](/posts/belgien/fahrrad.JPEG)
 
 📍 Wallonie, Belgium
 
-Cycling 520 km through Beglium, Germany and Luxembourg.
+Cycling 520 km through Belgium, Germany and Luxembourg.
 
 1. Aachen - Bomal (85 km)
 2. Bomal - Chimay (131 km)

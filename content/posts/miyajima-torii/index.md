@@ -5,4 +5,4 @@ location: Miyajima, Japan
 draft: false
 ---
 
-![Rotes Torii im Wasser zwischen Tempeldächern und einem Baum](miyajima-torii.jpg)
+![Red torii gate in the water between temple roofs and a tree](miyajima-torii.jpg)

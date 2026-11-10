@@ -4,6 +4,6 @@ date = 2025-10-12T07:00:00+01:00
 draft = false
 +++
 
-![Enge Gasse in Saigon am Abend mit Lampions, Motorrollern und Leuchtschildern](/posts/saigon/saigon.jpg)
+![Narrow alley in Saigon in the evening with lanterns, scooters and illuminated signs](/posts/saigon/saigon.jpg)
 
 📍 Saigon, Vietnam

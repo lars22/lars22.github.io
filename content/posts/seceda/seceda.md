@@ -4,7 +4,7 @@ date = 2026-09-23T07:00:00+01:00
 draft = false
 +++
 
-![Die Seceda in den Dolomiten mit grüner Alm, schroffer Felskante und Wolken am Himmel](/posts/seceda/IMG_2090.jpeg)
+![The Seceda in the Dolomites with green alpine pasture, a rugged rock edge and clouds in the sky](/posts/seceda/IMG_2090.jpeg)
 
 Die grüne Seceda-Alm mit ihrer schroffen Felskante ist wohl einer der schönsten Orte in den Dolomiten und eines der beliebtesten Fotomotive in Südtirol. Sie ist Teil des UNESCO-Welterbes Dolomiten. Auf 2.500 Metern Höhe bietet sich ein fantastischer Blick in alle Richtungen. Doch der Ort ist so beliebt, dass es in der Hauptsaison ziemlich schwierig sein kann, einen Parkplatz zu bekommen, um die Wanderung überhaupt zu starten.
 Viele starten ihre Wanderung in St. Ulrich oder nehmen von dort die Seilbahn direkt zur Seceda. Ich habe dort allerdings vergeblich einen Parkplatz gesucht und bin daher eher zufällig in St. Christina gelandet. Dort gibt es sowohl im Ort als auch direkt an der Seilbahn Col Raiser viele Parkmöglichkeiten.

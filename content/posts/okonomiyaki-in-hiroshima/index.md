@@ -5,4 +5,4 @@ location: Hiroshima, Japan
 draft: false
 ---
 
-![Okonomiyaki auf der heißen Platte](okonomiyaki.jpg)
+![Okonomiyaki cooking on a hot griddle](okonomiyaki.jpg)
