@@ -14,6 +14,8 @@
       /* Grau für Labels und Daten: 4,8:1 Kontrast auf dem Hintergrund (Mindestwert 4,5:1) */
       :root {
         --muted: #707070;
+        /* rosa Marker beim Darüberfahren, für alle Links gleich */
+        --marker: rgba(255, 184, 210, 0.45);
       }
 
       body {
@@ -139,7 +141,7 @@
       }
 
       a:hover {
-        background-color: rgba(255, 184, 210, 0.45);
+        background-color: var(--marker);
       }
 
       a:focus-visible {
@@ -177,13 +179,17 @@
         text-align: left;
       }
 
+      /* Der Link ist ein Block über die ganze Breite: Marker nur hinter dem Titeltext */
       .entry-link:hover {
-        color: #6BBFE8;
         background-color: transparent;
-        opacity: 0.8;
+      }
+
+      .entry-link:hover .entry-title {
+        background-color: var(--marker);
       }
 
       .entry-title {
+        transition: background-color 0.15s ease;
         font-weight: 700;
         font-family: 'Google Sans', sans-serif;
         font-size: 27px;
