@@ -1,0 +1,65 @@
+{{ define "main" }}
+<style>
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+  }
+</style>
+
+<div class="section">
+  <div class="name-stack">
+    <a href="{{ "/" | relURL }}" aria-label="Startseite">
+      <span class="layer blue">Lars</span>
+      <span class="layer yellow">Lars</span>
+      <span class="layer pink">Lars</span>
+    </a>
+  </div>
+
+  {{ with .Site.GetPage "_about" }}
+    {{ .Summary }}
+  {{ end }}
+</div>
+
+<div class="section">
+  <div class="section-label">My Postcards from around the world</div>
+
+  {{ $posts := sort (where .Site.RegularPages "Section" "posts") "Date" "desc" }}
+  {{ $paginator := .Paginate $posts 10 }}
+
+  {{ range $i, $e := $paginator.Pages }}
+  <div class="entry">
+    <a href="{{ $e.RelPermalink }}" class="entry-link">
+      <span class="entry-title"{{ with $e.Params.language }} lang="{{ . }}"{{ end }}>{{ $e.Title }}</span>
+    </a>
+
+    <div class="post-content"{{ with $e.Params.language }} lang="{{ . }}"{{ end }}>
+      {{- /* erstes Foto sofort, alle weiteren erst beim Scrollen */ -}}
+      {{ if $i }}{{ $e.Content | replaceRE "<img " "<img loading=\"lazy\" decoding=\"async\" " | safeHTML }}{{ else }}{{ $e.Content }}{{ end }}
+      {{ with $e.Params.location }}<p>📍 {{ . }}</p>{{ end }}
+    </div>
+  </div>
+  {{ end }}
+
+  <div class="pagination">
+    <div>
+      {{ if $paginator.HasPrev }}
+        <a href="{{ $paginator.Prev.URL }}">← Back</a>
+      {{ end }}
+    </div>
+
+    <div>
+      {{ if $paginator.HasNext }}
+        <a href="{{ $paginator.Next.URL }}">Next →</a>
+      {{ end }}
+    </div>
+  </div>
+</div>
+
+<div class="site-footer">
+  created in Hamburg, Germany ❤
+</div>
+{{ end }}

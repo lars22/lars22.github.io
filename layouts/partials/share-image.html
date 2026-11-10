@@ -1,0 +1,25 @@
+{{- /*
+  Vorschaubild für geteilte Links (1000x525, klein genug für WhatsApp).
+  Aufruf: partial "share-image.html" <Seite>. Gibt die absolute URL zurück, sonst "".
+  - Artikel im Editor-Ordner (Page Bundle): erstes Bild des Artikels
+  - ältere Artikel: erstes Bild aus dem Text (liegt unter content/ und ist als assets/content/ gemountet)
+*/ -}}
+{{- $page := . -}}
+{{- $img := false -}}
+{{- with $page.Resources.ByType "image" -}}
+  {{- $img = index . 0 -}}
+{{- end -}}
+{{- if not $img -}}
+  {{- with findRESubmatch `<img src="/([^"]+)"` $page.Content 1 -}}
+    {{- $src := resources.Get (printf "content/%s" (index (index . 0) 1)) -}}
+    {{- with $src -}}
+      {{- /* unter /share/<seite>.<endung> veröffentlichen statt unter /content/... */ -}}
+      {{- $img = $src | resources.Copy (printf "share/%s%s" (replace (strings.Trim $page.RelPermalink "/") "/" "-") (path.Ext $src.Name)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $url := "" -}}
+{{- if $img -}}
+  {{- $url = ($img.Fill "1000x525 center q72 jpg").Permalink -}}
+{{- end -}}
+{{- return $url -}}

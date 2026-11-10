@@ -1,8 +1,40 @@
 baseURL = 'https://lars22.github.io/'
 locale = 'en-us'
 title = 'Lars'
-Theme = 'ritzy'
-favicon = "/static/favicon/favicon.svg"
 timeZone = 'Europe/Berlin'
 # Artikel erscheinen sofort, auch wenn das Datum wegen Zeitzone (Reisen) „in der Zukunft“ liegt.
 buildFuture = true
+# Keine Tag-/Kategorie-Seiten (werden nicht genutzt)
+disableKinds = ['taxonomy', 'term']
+
+[params]
+  description = 'A small travel diary: places I visit, in photos and a few words.'
+
+# Standard-Ordner von Hugo, dazu: die Fotos aus content/ auch als "assets" verfügbar,
+# damit für die Link-Vorschau (WhatsApp & Co.) kleine Vorschaubilder erzeugt werden können.
+[module]
+  [[module.mounts]]
+    source = 'content'
+    target = 'content'
+  [[module.mounts]]
+    source = 'content'
+    target = 'assets/content'
+    files = ['**.jpg', '**.jpeg', '**.JPG', '**.JPEG', '**.png', '**.webp']
+  [[module.mounts]]
+    source = 'static'
+    target = 'static'
+  [[module.mounts]]
+    source = 'layouts'
+    target = 'layouts'
+  [[module.mounts]]
+    source = 'archetypes'
+    target = 'archetypes'
+  [[module.mounts]]
+    source = 'data'
+    target = 'data'
+  [[module.mounts]]
+    source = 'assets'
+    target = 'assets'
+  [[module.mounts]]
+    source = 'i18n'
+    target = 'i18n'

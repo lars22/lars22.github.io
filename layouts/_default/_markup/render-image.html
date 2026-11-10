@@ -1,8 +1,10 @@
 {{- /*
   Bilder in Artikeln:
-  - Pfade mit "/" oder "http" bleiben unverändert (alte Artikel).
-  - Relative Dateinamen (neue Artikel aus dem Editor) werden im Artikel-Ordner gesucht,
-    bei Bedarf auf max. 1600 px verkleinert.
+  - Relative Dateinamen (Artikel aus dem Editor) werden im Artikel-Ordner gesucht und bei Bedarf
+    auf max. 1600 px verkleinert.
+  - Pfade mit "/" (ältere Artikel) bleiben unverändert; Breite und Höhe werden zusätzlich gesetzt,
+    damit die Seite beim Nachladen der Fotos nicht springt.
+  - Leerer Alt-Text (oder "image") wird durch den Artikeltitel ersetzt.
 */ -}}
 {{- $dest := .Destination -}}
 {{- $alt := .PlainText -}}
@@ -15,5 +17,9 @@
   {{- if gt $img.Width 1600 -}}{{- $img = $img.Resize "1600x q85" -}}{{- end -}}
   <img src="{{ $img.RelPermalink }}" alt="{{ $alt }}" width="{{ $img.Width }}" height="{{ $img.Height }}"{{ with .Title }} title="{{ . }}"{{ end }}>
 {{- else -}}
-  <img src="{{ $dest | safeURL }}" alt="{{ $alt }}"{{ with .Title }} title="{{ . }}"{{ end }}>
+  {{- $w := 0 -}}{{- $h := 0 -}}
+  {{- if hasPrefix $dest "/posts/" -}}
+    {{- with resources.Get (printf "content%s" $dest) -}}{{- $w = .Width -}}{{- $h = .Height -}}{{- end -}}
+  {{- end -}}
+  <img src="{{ $dest | safeURL }}" alt="{{ $alt }}"{{ if $w }} width="{{ $w }}" height="{{ $h }}"{{ end }}{{ with .Title }} title="{{ . }}"{{ end }}>
 {{- end -}}

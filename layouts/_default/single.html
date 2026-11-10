@@ -1,0 +1,72 @@
+{{ define "main" }}
+<style>
+  .post-header {
+    margin-bottom: 16px;
+  }
+
+  .post-title {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: left;
+    color: #4a4b4f;
+  }
+
+  .post-date {
+    font-family: "Google Sans Code", monospace;
+    font-size: 14px;
+    color: #9d9d9d;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  .post-content h2 {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 30px 0 20px 0;
+    text-align: left;
+    color: #4a4b4f;
+  }
+
+  .post-content img {
+    width: 100%;
+    margin: 0.4rem auto 2rem;
+  }
+
+  /* Bildunterschrift: kursiver Text direkt unter einem Foto */
+  .post-content img + em {
+    display: block;
+    text-align: center;
+    font-size: 0.9em;
+    color: #777;
+    margin-top: -0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .post-content em {
+    color: #666;
+  }
+
+  .back-link {
+    font-family: "Google Sans Code", monospace;
+    font-size: 14px;
+    display: inline-block;
+    margin-top: 50px;
+    margin-bottom: 30px;
+  }
+</style>
+
+<div class="post-header">
+  <h1 class="post-title"{{ with .Params.language }} lang="{{ . }}"{{ end }}>{{ .Title }}</h1>
+  <div class="post-date">{{ .Date.Format "January 2, 2006" }}</div>
+</div>
+
+<div class="post-content"{{ with .Params.language }} lang="{{ . }}"{{ end }}>
+  {{ .Content }}
+  {{ with .Params.location }}<p>📍 {{ . }}</p>{{ end }}
+</div>
+
+<a href="{{ "/" | relURL }}" class="back-link">← Back to home</a>
+{{ end }}

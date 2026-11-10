@@ -1,16 +1,14 @@
 <!doctype html>
-<html lang="{{ .Site.LanguageCode }}">
+<html lang="{{ site.Language.Locale }}">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-    <meta name="description" content="{{ .Site.Params.description }}" />
+    {{ partial "head-meta.html" . }}
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
 
-    <!-- Self-hosted fonts (no request to Google Fonts / no third-party cookies) -->
-
+    <!-- Schriften liegen lokal unter /fonts/ (keine Anfrage an Google) -->
     <link href="/fonts/fonts.css" rel="stylesheet">
-
 
     <style>
       body {
@@ -25,12 +23,14 @@
         text-align: justify;
       }
 
+      /* Eine schmale Textspalte (540 px) für alle Seiten */
       .container {
-        max-width: 580px; /* Adjusted for approximately 80 characters */
+        max-width: 540px;
         margin: 0 auto;
-        padding: 60px 20px;
+        padding: 60px 40px;
       }
 
+      /* Logo: drei versetzte Ebenen */
       .name-stack a,
       .name-stack a:hover {
         text-decoration: none;
@@ -56,58 +56,51 @@
         user-select: none;
       }
 
-      /* oberste Ebene */
       .blue {
         color: #A7E8FF;
         transform: translate(0px, 0px);
       }
 
-      /* leicht nach rechts unten verschoben */
       .yellow {
         color: #FFF1A8;
         transform: translate(10px, 10px);
       }
 
-      /* dritte Ebene */
       .pink {
         color: #FFB8D2;
         transform: translate(20px, 20px);
       }
 
       @media (max-width: 768px) {
-      .container {
-        padding: 40px 10px;
+        .container {
+          padding: 40px 30px;
+        }
+
+        .name-stack {
+          width: 100%;
+          max-width: 100%;
+          height: 80px;
+        }
+
+        /* kleiner, damit der Versatz nicht über den Rand ragt */
+        .layer {
+          font-size: 56px;
+        }
+
+        .yellow {
+          transform: translate(6px, 6px);
+        }
+
+        .pink {
+          transform: translate(12px, 12px);
+        }
+
+        body {
+          font-size: 19px;
+        }
       }
 
-      /* Ergänzung für den Name-Stack auf Mobilgeräten */
-      .name-stack {
-        width: 100%;
-        max-width: 100%;
-        height: 80px; /* Höhe leicht anpassen */
-      }
-
-      .layer {
-        font-size: 56px; /* Schriftgröße verkleinern, damit 20px Offset nicht übersteht */
-      }
-
-      .yellow {
-        transform: translate(6px, 6px); /* Versatz mobil etwas reduzieren */
-      }
-
-      .pink {
-        transform: translate(12px, 12px);
-      }
-
-      h1 {
-        font-size: 22px;
-      }
-
-      body {
-        font-size: 19px;
-      }
-      }
-
-      .helloworld {
+      .page-title {
         font-family: 'Google Sans', sans-serif;
         font-size: 30px;
         font-weight: 700;
@@ -154,7 +147,7 @@
         margin-bottom: 40px;
       }
 
-      .works-title {
+      .section-label {
         font-family: 'Google Sans', sans-serif;
         font-size: 13px;
         font-weight: 600;
@@ -165,103 +158,48 @@
         color: #9d9d9d;
       }
 
-      .work-item {
+      /* Ein Eintrag auf der Startseite: Titel, Foto, Ort */
+      .entry {
         margin-bottom: 12px;
         line-height: 1.6;
       }
 
-      .work-link {
+      .entry-link {
         display: block;
+        margin-bottom: 4px;
         text-decoration: none;
         color: #4a4b4f;
         text-align: left;
       }
 
-      .work-link:hover {
+      .entry-link:hover {
         color: #6BBFE8;
         background-color: transparent;
         opacity: 0.8;
       }
 
-      .work-title {
+      .entry-title {
         font-weight: 700;
         font-family: 'Google Sans', sans-serif;
         font-size: 27px;
       }
 
-      .publication {
-        color: #8f6a60;
-      }
-
-      .year {
-        font-family: "Google Sans Code", monospace;
-        color: #9d9d9d;
-      }
-
-      .description {
-        color: #9d9d9d;
-        font-style: italic;
-        margin-top: 4px;
-      }
-
-      .contact {
+      .site-footer {
         margin-top: 50px;
         padding-top: 5px;
         border-top: 1px solid #e5e5e5;
         text-align: right;
       }
 
-      .footer-image {
-        margin-top: 30px;
-        text-align: left;
-      }
-
-      .footer-image img {
-        width: 60px;
-        height: auto;
-        opacity: 0.7;
-      }
-
-      /* Code block styling with horizontal scrolling */
-      pre {
-        background-color: #f5f5f5;
-        padding: 16px;
-        border-radius: 4px;
-        overflow-x: auto;
-        margin: 20px 0;
-      }
-      
-      code {
-        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-        font-size: 14px;
-        line-height: 1.5;
-      }
-      
-      pre code {
-        display: block;
-        white-space: pre !important;
-        word-wrap: normal !important;
-        word-break: normal;
-        overflow-x: auto;
-      }
-      
-      /* Inline code styling */
-      p code, li code, h1 code, h2 code, h3 code {
-        background-color: #f5f5f5;
-        padding: 3px 5px;
-        border-radius: 3px;
-        font-size: 0.9em;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-      }
-
-      /* Remove vertical scroll from .post-content as well */
+      /* Artikeltext und Fotos (Startseite und Artikelseite) */
       .post-content {
         overflow-x: auto;
         overflow-y: visible;
+        line-height: 1.6;
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 18px;
       }
-      
-      /* Center images in posts */
+
       .post-content img {
         display: block;
         margin-left: auto;
@@ -273,26 +211,10 @@
         margin-bottom: 1.5em;
       }
 
-      .post-content {
-        line-height: 1.6;
-        font-family: "Source Serif 4", Georgia, serif;
-        font-size: 18px;
-  }
-
       @media (max-width: 768px) {
         .post-content {
           font-size: 19px;
         }
-      }
-
-      /* Image captions */
-      .post-content img + em {
-        display: block;
-        text-align: center;
-        font-size: 0.9em;
-        color: #777;
-        margin-top: -1em;
-        margin-bottom: 1.5em;
       }
     </style>
   </head>
