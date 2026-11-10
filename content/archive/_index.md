@@ -1,4 +1,4 @@
 ---
-title: "Archiv"
+title: "Archive"
 layout: "archive"
 ---
