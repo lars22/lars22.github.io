@@ -11,6 +11,11 @@
     <link href="/fonts/fonts.css" rel="stylesheet">
 
     <style>
+      /* Grau für Labels und Daten: 4,8:1 Kontrast auf dem Hintergrund (Mindestwert 4,5:1) */
+      :root {
+        --muted: #707070;
+      }
+
       body {
         margin: 0;
         padding: 0;
@@ -155,7 +160,7 @@
         letter-spacing: 0.09em;
         margin-bottom: 15px;
         text-align: left;
-        color: #9d9d9d;
+        color: var(--muted);
       }
 
       /* Ein Eintrag auf der Startseite: Titel, Foto, Ort */
