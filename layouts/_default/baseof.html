@@ -182,23 +182,11 @@
         font-style: italic;
       }
 
-      /* kleines Logo oben auf Artikel-, Archiv- und Fehlerseite */
-      .name-stack.small {
-        width: 110px;
-        height: 42px;
-        margin: 0 0 32px -2px;
-      }
-
-      .name-stack.small .layer {
-        font-size: 32px;
-      }
-
-      .name-stack.small .yellow {
-        transform: translate(3px, 3px);
-      }
-
-      .name-stack.small .pink {
-        transform: translate(6px, 6px);
+      /* Link zurück zur Startseite (Artikel und Archiv) */
+      .back-link {
+        display: inline-block;
+        margin-top: 50px;
+        margin-bottom: 30px;
       }
 
       /* Ein Eintrag auf der Startseite: Titel, Foto, Ort */
@@ -267,7 +255,6 @@
   </head>
   <body>
     <div class="container">
-      {{ if not .IsHome }}{{ partial "site-logo.html" (dict "small" true) }}{{ end }}
       {{ block "main" . }}{{ end }}
       <div class="site-footer">created in Hamburg, Germany ❤</div>
     </div>

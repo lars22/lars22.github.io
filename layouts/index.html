@@ -11,7 +11,7 @@
 </style>
 
 <div class="section">
-  {{ partial "site-logo.html" (dict "small" false) }}
+  {{ partial "site-logo.html" . }}
 
   {{ with .Site.GetPage "_about" }}
     {{ .Summary }}

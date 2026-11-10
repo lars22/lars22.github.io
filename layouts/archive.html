@@ -6,6 +6,11 @@
     margin-bottom: 48px;
   }
 
+  /* der letzte Jahrgang hat schon genug Abstand nach unten */
+  .archive + .back-link {
+    margin-top: 0;
+  }
+
   .archive-year-header {
     display: flex;
     justify-content: space-between;
@@ -108,5 +113,7 @@
       {{ end }}
 
 </article>
+
+<a href="{{ "/" | relURL }}" class="back-link nav-link">← Back to home</a>
 
 {{ end }}
