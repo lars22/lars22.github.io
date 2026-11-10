@@ -1,14 +1,10 @@
 name: Blog veröffentlichen
 
 # Baut die Hugo-Seite und veröffentlicht sie auf GitHub Pages.
-# Läuft bei jedem Commit auf main (auch aus dem Editor unter /admin/) und nachdem
-# die Karten-Workflows Änderungen gespeichert haben (deren Commits lösen sonst nichts aus).
+# Läuft bei jedem Commit auf main (auch aus dem Editor unter /admin/).
 on:
   push:
     branches: [main]
-  workflow_run:
-    workflows: ["Café-Karte aktualisieren", "Neuer Ort aus Formular"]
-    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -25,7 +21,6 @@ env:
 
 jobs:
   build:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Hugo installieren
@@ -45,13 +40,6 @@ jobs:
           HUGO_ENVIRONMENT: production
           TZ: Europe/Berlin
         run: hugo --gc --baseURL "${{ steps.pages.outputs.base_url }}/"
-
-      # Die Café-Karte ist ein eigenes Projekt im Ordner karte/ und wird unverändert mitveröffentlicht
-      # (ohne die Quelldateien in _cafes/).
-      - name: Karte einbinden
-        run: |
-          mkdir -p public/karte
-          rsync -a --exclude '_cafes' --exclude '.gitkeep' karte/ public/karte/
 
       - uses: actions/upload-pages-artifact@v5
         with:
