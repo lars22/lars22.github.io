@@ -6,3 +6,5 @@ draft: false
 ---
 
 ![Okonomiyaki cooking on a hot griddle](okonomiyaki.jpg)
+
+Okonomiyaki – a delicious Japanese savory pancake. 
