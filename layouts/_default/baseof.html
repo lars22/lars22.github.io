@@ -28,6 +28,13 @@
         color: #4a4b4f;
         background-color: #fbfbfb;
         text-align: justify;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+      }
+
+      h1, h2, .site-title, .section-label, .entry-title, .nav-link, .meta, .site-footer {
+        -webkit-hyphens: manual;
+        hyphens: manual;
       }
 
       /* Eine schmale Textspalte (540 px) für alle Seiten */
@@ -37,45 +44,30 @@
         padding: 60px 40px;
       }
 
-      /* Logo: drei versetzte Ebenen */
-      .name-stack a,
-      .name-stack a:hover {
+      /* Logo: Bär + "bueno" (Hauptüberschrift der Startseite) */
+      .site-title {
+        margin: 0 0 32px 0;
+        font-family: 'Google Sans', sans-serif;
+        font-size: 60px;
+        font-weight: 700;
+        line-height: 0.8;
+        letter-spacing: -0.04em;
+        color: #4a4b4f;
+      }
+
+      .site-title a,
+      .site-title a:hover {
+        display: inline-flex;
+        align-items: flex-end;
+        gap: 0.2em;
+        color: inherit;
         text-decoration: none;
         background-color: transparent;
       }
 
-      .name-stack {
-        position: relative;
-        width: 420px;
-        height: 120px;
-        margin-left: -6px;
-      }
-
-      .layer {
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-family: 'Google Sans', sans-serif;
-        font-size: 88px;
-        font-weight: 700;
-        line-height: 1;
-        letter-spacing: -0.04em;
-        user-select: none;
-      }
-
-      .blue {
-        color: #A7E8FF;
-        transform: translate(0px, 0px);
-      }
-
-      .yellow {
-        color: #FFF1A8;
-        transform: translate(10px, 10px);
-      }
-
-      .pink {
-        color: #FFB8D2;
-        transform: translate(20px, 20px);
+      .site-title img {
+        height: 1.5em;
+        width: auto;
       }
 
       @media (max-width: 768px) {
@@ -83,23 +75,8 @@
           padding: 40px 30px;
         }
 
-        .name-stack {
-          width: 100%;
-          max-width: 100%;
-          height: 80px;
-        }
-
-        /* kleiner, damit der Versatz nicht über den Rand ragt */
-        .layer {
-          font-size: 56px;
-        }
-
-        .yellow {
-          transform: translate(6px, 6px);
-        }
-
-        .pink {
-          transform: translate(12px, 12px);
+        .site-title {
+          font-size: 46px;
         }
 
         body {
@@ -174,6 +151,10 @@
         font-weight: 400;
       }
 
+      .nav-link {
+        font-size: 16px;
+      }
+
       .meta {
         color: var(--muted);
       }
@@ -217,9 +198,12 @@
 
       .site-footer {
         margin-top: 50px;
-        padding-top: 5px;
+        padding-top: 12px;
         border-top: 1px solid #e5e5e5;
         text-align: right;
+        font-family: 'Google Sans', sans-serif;
+        font-size: 15px;
+        color: var(--muted);
       }
 
       /* Artikeltext und Fotos (Startseite und Artikelseite) */
@@ -252,7 +236,7 @@
   <body>
     <div class="container">
       {{ block "main" . }}{{ end }}
-      <div class="site-footer">created in Hamburg, Germany ❤</div>
+      <div class="site-footer"><a href="{{ "archive/" | relURL }}">Archive</a> · <a href="{{ "index.xml" | relURL }}">RSS</a></div>
     </div>
   </body>
 </html>

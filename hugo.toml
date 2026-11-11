@@ -1,6 +1,6 @@
 baseURL = 'https://lars22.github.io/'
 locale = 'en-us'
-title = 'Lars'
+title = 'bueno'
 timeZone = 'Europe/Berlin'
 # Artikel erscheinen sofort, auch wenn das Datum wegen Zeitzone (Reisen) „in der Zukunft“ liegt.
 buildFuture = true

@@ -1,8 +1,7 @@
-{{- /* Logo "Lars" aus drei versetzten Ebenen (Startseite) */ -}}
-<div class="name-stack">
-  <a href="{{ "/" | relURL }}" aria-label="Lars – home">
-    <span class="layer blue">Lars</span>
-    <span class="layer yellow">Lars</span>
-    <span class="layer pink">Lars</span>
+{{- /* Logo: Bär + Schriftzug; zugleich die Hauptüberschrift der Startseite */ -}}
+<h1 class="site-title">
+  <a href="{{ "/" | relURL }}">
+    <img src="{{ "logo-bear.svg" | relURL }}" alt="" width="52" height="100">
+    <span>{{ site.Title }}</span>
   </a>
-</div>
+</h1>
