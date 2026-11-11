@@ -16,4 +16,4 @@ Schon an der Bergstation startet die Wanderung mit einem wunderbaren Panoramabli
 
 Als Reaktion auf den großen Besucherandrang haben die Grundeigentümer eine Zahlstelle für einen schmalen Pfad entlang der Alm eingerichtet. Für 5 Euro kann man dort ebenfalls entlangwandern. Ich persönlich finde allerdings nicht, dass sich der Preis für das kurze Stück lohnt (siehe auch die Google-Rezensionen). Ein Schnappschuss vom Gipfelkreuz ist meiner Meinung nach ohnehin das schönere Erinnerungsfoto.
 
-📍 Dolomiten, Italien   
+📍 Dolomites, Italy   

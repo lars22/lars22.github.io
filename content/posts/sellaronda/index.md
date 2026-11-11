@@ -1,7 +1,7 @@
 ---
 title: Sellaronda
 date: 2026-08-30
-location: Sellaronda, Italien
+location: Sellaronda, Italy
 draft: false
 ---
 

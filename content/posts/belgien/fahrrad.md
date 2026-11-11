@@ -6,7 +6,7 @@ draft = false
 
 ![Cyclist riding along a foggy road over a bridge lined with flags in Wallonia](/posts/belgien/fahrrad.JPEG)
 
-📍 Wallonie, Belgium
+📍 Wallonia, Belgium
 
 Cycling 520 km through Belgium, Germany and Luxembourg.
 
