@@ -197,6 +197,10 @@
         font-size: 27px;
       }
 
+      .site-footer .sep {
+        margin: 0 0.4em;
+      }
+
       .site-footer {
         margin-top: 50px;
         padding-top: 12px;
@@ -237,7 +241,7 @@
   <body>
     <div class="container">
       {{ block "main" . }}{{ end }}
-      <div class="site-footer"><a href="{{ "archive/" | relURL }}">Archive</a> · <a href="{{ "index.xml" | relURL }}">RSS</a></div>
+      <div class="site-footer"><a href="{{ "archive/" | relURL }}">Archive</a> <span class="sep">|</span> <a href="{{ "about/" | relURL }}">About</a></div>
     </div>
   </body>
 </html>
