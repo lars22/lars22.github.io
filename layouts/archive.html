@@ -20,7 +20,6 @@
     border-bottom: 1px solid #ececec;
   }
 
-
   .archive-year h2 {
     margin: 0;
     font-family: 'Google Sans', sans-serif;
@@ -35,24 +34,29 @@
     padding: 0;
   }
 
+  /* Datum und Titel in derselben Schrift und Größe */
   .archive li {
     display: grid;
     grid-template-columns: 85px 1fr;
     gap: 18px;
     align-items: baseline;
     padding: 8px 0;
+    font-family: 'Google Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.4;
   }
 
   .archive time {
+    font-size: inherit;
     text-align: right;
     white-space: nowrap;
   }
 
   .archive li a {
     color: #4a4b4f;
+    font-weight: 500;
     text-decoration: none;
   }
-
 
   @media (max-width: 768px) {
 
