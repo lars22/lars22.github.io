@@ -6,8 +6,6 @@ draft = false
 
 ![Cyclist riding along a foggy road over a bridge lined with flags in Wallonia](/posts/belgien/fahrrad.JPEG)
 
-📍 Wallonia, Belgium
-
 Cycling 520 km through Belgium, Germany and Luxembourg.
 
 1. Aachen - Bomal (85 km)
@@ -17,3 +15,5 @@ Cycling 520 km through Belgium, Germany and Luxembourg.
 5. Betrix - Troisvierges (88 km)
 6. Troisvierges - Monschau (83 km)
 7. Monschau - Aachen (62 km)
+
+📍 Wallonia, Belgium
