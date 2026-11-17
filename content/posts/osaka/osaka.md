@@ -11,6 +11,6 @@ Konnichiwa, Osaka! Osaka was the first stop on our trip to Japan. It is exactly 
 ## Cafés and Restaurants
 
 - [Amijima Chaya](https://www.google.com/maps/search/?api=1&query=Amijima+Chaya%2C+10-32+Amijimacho%2C+Miyakojima+Ward%2C+Osaka%2C+534-0026%2C+Japan): Very good matcha and freshly grilled dango
-- [OKO - Fun Okonomiyaki Bar](https://www.google.com/maps/search/?api=1&query=OKO+-+Fun+Okonomiyaki+Bar%2C+2+Chome-4-13+Dotonbori%2C+Chuo+Ward%2C+Osaka%2C+542-0071%2C+Japan): Very good okonomiyaki with vegan and vegetarian options
+- [OKO - Fun Okonomiyaki Bar](https://www.google.com/maps/search/?api=1&query=OKO+-+Fun+Okonomiyaki+Bar%2C+2+Chome-4-13+Dotonbori%2C+Chuo+Ward%2C+Osaka%2C+542-0071%2C+Japan): A crazy place with really good okonomiyaki, including vegetarian and vegan options
 
 📍 Osaka, Japan
