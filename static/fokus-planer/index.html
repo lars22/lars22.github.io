@@ -360,6 +360,7 @@ ul.list:empty::after{content:"Drop here";display:block;border:1.5px dashed var(-
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){--bg:#16181c;--panel:#1f2227;--ink:#e7e9ee;--muted:#9aa1ad;--line:#2c3037;--accent:#8fb0ec;--accent-ink:#0f1b33;--accent-soft:#25324a;--today:#212733;--shadow:0 8px 28px rgba(0,0,0,.25)}
 }
+:root[data-theme="dark"]{--bg:#16181c;--panel:#1f2227;--ink:#e7e9ee;--muted:#9aa1ad;--line:#2c3037;--accent:#8fb0ec;--accent-ink:#0f1b33;--accent-soft:#25324a;--today:#212733;--shadow:0 8px 28px rgba(0,0,0,.25)}
 body{font-size:15px}
 h1,h2,h3{font-weight:500}
 .top{padding:20px 0 14px;gap:28px}
@@ -412,7 +413,8 @@ ul.list:empty::after{border-radius:14px;border-color:var(--line)}
 .trow:hover{background:hsl(var(--h) var(--s) 89%)}
 .trow .tr{color:hsl(var(--h) 18% 40%)}
 .trow .tn{font-weight:500}
-@media (prefers-color-scheme: dark){.trow{background:hsl(var(--h) calc(var(--s)*.6) 22%)}.trow:hover{background:hsl(var(--h) calc(var(--s)*.6) 27%)}.trow .tr{color:var(--muted)}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .trow{background:hsl(var(--h) calc(var(--s)*.6) 22%)}:root:not([data-theme="light"]) .trow:hover{background:hsl(var(--h) calc(var(--s)*.6) 27%)}:root:not([data-theme="light"]) .trow .tr{color:var(--muted)}}
+:root[data-theme="dark"] .trow{background:hsl(var(--h) calc(var(--s)*.6) 22%)}:root[data-theme="dark"] .trow:hover{background:hsl(var(--h) calc(var(--s)*.6) 27%)}:root[data-theme="dark"] .trow .tr{color:var(--muted)}
 .homecal{gap:14px}
 /* Kalender: Woche */
 .calbig{height:100%;padding:18px}
@@ -427,7 +429,8 @@ ul.list:empty::after{border-radius:14px;border-color:var(--line)}
 .wklist .trow .tr{grid-area:t;font-size:12.5px}
 .wklist .trow .td{grid-area:d;font-size:12.5px}
 .wklist .trow .tn{grid-area:n;white-space:normal;font-size:14px}
-@media (prefers-color-scheme: dark){.wkcol .trow{background:hsl(var(--h) calc(var(--s)*.6) 22%)}.wkcol .trow:hover{background:hsl(var(--h) calc(var(--s)*.6) 27%)}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .wkcol .trow{background:hsl(var(--h) calc(var(--s)*.6) 22%)}:root:not([data-theme="light"]) .wkcol .trow:hover{background:hsl(var(--h) calc(var(--s)*.6) 27%)}}
+:root[data-theme="dark"] .wkcol .trow{background:hsl(var(--h) calc(var(--s)*.6) 22%)}:root[data-theme="dark"] .wkcol .trow:hover{background:hsl(var(--h) calc(var(--s)*.6) 27%)}
 /* Dialog & Listen */
 .dialog.big{border-radius:28px}
 .bigcheck{border-color:color-mix(in srgb,var(--muted) 55%,transparent)}
@@ -478,7 +481,8 @@ ul.list:empty::after{border-radius:14px;border-color:var(--line)}
 .blk:hover{background:hsl(var(--h) var(--s) 85%)}
 .blk .bt{font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .blk .bm{font-size:11.5px;color:hsl(var(--h) 14% 42%);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media (prefers-color-scheme: dark){.blk{background:hsl(var(--h) calc(var(--s)*.7) 24%);color:var(--ink)}.blk:hover{background:hsl(var(--h) calc(var(--s)*.7) 29%)}.blk .bm{color:var(--muted)}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .blk{background:hsl(var(--h) calc(var(--s)*.7) 24%);color:var(--ink)}:root:not([data-theme="light"]) .blk:hover{background:hsl(var(--h) calc(var(--s)*.7) 29%)}:root:not([data-theme="light"]) .blk .bm{color:var(--muted)}}
+:root[data-theme="dark"] .blk{background:hsl(var(--h) calc(var(--s)*.7) 24%);color:var(--ink)}:root[data-theme="dark"] .blk:hover{background:hsl(var(--h) calc(var(--s)*.7) 29%)}:root[data-theme="dark"] .blk .bm{color:var(--muted)}
 .blk.sm{flex-direction:row;align-items:center;padding:2px 9px;border-radius:10px;min-height:24px}
 .blk.sm .bm{display:none}
 .blk.sm .bt{font-size:12.5px}
@@ -602,13 +606,8 @@ body,button,input,select,textarea{font-family:var(--body)}
 .hbars.kb .ht{height:8px}
 .cps{font-size:12.5px;color:var(--muted);text-align:center;padding:6px 0 2px}
 .hb .hv{width:auto}
-@media (prefers-color-scheme: dark){
-  .chip{background:hsl(var(--h,200) 28% 25%);color:hsl(var(--h,200) 45% 85%)}
-  .chip::before{background:hsl(var(--h,200) 50% 65%)}
-  .fchip i,.mside .topt i{background:hsl(var(--h,200) 50% 65%)}
-  .hb .ht i{background:hsl(var(--h) calc(var(--s)*.9) 58%)}
-  .bar i{background:color-mix(in srgb,var(--accent) 35%,var(--panel))}
-}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip{background:hsl(var(--h,200) 28% 25%);color:hsl(var(--h,200) 45% 85%)}:root:not([data-theme="light"]) .chip::before{background:hsl(var(--h,200) 50% 65%)}:root:not([data-theme="light"]) .fchip i,:root:not([data-theme="light"]) .mside .topt i{background:hsl(var(--h,200) 50% 65%)}:root:not([data-theme="light"]) .hb .ht i{background:hsl(var(--h) calc(var(--s)*.9) 58%)}:root:not([data-theme="light"]) .bar i{background:color-mix(in srgb,var(--accent) 35%,var(--panel))}}
+:root[data-theme="dark"] .chip{background:hsl(var(--h,200) 28% 25%);color:hsl(var(--h,200) 45% 85%)}:root[data-theme="dark"] .chip::before{background:hsl(var(--h,200) 50% 65%)}:root[data-theme="dark"] .fchip i,:root[data-theme="dark"] .mside .topt i{background:hsl(var(--h,200) 50% 65%)}:root[data-theme="dark"] .hb .ht i{background:hsl(var(--h) calc(var(--s)*.9) 58%)}:root[data-theme="dark"] .bar i{background:color-mix(in srgb,var(--accent) 35%,var(--panel))}
 .mtools{flex:none;min-height:43px;box-sizing:border-box}
 .mtools.vmode .t,.mtools.vmode .vsep{display:none}
 .mtools .seg{min-width:84px;height:32px;border-radius:999px;font-weight:600}
@@ -624,7 +623,8 @@ body,button,input,select,textarea{font-family:var(--body)}
 .dsec .row{flex-wrap:wrap}
 .dsec .row select{flex:1;min-width:0}
 .dsec p{margin:0;color:var(--muted);font-size:14px}
-@media (prefers-color-scheme:dark){.store.warn{background:#3b3216;border-color:#6d5a24;color:#e8cf8a}.store.err{background:#3b1d1d;border-color:#744040;color:#efb3b3}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .store.warn{background:#3b3216;border-color:#6d5a24;color:#e8cf8a}:root:not([data-theme="light"]) .store.err{background:#3b1d1d;border-color:#744040;color:#efb3b3}}
+:root[data-theme="dark"] .store.warn{background:#3b3216;border-color:#6d5a24;color:#e8cf8a}:root[data-theme="dark"] .store.err{background:#3b1d1d;border-color:#744040;color:#efb3b3}
 
 .mside .topt i.sq{border-radius:2px;background:var(--muted)}
 .dfilters{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:2px 0 18px}
@@ -767,7 +767,7 @@ var EST=[15,30,45,60,90,120];
 var DEF=30;
 var VIEWS=['home','planer','kalender','erledigt','notizen'];
 var filterProj='', memory=null, state=null, view='home', planOff=0, calOff=0, doneOpen=false;
-var APP_VERSION='1.0.3',APP_DATE='Nov 22, 2026';
+var APP_VERSION='1.0.4',APP_DATE='Nov 22, 2026';
 var freshIds={};
 function wantEdit(it){var e=!!freshIds[it.id]&&!(it.note||'').trim();delete freshIds[it.id];return e}
 var tick=null, modalId=null, delArmed=false, toastT=null, toastFn=null, prevOn=false, dragging=false, homeOff=0, calSel=null, calMode='week', monOff=0, modalKind='task';
