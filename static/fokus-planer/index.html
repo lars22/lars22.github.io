@@ -87,6 +87,9 @@ ul.list:empty::after{content:"Drop here";display:block;border:1.5px dashed var(-
 .card:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
 .card.active{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
 .card.hide{display:none}
+.homeleft .card .check{margin-top:0}
+.homeleft .card .play{align-self:start;margin-top:-5px}
+.homeleft .card .ctitle{min-height:20px}
 .card.np{grid-template-columns:22px minmax(0,1fr)}
 .card.ghost{opacity:.35}
 .check{width:20px;height:20px;border-radius:50%;border:2px solid var(--muted);background:transparent;padding:0;margin-top:1px}
@@ -764,7 +767,7 @@ var EST=[15,30,45,60,90,120];
 var DEF=30;
 var VIEWS=['home','planer','kalender','erledigt','notizen'];
 var filterProj='', memory=null, state=null, view='home', planOff=0, calOff=0, doneOpen=false;
-var APP_VERSION='1.0.2',APP_DATE='Nov 22, 2026';
+var APP_VERSION='1.0.3',APP_DATE='Nov 22, 2026';
 var freshIds={};
 function wantEdit(it){var e=!!freshIds[it.id]&&!(it.note||'').trim();delete freshIds[it.id];return e}
 var tick=null, modalId=null, delArmed=false, toastT=null, toastFn=null, prevOn=false, dragging=false, homeOff=0, calSel=null, calMode='week', monOff=0, modalKind='task';
