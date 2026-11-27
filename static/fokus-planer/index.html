@@ -733,6 +733,55 @@ body.compact .col .dayhead{margin-bottom:0}
 .mlabel{padding-bottom:0;align-items:center;margin-right:16px}
 .mtools .seg{width:104px;min-width:104px;padding:0;text-align:center;display:inline-flex;align-items:center;justify-content:center}
 .mtools .grow{flex:1}
+
+/* ===== Mobile (<=700px): view-only layout, laptop is unaffected ===== */
+@media (max-width:700px){
+  .app{padding:0 12px}
+  .top{padding:12px 0 8px;gap:8px;flex-wrap:nowrap}
+  .brand h1{font-size:19px}
+  .gear{width:40px;height:40px}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;margin:0;gap:0;justify-content:space-between;padding:6px 8px calc(8px + env(safe-area-inset-bottom));background:var(--panel);border:none;border-top:1px solid var(--line);border-radius:0}
+  .tabs button{flex:1;padding:11px 0;font-size:13.5px;text-align:center;border-radius:12px}
+  .view{padding-bottom:96px}
+  input[type=text],input[type=date],input:not([type]),select,textarea,.sbox input,.pfilter,.dfilters input{font-size:16px!important}
+  .toolbar{gap:8px;padding:0 0 10px}
+  .toolbar .tsearch{order:1;flex:1 1 0;min-width:0;width:auto;height:40px}
+  .toolbar .pfilter{order:1;flex:none;width:112px;height:40px}
+  .toolbar .wnav{order:2;width:100%;height:40px}
+  .btn.sq{width:40px;height:40px}
+  .wnav .btn{height:40px}
+  .wl{margin-left:4px;font-size:15px;line-height:1.2}
+  .pscroll{overflow:visible}
+  .pgrid{display:flex;flex-direction:column;min-width:0;gap:12px}
+  .col ul.list{max-height:none;overflow:visible}
+  .col .ctitle{font-size:16px}
+  .col .check{width:22px;height:22px}
+  .col .card{grid-template-columns:22px minmax(0,1fr);padding:12px}
+  .col .play{opacity:1;width:36px;height:36px;right:8px;bottom:8px}
+  .col.bl .panelhead{cursor:pointer;min-height:36px;align-items:center}
+  .col.bl .panelhead span::after{content:" ▾"}
+  .col.bl.open .panelhead span::after{content:" ▴"}
+  .col.bl:not(.open) #quick,.col.bl:not(.open) #backlogList{display:none}
+  .col.bl.open #backlogList{max-height:60vh;overflow:auto}
+  .homecal{display:none}
+  .homeleft .card .play{width:40px;height:40px;margin-top:-10px}
+  .homeleft .card .check{width:22px;height:22px}
+  .calbig{padding:12px}
+  .dfilters{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;margin-bottom:14px}
+  .dfilters .sbox{grid-column:1/-1;width:auto;min-width:0;height:40px;flex-direction:row;align-items:center;gap:8px}
+  .drow{flex-wrap:wrap;row-gap:2px}
+  .drow .tt{flex:1 1 0}
+  .drow .btn{order:2}
+  .drow .tm{order:3;flex:1 1 100%;padding-left:30px;font-size:12.5px}
+  .dfilters label{flex-direction:column;align-items:stretch;gap:4px}
+  .dfilters label:nth-child(2){grid-column:1/-1}
+  .dfilters input[type=text]{width:100%;height:40px}
+  .dfilters .btn{grid-column:1/-1;justify-self:start;border:none;background:none;box-shadow:none;padding:0;color:var(--muted);text-decoration:underline}
+  .kpis.k3{grid-template-columns:1fr 1fr}
+  .kpis.k3>*:nth-child(3){grid-column:1/-1}
+  .overlay,.overlay.center{padding:0;align-items:stretch}
+  .dialog,.dialog.big{max-width:none;width:100%;min-height:100dvh;height:auto;max-height:none;border-radius:0;border:none}
+}
 </style>
 </head>
 <body>
@@ -766,8 +815,12 @@ var HUES=[210,150,28,340,265,185,50];
 var EST=[15,30,45,60,90,120];
 var DEF=30;
 var VIEWS=['home','planer','kalender','erledigt','notizen'];
+var mOff=0,mcOff=0,blOpen=false;
+var MQ=window.matchMedia?window.matchMedia('(max-width:700px)'):null;
+function isMob(){return !!(MQ&&MQ.matches)}
+function mobDate(off){var t=new Date(),d=new Date(t.getFullYear(),t.getMonth(),t.getDate());while(!validDay(d))d=addDays(d,1);var sg=off<0?-1:1,n=Math.abs(off);while(n>0){d=addDays(d,sg);if(validDay(d))n--}return d}
 var filterProj='', memory=null, state=null, view='home', planOff=0, calOff=0, doneOpen=false;
-var APP_VERSION='1.0.5',APP_DATE='Nov 22, 2026';
+var APP_VERSION='1.1.0',APP_DATE='Nov 22, 2026';
 var freshIds={};
 function wantEdit(it){var e=!!freshIds[it.id]&&!(it.note||'').trim();delete freshIds[it.id];return e}
 var tick=null, modalId=null, delArmed=false, toastT=null, toastFn=null, prevOn=false, dragging=false, homeOff=0, calSel=null, calMode='week', monOff=0, modalKind='task';
@@ -1451,7 +1504,7 @@ function renderHome(){
   return h;
 }
 function renderPlaner(){
-  var days=windowDates(planOff),tk=todayKey(),doneBy=doneCounts();
+  var days=isMob()?[mobDate(mOff)]:windowDates(planOff),tk=todayKey(),doneBy=doneCounts();
   var h='<div class="pscroll"><div class="pgrid" style="--n:'+days.length+'">';
   days.forEach(function(d){
     var key=ds(d),isT=key===tk,tasks=openTasks(state.plan[key]);
@@ -1462,14 +1515,14 @@ function renderPlaner(){
     h+='</section>';
   });
   var bl=openTasks(state.backlog),now=Date.now();
-  h+='<section class="panel col bl"><div class="panelhead"><h2>Backlog</h2><span>'+bl.length+' open</span></div>';
+  h+='<section class="panel col bl'+(blOpen?' open':'')+'"><div class="panelhead" data-act="blt"><h2>Backlog</h2><span>'+bl.length+' open</span></div>';
   h+='<form id="quick" autocomplete="off"><input id="quickInput" type="text" placeholder="+ Task" aria-label="New task"></form>';
   h+='<ul class="list" id="backlogList" data-list="backlog">'+bl.map(function(t){return cardHTML(t,{age:Math.floor((now-t.created)/864e5)})}).join('')+'</ul></section>';
   h+='</div></div>';
   return h;
 }
 function renderKalender(){
-  var days=calRows(addDays(weekStart(new Date()),calOff*7),1)[0],keys=days.map(ds);
+  var days=calRows(addDays(weekStart(new Date()),calOff*7),1)[0],keys=isMob()?[ds(mobDate(mcOff))]:days.map(ds);
   var range=dayRange(keys.map(trackedOn));
   return '<section class="panel calbig">'+timeGrid(keys,range,true)+'</section>';
 }
@@ -1527,6 +1580,9 @@ function renderToolbar(){
   if(view==='planer'){
     var ds_=windowDates(planOff),a=ds_[0],b=ds_[ds_.length-1];
     label=fmtDay(a)+' – '+fmtDay(b)+b.getFullYear();prevDis=planOff===0;
+    if(isMob()){var md=mobDate(mOff);label=fmtDay(md);prevDis=mOff===0}
+  }else if(isMob()){
+    var cd=mobDate(mcOff);label=fmtDay(cd)+(ds(cd)===todayKey()?' · Today':'');
   }else{
     var r=calRows(addDays(weekStart(new Date()),calOff*7),1)[0],b3=r[r.length-1],tot=0;
     r.forEach(function(d){tot+=dayTotal(trackedOn(ds(d)))});
@@ -1557,6 +1613,7 @@ var dragEl=null;
 var sortables=[];
 function initSortable(){
   sortables.forEach(function(x){x.destroy()});sortables=[];
+  if(isMob())return;
   if(!window.Sortable){
     document.querySelectorAll('ul.list[data-list] > li.card').forEach(function(li){li.draggable=true});
     return;
@@ -1867,6 +1924,7 @@ function toggleLine(t,line){
 
 /* ---------- Events ---------- */
 function bind(){
+  if(MQ&&MQ.addEventListener)MQ.addEventListener('change',function(){renderBoard()});
   window.addEventListener('hashchange',function(){
     var v=(location.hash||'').replace('#','');
     if(VIEWS.indexOf(v)>-1&&v!==view){view=v;renderBoard()}
@@ -1928,9 +1986,10 @@ function bind(){
     var act=el.dataset.act,card=el.closest('.card'),id=card?card.dataset.id:el.dataset.id,t;
     switch(act){
       case 'nav':setView(el.dataset.view);break;
-      case 'wprev':if(view==='planer'){planOff=Math.max(0,planOff-1)}else{calOff--}renderBoard();break;
-      case 'wnext':if(view==='planer')planOff++;else calOff++;renderBoard();break;
-      case 'wtoday':planOff=0;calOff=0;monOff=0;renderBoard();break;
+      case 'wprev':if(isMob()){if(view==='planer')mOff=Math.max(0,mOff-1);else mcOff--}else if(view==='planer'){planOff=Math.max(0,planOff-1)}else{calOff--}renderBoard();break;
+      case 'blt':blOpen=!blOpen;renderBoard();break;
+      case 'wnext':if(isMob()){if(view==='planer')mOff++;else mcOff++}else if(view==='planer')planOff++;else calOff++;renderBoard();break;
+      case 'wtoday':planOff=0;calOff=0;monOff=0;mOff=0;mcOff=0;renderBoard();break;
       case 'cmode':calMode=el.dataset.m;renderBoard();break;
       case 'nopen':openNote(id);break;
       case 'ntask':
